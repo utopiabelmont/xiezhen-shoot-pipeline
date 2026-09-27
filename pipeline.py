@@ -192,7 +192,7 @@ def cmd_shots(a):
 def cmd_cards(a):
     d = PLANS / a.plan
     images = Path(a.images) if a.images else ROOT / "out" / a.plan
-    rc = run([PY, TOOLS / "make_cards.py", "--plan", d, "--images", images, "--out", d / "cards"])
+    rc = run([PY, TOOLS / "make_cards.py", "--plan", d, "--images", images, "--out", d / "cards"] + (["--public"] if getattr(a, "public", False) else []))
     if rc == 0 and (d / "outfit.json").exists():
         run([PY, TOOLS / "make_outfit_page.py", "--plan", d, "--out", d / "cards"])
     if rc == 0 and (d / "trip.json").exists():
@@ -230,7 +230,7 @@ def cmd_cards(a):
                 print(name, len(ims), "页")
         except Exception as e:  # PDF 只是附带产物
             print("PDF 未生成：", e)
-        run([PY, TOOLS / "checklist.py", "--plan", d, "--images", images])   # 现场核对表（HTML）
+        run([PY, TOOLS / "checklist.py", "--plan", d, "--images", images] + (["--public"] if getattr(a, "public", False) else []))   # 现场核对表（HTML）
     return rc
 
 
@@ -481,7 +481,7 @@ def main():
     s = sub.add_parser("stylize"); s.add_argument("plan"); s.add_argument("--name", default="main"); s.add_argument("--prompt-extra", default=""); s.set_defaults(fn=cmd_stylize)
     s = sub.add_parser("jobs"); s.add_argument("plan"); s.add_argument("--force", action="store_true"); s.add_argument("--missing", action="store_true"); s.set_defaults(fn=cmd_jobs)
     s = sub.add_parser("shots"); s.add_argument("plan"); s.add_argument("--dry-run", action="store_true"); s.set_defaults(fn=cmd_shots)
-    s = sub.add_parser("cards"); s.add_argument("plan"); s.add_argument("--images"); s.set_defaults(fn=cmd_cards)
+    s = sub.add_parser("cards"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--public", action="store_true", help="公开版：不放 sns_private 原帖截图（放进 examples / 推到 GitHub 前用）"); s.set_defaults(fn=cmd_cards)
     s = sub.add_parser("lint"); s.add_argument("plan"); s.set_defaults(fn=cmd_lint)
     s = sub.add_parser("checklist"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--no-thumbs", action="store_true"); s.set_defaults(fn=cmd_checklist)
     s = sub.add_parser("palette"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--n", type=int, default=12); s.add_argument("--offline", action="store_true"); s.set_defaults(fn=cmd_palette)

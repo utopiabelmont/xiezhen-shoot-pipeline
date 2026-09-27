@@ -82,7 +82,7 @@ def page_main(o, pal, meta, out):
 
     y = panel(d, (lx0, 484, lx1, 800), "为什么这样搭", f_h)
     text_block(d, (lx0 + 16, y), "路线：" + o.get("route", "") + "\n" + "\n".join("· " + r for r in o.get("rationale", [])), f_s, lx1 - lx0 - 32, spacing=4)
-    y = panel(d, (lx0, 814, lx1, H - 22), "道具 · 妆发", f_h)
+    y = panel(d, (lx0, 814, lx1, H - 60), "道具 · 妆发", f_h)
     text_block(d, (lx0 + 16, y), "道具：" + "、".join(o.get("props", [])) + "\n妆发：" + o.get("hair_makeup", ""), f_s, lx1 - lx0 - 32, spacing=4)
 
     # 右栏：方案

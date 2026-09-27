@@ -6,7 +6,7 @@ sns_refs.py　SNS 参考机位：把 plans/<plan>/sns_refs.json 里逐帖记录�
 
 输出：
   cards/sns_01.png        参考机位分布图（风格化底图上画每帖的相机位置与朝向，颜色按可复现度）+ 一览表
-  cards/sns_02.png ...    机位卡，每页 3 张：构图示意、俯视小图、机位要素、视觉拆解、可复现度与本组用法、原帖链接
+  cards/sns_02.png ...    （--cards 时）单独的机位卡页，每页 3 张；默认不出，机位卡已并入对应分镜页：构图示意、俯视小图、机位要素、视觉拆解、可复现度与本组用法、原帖链接
   sns_refs.md             同内容的文字版
 只记链接与观察，不保存、不嵌入原帖图片；构图示意按记录的 frame 字段画剪影。
 """
@@ -129,9 +129,9 @@ def render_map(plan, R, stops_order, out):
     y = panel(d, (rx0, 804, rx1, H - 50), "看图方法", font(24, True))
     for t in ["圆圈是相机位置，箭头指向人物；数字是参考编号。",
               "颜色：绿 = 9/28 可复现度高，橙 = 中，灰 = 低；虚线 = 位置推测，需现场核对。",
-              "机位按照片内容推算，只作找位参考；原图请点核对表里的链接查看。"]:
+              "机位按照片内容推算，只作找位参考；原帖截图与本组示意并排放在对应分镜页，链接见核对表。"]:
         y = text_block(d, (rx0 + 14, y), t, font(15), rx1 - rx0 - 28, spacing=3) + 4
-    d.text((40, H - 32), "参考机位：只记录链接与观察，不保存原帖图片。", font=font(15), fill=MUTED)
+    d.text((40, H - 32), "原帖截图只存本机 sns_private/，仅作个人拍摄参考，不进公开版与仓库。", font=font(15), fill=MUTED)
     img.save(out, quality=92)
 
 
@@ -243,7 +243,7 @@ def write_md(plan, R):
               f"- 前景背景：{r['fg_bg']}", f"- 穿搭：{r['outfit']}",
               f"- 视觉：光线 {r['visual'].get('light', '')}；色调 {r['visual'].get('tone', '')}；构图 {r['visual'].get('composition', '')}",
               f"- 可复现度：{r['reproducible']['level']}，{r['reproducible']['why']}",
-              f"- 本组用法：{r['use']}", ""]
+              f"- 本组用法：{r['use']}"] + [f"  - 分镜 {k}：{v}" for k, v in (r.get("use_by_shot") or {}).items()] + [""]
     (plan / "sns_refs.md").write_text("\n".join(L), encoding="utf-8")
 
 
@@ -251,6 +251,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--plan", required=True)
     ap.add_argument("--out")
+    ap.add_argument("--cards", action="store_true", help="另出单独的机位卡页（默认不出：机位卡内容已并入对应分镜页）")
     a = ap.parse_args()
     plan = Path(a.plan)
     out = Path(a.out or plan / "cards"); out.mkdir(parents=True, exist_ok=True)
@@ -266,7 +267,7 @@ def main():
     cols = outfit_cols(plan)
     n = 1
     per = 3
-    for i in range(0, len(R["refs"]), per):
+    for i in range(0, len(R["refs"]) if a.cards else 0, per):
         img = Image.new("RGB", (W, H), BG)
         d = ImageDraw.Draw(img)
         d.text((40, 26), "参考机位卡", font=font(44, True), fill=GREEN)

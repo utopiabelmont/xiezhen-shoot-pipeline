@@ -262,6 +262,7 @@ details.refs ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
 details.refs li{border-left:3px solid var(--line);padding-left:8px}
 details.refs a{color:var(--green);font-weight:600}
 details.refs .use{margin-top:2px}
+details.refs .snsimg{display:block;width:100%;max-width:260px;height:auto;border-radius:6px;margin:2px 0 6px;border:1px solid var(--line)}
 .chip.lv-hi{color:var(--green)} .chip.lv-mid{color:var(--burst)} .chip.lv-lo{color:var(--muted)}
 img.overview{display:block;width:100%;max-width:560px;height:auto;margin:8px 0;border-radius:6px;border:1px solid var(--line)}
 details.ov summary{cursor:pointer;color:var(--green)}
@@ -339,7 +340,7 @@ def item(cid: str, head: str, desc: str = "") -> str:
             + (f'<div class="d">{esc(desc)}</div>' if desc else "") + "</label></li>")
 
 
-def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
+def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str, str, str]:
     SL = load(plan_dir / "shotlist.json")
     meta, shots = SL["meta"], SL["shots"]
     byid = {s["id"]: s for s in shots}
@@ -499,6 +500,12 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
         refs_by_stop.setdefault(r.get("stop", ""), []).append(r)
     DIRS = ["北", "北北东", "东北", "东北东", "东", "东南东", "东南", "南南东", "南", "南南西", "西南", "西南西", "西", "西北西", "西北", "北北西"]
 
+    def use_html(r):
+        ub = r.get("use_by_shot") or {}
+        if not ub:
+            return f'<div class="use">本组：{esc(r["use"])}</div>'
+        return "".join(f'<div class="use">本组{"" if sid in t else " " + esc(sid)}：{esc(t)}</div>' for sid, t in ub.items())
+
     def refs_html(stop):
         rs = refs_by_stop.get(stop, [])
         if not rs:
@@ -507,11 +514,13 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
         for r in rs:
             lv = r["reproducible"]["level"]
             dr = DIRS[int((r["cam_bearing"] % 360) / 22.5 + 0.5) % 16]
-            li.append(f'<li><a href="{esc(r["url"])}" target="_blank" rel="noopener">{esc(r["id"])} {esc(r["title"])}</a>'
+            src = None if (public or not thumbs) else thumb(plan_dir / "sns_private", r["id"], width=360)
+            pic = f'<img class="snsimg" src="{src}" alt="{esc(r["id"])} 原帖截图（仅个人参考）" loading="lazy">' if src else ""
+            li.append(f'<li>{pic}<a href="{esc(r["url"])}" target="_blank" rel="noopener">{esc(r["id"])} {esc(r["title"])}</a>'
                       f' <span class="chip lv-{ {"高": "hi", "中": "mid", "低": "lo"}.get(lv, "lo") }">可复现 {esc(lv)}</span>'
                       f'<div class="d">{esc(r["platform"])} · {esc(r["posted"])} · 相机在人物{dr}侧 {r["cam_dist"]:g} m · {esc(r["lens_est"])} · {esc(r["kind"])}'
                       + ("（位置推测）" if r.get("location_confidence") == "低" else "") + '</div>'
-                      f'<div class="use">本组：{esc(r["use"])}</div></li>')
+                      + use_html(r) + '</li>')
         return (f'<details class="refs"><summary>SNS 参考机位（{len(rs)}）</summary><ul>{"".join(li)}</ul>'
                 '<p class="d">点标题在新页面打开原帖；机位为按照片推算，现场以实际为准。</p></details>')
 
@@ -548,10 +557,11 @@ def main():
     ap.add_argument("--images")
     ap.add_argument("--no-thumbs", action="store_true")
     ap.add_argument("--fragment", help="另存一份无外壳版本到此路径")
+    ap.add_argument("--public", action="store_true", help="公开版：不嵌 sns_private 原帖截图（发布页、examples 用）")
     a = ap.parse_args()
     plan = Path(a.plan)
     images = Path(a.images) if a.images else ROOT / "out" / plan.name
-    title, body, key = build(plan, images, thumbs=not a.no_thumbs)
+    title, body, key = build(plan, images, thumbs=not a.no_thumbs, public=a.public)
     meta = load(plan / "shotlist.json")["meta"]
     date = meta.get("date", "")
     inner = (f"<title>{esc(title)}</title>\n<style>{CSS}</style>\n"
