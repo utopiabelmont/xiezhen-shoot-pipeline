@@ -209,12 +209,12 @@
   "rows": [
    {
     "time": "00:00",
-    "cloud": 98,
+    "cloud": 100,
     "direct": 0.0,
     "diffuse": 0.0,
     "direct_ratio": null,
-    "rain_prob": 90,
-    "wmo": "阴",
+    "rain_prob": 86,
+    "wmo": "毛毛雨",
     "light": "无日光"
    },
    {
@@ -223,213 +223,33 @@
     "direct": 0.0,
     "diffuse": 0.0,
     "direct_ratio": null,
-    "rain_prob": 91,
-    "wmo": "阴",
+    "rain_prob": 89,
+    "wmo": "毛毛雨",
     "light": "无日光"
    },
    {
     "time": "02:00",
-    "cloud": 100,
+    "cloud": 85,
     "direct": 0.0,
     "diffuse": 0.0,
     "direct_ratio": null,
-    "rain_prob": 92,
+    "rain_prob": 89,
     "wmo": "毛毛雨",
     "light": "无日光"
    },
    {
     "time": "03:00",
-    "cloud": 92,
+    "cloud": 87,
     "direct": 0.0,
     "diffuse": 0.0,
     "direct_ratio": null,
-    "rain_prob": 92,
+    "rain_prob": 90,
     "wmo": "小雨",
     "light": "无日光"
    },
    {
     "time": "04:00",
-    "cloud": 100,
-    "direct": 0.0,
-    "diffuse": 0.0,
-    "direct_ratio": null,
-    "rain_prob": 92,
-    "wmo": "毛毛雨",
-    "light": "无日光"
-   },
-   {
-    "time": "05:00",
-    "cloud": 100,
-    "direct": 0.0,
-    "diffuse": 0.0,
-    "direct_ratio": null,
-    "rain_prob": 92,
-    "wmo": "毛毛雨",
-    "light": "无日光"
-   },
-   {
-    "time": "06:00",
-    "cloud": 97,
-    "direct": 0.0,
-    "diffuse": 1.0,
-    "direct_ratio": null,
-    "rain_prob": 92,
-    "wmo": "毛毛雨",
-    "light": "无日光"
-   },
-   {
-    "time": "07:00",
-    "cloud": 73,
-    "direct": 0.0,
-    "diffuse": 15.0,
-    "direct_ratio": 0.0,
-    "rain_prob": 91,
-    "wmo": "毛毛雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "08:00",
-    "cloud": 85,
-    "direct": 1.3,
-    "diffuse": 43.7,
-    "direct_ratio": 0.03,
-    "rain_prob": 89,
-    "wmo": "毛毛雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "09:00",
-    "cloud": 100,
-    "direct": 1.0,
-    "diffuse": 50.0,
-    "direct_ratio": 0.02,
-    "rain_prob": 88,
-    "wmo": "大雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "10:00",
-    "cloud": 100,
-    "direct": 0.1,
-    "diffuse": 43.9,
-    "direct_ratio": 0.0,
-    "rain_prob": 88,
-    "wmo": "大雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "11:00",
-    "cloud": 48,
-    "direct": 5.2,
-    "diffuse": 165.8,
-    "direct_ratio": 0.03,
-    "rain_prob": 89,
-    "wmo": "中雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "12:00",
-    "cloud": 92,
-    "direct": 25.3,
-    "diffuse": 243.7,
-    "direct_ratio": 0.09,
-    "rain_prob": 90,
-    "wmo": "毛毛雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "13:00",
-    "cloud": 80,
-    "direct": 2.7,
-    "diffuse": 150.3,
-    "direct_ratio": 0.02,
-    "rain_prob": 91,
-    "wmo": "毛毛雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "14:00",
-    "cloud": 100,
-    "direct": 1.1,
-    "diffuse": 95.9,
-    "direct_ratio": 0.01,
-    "rain_prob": 91,
-    "wmo": "毛毛雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "15:00",
-    "cloud": 80,
-    "direct": 5.9,
-    "diffuse": 106.1,
-    "direct_ratio": 0.05,
-    "rain_prob": 92,
-    "wmo": "小雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "16:00",
-    "cloud": 73,
-    "direct": 5.4,
-    "diffuse": 76.6,
-    "direct_ratio": 0.07,
-    "rain_prob": 92,
-    "wmo": "小雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "17:00",
-    "cloud": 61,
-    "direct": 0.6,
-    "diffuse": 32.4,
-    "direct_ratio": 0.02,
-    "rain_prob": 92,
-    "wmo": "小雨",
-    "light": "阴天散射光（无明显方向，柔和低反差）"
-   },
-   {
-    "time": "18:00",
-    "cloud": 57,
-    "direct": 0.0,
-    "diffuse": 3.0,
-    "direct_ratio": null,
-    "rain_prob": 92,
-    "wmo": "毛毛雨",
-    "light": "无日光"
-   },
-   {
-    "time": "19:00",
-    "cloud": 91,
-    "direct": 0.0,
-    "diffuse": 0.0,
-    "direct_ratio": null,
-    "rain_prob": 94,
-    "wmo": "毛毛雨",
-    "light": "无日光"
-   },
-   {
-    "time": "20:00",
-    "cloud": 65,
-    "direct": 0.0,
-    "diffuse": 0.0,
-    "direct_ratio": null,
-    "rain_prob": 96,
-    "wmo": "毛毛雨",
-    "light": "无日光"
-   },
-   {
-    "time": "21:00",
-    "cloud": 69,
-    "direct": 0.0,
-    "diffuse": 0.0,
-    "direct_ratio": null,
-    "rain_prob": 96,
-    "wmo": "多云",
-    "light": "无日光"
-   },
-   {
-    "time": "22:00",
-    "cloud": 92,
+    "cloud": 64,
     "direct": 0.0,
     "diffuse": 0.0,
     "direct_ratio": null,
@@ -438,12 +258,192 @@
     "light": "无日光"
    },
    {
-    "time": "23:00",
-    "cloud": 83,
+    "time": "05:00",
+    "cloud": 52,
     "direct": 0.0,
     "diffuse": 0.0,
     "direct_ratio": null,
-    "rain_prob": 89,
+    "rain_prob": 97,
+    "wmo": "小雨",
+    "light": "无日光"
+   },
+   {
+    "time": "06:00",
+    "cloud": 56,
+    "direct": 0.0,
+    "diffuse": 1.0,
+    "direct_ratio": null,
+    "rain_prob": 100,
+    "wmo": "小雨",
+    "light": "无日光"
+   },
+   {
+    "time": "07:00",
+    "cloud": 67,
+    "direct": 1.2,
+    "diffuse": 35.8,
+    "direct_ratio": 0.03,
+    "rain_prob": 100,
+    "wmo": "毛毛雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "08:00",
+    "cloud": 100,
+    "direct": 1.3,
+    "diffuse": 43.7,
+    "direct_ratio": 0.03,
+    "rain_prob": 98,
+    "wmo": "小雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "09:00",
+    "cloud": 66,
+    "direct": 1.8,
+    "diffuse": 66.2,
+    "direct_ratio": 0.03,
+    "rain_prob": 96,
+    "wmo": "小雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "10:00",
+    "cloud": 76,
+    "direct": 8.0,
+    "diffuse": 148.0,
+    "direct_ratio": 0.05,
+    "rain_prob": 92,
+    "wmo": "中雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "11:00",
+    "cloud": 97,
+    "direct": 0.7,
+    "diffuse": 120.3,
+    "direct_ratio": 0.01,
+    "rain_prob": 88,
+    "wmo": "中雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "12:00",
+    "cloud": 56,
+    "direct": 0.0,
+    "diffuse": 100.0,
+    "direct_ratio": 0.0,
+    "rain_prob": 84,
+    "wmo": "中雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "13:00",
+    "cloud": 52,
+    "direct": 11.1,
+    "diffuse": 196.9,
+    "direct_ratio": 0.05,
+    "rain_prob": 80,
+    "wmo": "中雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "14:00",
+    "cloud": 59,
+    "direct": 17.6,
+    "diffuse": 185.4,
+    "direct_ratio": 0.09,
+    "rain_prob": 77,
+    "wmo": "小雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "15:00",
+    "cloud": 95,
+    "direct": 6.7,
+    "diffuse": 110.3,
+    "direct_ratio": 0.06,
+    "rain_prob": 76,
+    "wmo": "毛毛雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "16:00",
+    "cloud": 65,
+    "direct": 1.0,
+    "diffuse": 38.0,
+    "direct_ratio": 0.03,
+    "rain_prob": 79,
+    "wmo": "毛毛雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "17:00",
+    "cloud": 94,
+    "direct": 1.5,
+    "diffuse": 39.5,
+    "direct_ratio": 0.04,
+    "rain_prob": 83,
+    "wmo": "毛毛雨",
+    "light": "阴天散射光（无明显方向，柔和低反差）"
+   },
+   {
+    "time": "18:00",
+    "cloud": 95,
+    "direct": 0.0,
+    "diffuse": 2.0,
+    "direct_ratio": null,
+    "rain_prob": 86,
+    "wmo": "毛毛雨",
+    "light": "无日光"
+   },
+   {
+    "time": "19:00",
+    "cloud": 89,
+    "direct": 0.0,
+    "diffuse": 0.0,
+    "direct_ratio": null,
+    "rain_prob": 85,
+    "wmo": "毛毛雨",
+    "light": "无日光"
+   },
+   {
+    "time": "20:00",
+    "cloud": 95,
+    "direct": 0.0,
+    "diffuse": 0.0,
+    "direct_ratio": null,
+    "rain_prob": 82,
+    "wmo": "毛毛雨",
+    "light": "无日光"
+   },
+   {
+    "time": "21:00",
+    "cloud": 78,
+    "direct": 0.0,
+    "diffuse": 0.0,
+    "direct_ratio": null,
+    "rain_prob": 80,
+    "wmo": "毛毛雨",
+    "light": "无日光"
+   },
+   {
+    "time": "22:00",
+    "cloud": 96,
+    "direct": 0.0,
+    "diffuse": 0.0,
+    "direct_ratio": null,
+    "rain_prob": 79,
+    "wmo": "毛毛雨",
+    "light": "无日光"
+   },
+   {
+    "time": "23:00",
+    "cloud": 95,
+    "direct": 0.0,
+    "diffuse": 0.0,
+    "direct_ratio": null,
+    "rain_prob": 79,
     "wmo": "毛毛雨",
     "light": "无日光"
    }
@@ -452,5 +452,5 @@
   "sunset_om": "17:32",
   "source": "Open-Meteo"
  },
- "generated": "2026-09-27T09:50:23"
+ "generated": "2026-09-27T19:00:46"
 }
