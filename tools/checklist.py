@@ -262,6 +262,12 @@ details.refs ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
 details.refs li{border-left:3px solid var(--line);padding-left:8px}
 details.refs a{color:var(--green);font-weight:600}
 details.refs .use{margin-top:2px}
+.pose{font-size:13px;margin-top:3px}
+.pose a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px dotted var(--green);margin-right:6px}
+.poses{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.poses li{background:var(--panel,#fff);border:1px solid var(--line);border-radius:8px;padding:6px;font-size:12.5px;line-height:1.45}
+.poses img{display:block;width:100%;height:auto;border-radius:6px;margin-bottom:4px}
+.poses b{color:var(--green)}
 details.refs .snsimg{display:block;width:100%;max-width:260px;height:auto;border-radius:6px;margin:2px 0 6px;border:1px solid var(--line)}
 .chip.lv-hi{color:var(--green)} .chip.lv-mid{color:var(--burst)} .chip.lv-lo{color:var(--muted)}
 img.overview{display:block;width:100%;max-width:560px;height:auto;margin:8px 0;border-radius:6px;border:1px solid var(--line)}
@@ -349,6 +355,22 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
     T = load(plan_dir / "trip.json")
     S = load(plan_dir / "sun.json", {}) or {}
     O = load(plan_dir / "outfit.json")
+    PR = load(plan_dir / "pose_refs.json", {}) or {}
+    PPOST = {x["id"]: x for x in PR.get("posts", [])}
+    PBY = {}
+    for pz in PR.get("poses", []):
+        for sid in pz.get("shots", []):
+            PBY.setdefault(sid, []).append(pz)
+
+    def pose_img(pid):
+        if not thumbs:
+            return None
+        if not public:
+            src = thumb(plan_dir / "sns_private", pid, width=300)
+            if src:
+                return src
+        return thumb(plan_dir / "poses", pid, width=300)
+
     place = re.split(r"[（(]", meta.get("place", P.get("place", "")))[0].strip()
     date = meta.get("date", P.get("date", ""))
     key = f"xiezhen-check:{plan_dir.name}"
@@ -400,6 +422,9 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
                 f'<span class="chips">{"".join(chips)}</span>'
                 f'<div class="d">{esc(line)}</div>'
                 + (f'<div class="say">{esc(s.get("action"))}</div>' if s.get("action") else "")
+                + (('<div class="pose">参考姿势：' + "".join(
+                    f'<a href="{esc(PPOST.get(pz["src"], {}).get("url", "#"))}" target="_blank" rel="noopener">{esc(pz["id"])} {esc(pz["name"])}</a>'
+                    for pz in PBY.get(s["id"], [])) + '</div>') if PBY.get(s["id"]) else "")
                 + f'<details><summary>细节</summary><dl>{dl}</dl></details></div>{mv}</li>')
 
     ver = re.search(r"v\d+(?:\.\d+)?", meta.get("version", ""))
@@ -523,6 +548,19 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
                       + use_html(r) + '</li>')
         return (f'<details class="refs"><summary>SNS 参考机位（{len(rs)}）</summary><ul>{"".join(li)}</ul>'
                 '<p class="d">点标题在新页面打开原帖；机位为按照片推算，现场以实际为准。</p></details>')
+
+    # 姿势参考（小红书）
+    if PR.get("poses"):
+        li = []
+        for pz in PR["poses"]:
+            src = pose_img(pz["id"])
+            post = PPOST.get(pz.get("src"), {})
+            li.append(f'<li>' + (f'<img src="{src}" alt="{esc(pz["id"])} {esc(pz["name"])} 姿势示意" loading="lazy">' if src else "")
+                      + f'<b>{esc(pz["id"])} {esc(pz["name"])}</b>　用于 {esc(" · ".join(pz.get("shots", [])))}<br>{esc(pz["how"])}<br>'
+                      + f'<a href="{esc(post.get("url", "#"))}" target="_blank" rel="noopener">{esc(post.get("title", pz.get("src", "")))}</a></li>')
+        tips = "".join(f'<p class="d">{esc(t["text"])}</p>' for t in PR.get("tips", []))
+        H.append('<section><h2>姿势参考（小红书）</h2><details><summary>'
+                 f'{len(PR["poses"])} 个姿势，点开看线稿与要领；原帖点链接</summary><ul class="poses">{"".join(li)}</ul>{tips}</details></section>')
 
     # 分镜
     H.append(f'<section><h2>分镜{"（按游览路线）" if R else ""}</h2>')

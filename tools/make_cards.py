@@ -455,7 +455,9 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     d = ImageDraw.Draw(img)
     split = rx0 + int((rx1 - rx0) * 0.4)
     y = panel(d, (rx0, 702, split - 6, 912), "姿势与引导", f_h)
-    fit_block(d, (rx0 + 12, y), shot["subject"] + "\n" + shot["action"], split - rx0 - 30, 904)
+    pz = POSES_BY_SHOT.get(shot["id"], [])
+    ptxt = ("\n参考姿势：" + "、".join(f"{p['id']} {p['name']}" for p in pz)) if pz else ""
+    fit_block(d, (rx0 + 12, y), shot["subject"] + "\n" + shot["action"] + ptxt, split - rx0 - 30, 904)
     y = panel(d, (split + 6, 702, rx1, 912), "光线与备选", f_h)
     fit_block(d, (split + 18, y), shot["light"] + "\n备选：" + shot["alt"], rx1 - split - 32, 904)
     y = panel(d, (rx0, 924, rx1, H - 22), "时段 · 地点 · 注意", f_h)
@@ -467,6 +469,7 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
 
 
 SNS_BY_SHOT: dict = {}
+POSES_BY_SHOT: dict = {}                              # pose_refs.json：分镜 id → 适用的小红书姿势
 SNS_REFS: dict = {}
 SNS_DIR: Path | None = None
 PUBLIC = False                                        # 公开版（examples / GitHub / 发布页）不放原帖截图
@@ -629,6 +632,11 @@ def main():
             SNS_REFS[r["id"]] = r
             for sid in r.get("shots", []):
                 SNS_BY_SHOT.setdefault(sid, []).append(r["id"])
+    pr = Path(a.plan) / "pose_refs.json"
+    if pr.exists():
+        for p in json.load(open(pr, encoding="utf-8")).get("poses", []):
+            for sid in p.get("shots", []):
+                POSES_BY_SHOT.setdefault(sid, []).append(p)
     meta = plan["meta"]
     global BASEMAPS
     bm = Path(a.plan) / "basemap_styled.png"; bmeta = Path(a.plan) / "basemap_meta.json"

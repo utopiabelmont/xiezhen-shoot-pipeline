@@ -202,6 +202,8 @@ def cmd_cards(a):
         run([PY, TOOLS / "route.py", "--plan", d, "--out", d / "cards", "--speed", str(plan["meta"].get("route_speed_mps", 1.0))])
     if rc == 0 and (d / "sns_refs.json").exists():
         run([PY, TOOLS / "sns_refs.py", "--plan", d, "--out", d / "cards"])    # SNS 参考机位页（在路线之后跑，按游览顺序）
+    if rc == 0 and (d / "pose_refs.json").exists():
+        run([PY, TOOLS / "poses.py", "--plan", d, "--out", d / "cards"] + (["--public"] if getattr(a, "public", False) else []))   # 姿势参考页
     if rc == 0 and any(x.get("medium") == "video" for x in plan.get("shots", [])):
         run([PY, TOOLS / "moves.py", "--plan", d, "--out", d / "cards"])      # 短片运镜示意页与短片一览（在路线之后跑，一览按游览顺序）
     if rc == 0:
@@ -217,8 +219,9 @@ def cmd_cards(a):
             rest = [i for i in sorted(cards) if i not in order]
             rest = [i for i in rest if medium.get(i, "still") == "still"] + [i for i in rest if medium.get(i, "still") != "still"]
             pngs = (sorted((d / "cards").glob("trip_*.png")) + sorted((d / "cards").glob("outfit_*.png"))
-                    + sorted((d / "cards").glob("route_*.png")) + sorted((d / "cards").glob("sns_[0-9]*.png")) + sorted((d / "cards").glob("moves_overview_[0-9]*.png"))
-                    + [q for i in order + rest for q in [cards[i], moves.get(i)] if q])   # 行程 → 穿搭 → 路线 → 参考机位 → 短片一览 → 分镜（按路线顺序，短片卡后接运镜页；无路线则静态在前）
+                    + sorted((d / "cards").glob("route_*.png")) + sorted((d / "cards").glob("sns_[0-9]*.png"))
+                    + sorted((d / "cards").glob("poses_[0-9]*.png")) + sorted((d / "cards").glob("poses_src.png")) + sorted((d / "cards").glob("moves_overview_[0-9]*.png"))
+                    + [q for i in order + rest for q in [cards[i], moves.get(i)] if q])   # 行程 → 穿搭 → 路线 → 参考机位 → 姿势参考 → 短片一览 → 分镜（按路线顺序，短片卡后接运镜页；无路线则静态在前）
             if pngs:
                 meta = plan.get("meta", {})
                 name = pdf_name(meta)
