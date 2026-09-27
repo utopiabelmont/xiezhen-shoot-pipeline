@@ -71,7 +71,7 @@ def run_batch(jobs_file: Path, cli: str, dry: bool):
         out_png = batch_dir / f"{jid}.png"
         prompt_file = batch_dir / f"{jid}.txt"
         prompt_file.write_text(job["prompt"].strip() + "\n", encoding="utf-8")
-        rec = {"id": jid, "batch": jobs_file.stem, "out": str(out_png),
+        rec = {"id": jid, "batch": jobs_file.stem, "out": out_png.relative_to(ROOT).as_posix(),
                "images": job.get("images") or [], "size": job.get("size", DEFAULT_SIZE),
                "quality": job.get("quality", DEFAULT_QUALITY),
                "generated_image_inputs": "none", "status": "", "seconds": 0.0, "note": ""}
@@ -89,7 +89,8 @@ def run_batch(jobs_file: Path, cli: str, dry: bool):
         t0 = time.time()
         r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
         rec["seconds"] = round(time.time() - t0, 1)
-        tail = (r.stderr or "").strip().splitlines()[-3:]
+        # 日志只记相对路径，不把本机绝对路径（含用户名）写进可入库的文件
+        tail = [ln.replace(str(ROOT), "<root>") for ln in (r.stderr or "").strip().splitlines()[-3:]]
         if r.returncode == 0 and out_png.exists():
             rec["status"] = "test"        # 生成成功，待检查；用户确认后才改 final
             rec["note"] = " | ".join(tail)
