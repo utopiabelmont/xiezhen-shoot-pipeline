@@ -70,14 +70,14 @@
 一组里加一点会动的东西：连拍抓到的半个动作、几条 5 秒内的短片、手机实况。它们让组图不全是站好的照片。规则与相机设置在 `docs/VIDEO_NOTES.md`，这里只记配比：
 
 - 连拍（`medium: burst`）≥ 2 张，放在 context / portrait / interaction，出的是照片、计入组图，连拍只选 1 张。
-- 短片（`medium: video`）3–6 条，每个叙事角色最好各 1 条，至少 opening / context / closing；实时片段 ≤ 5 秒，升格实录 2–3 秒；不计入 9 张下限。
-- 手机实况（`medium: live`）2–4 条，放在过渡与候场。
+- 短片（`medium: video`）≥ 5 条，六个叙事角色各 1 条，至少 opening / context / interaction / detail / closing；实时片段 ≤ 5 秒，升格实录 2–3 秒；不计入 9 张下限。
+- 手机实况（`medium: live`）≥ 6 条，放在过渡、候场、室内与主要机位。
 - 静动交替：动态条目紧跟对应的静态分镜（同机位同服装），拍完静态马上拍动态，不另找时间。
 
 ## 9 lint 检查项（`pipeline.py lint <plan>`）
 
 硬性（不过不给出图）：张数 ≥ 9；`opening` 在首、`closing` 在尾；`hero` ≥ 1；`interaction` ≥ 2；`detail` ≥ 1；景别覆盖 ≥ 4 类；单一景别 ≤ 40%；焦段 ≥ 3 档；姿态 ≥ 3 种；看镜头与不看镜头都有。
-提示（只警告）：相邻景别相同；相邻焦段相同且机位方向相同；无俯/仰机位；无前景层次；无逆光/侧逆光；看镜头 > 60%；连拍少于 2 张；穿搭主色 > 3 或与场地色 ΔE < 12。
+提示（只警告）：相邻景别相同；相邻焦段相同且机位方向相同；无俯/仰机位；无前景层次；无逆光/侧逆光；看镜头 > 60%；连拍少于 2 张；短片少于 5 条；实况少于 6 条；穿搭主色 > 3 或与场地色 ΔE < 12。
 `medium` 只能是 still / burst / video / live；video 必须有 `clip.mode`（24p / sq60 / sq120）、`clip.move`、`clip.start`、`clip.end`。
 
 ## 来源

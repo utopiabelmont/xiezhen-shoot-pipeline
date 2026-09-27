@@ -66,7 +66,7 @@
 - 俯视图字段：`subject_latlon`、`cam_bearing`、`cam_dist`、`face_bearing`、`bg_bearing`、`bg_label`；园外点加 `basemap`，室内点加 `indoor: true`；`alt_time` 指晴天版时刻；`meta.sun` 从 `sun.json` 取整点与半点。
 - SNS 影响：阶段 2 的结论要体现在分镜上（新增/替换机位、时段调整），并在 `meta.sns` 一句话记录。
 - 基本法：每条写 `role`（opening/context/interaction/portrait/detail/closing）、`pose`、`gaze`，主图 `hero: true`，备选 `optional: true`；景别配比、节奏、姿态视线规则见 `docs/SHOT_DESIGN.md`。
-- 动态素材：每条可写 `medium`（still / burst / video / live，缺省 still），规则与字段见 `docs/VIDEO_NOTES.md`。连拍出的照片计入组图；短片与实况不计入张数与景别配比。作为补充加在静态分镜之后的条目标 `supplement: true`（不参与首尾与相邻检查）。一组建议 ≥ 2 张 burst、3–6 条 video、2–4 条 live。
+- 动态素材：每条可写 `medium`（still / burst / video / live，缺省 still），规则与字段见 `docs/VIDEO_NOTES.md`。连拍出的照片计入组图；短片与实况不计入张数与景别配比。作为补充加在静态分镜之后的条目标 `supplement: true`（不参与首尾与相邻检查）。一组要求 ≥ 2 张 burst、≥ 5 条 video、≥ 6 条 live（lint 提示项）。
 - 验收：`python pipeline.py lint <plan>` 硬性项全部通过（`jobs` 阶段会先跑 lint，不过不生成任务）；提示项逐条看，能改就改。
 
 ## 7 prompt

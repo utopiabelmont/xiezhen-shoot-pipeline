@@ -296,6 +296,11 @@ def cmd_lint(a):
     bursts = [s["id"] for s in shots if s.get("medium") == "burst"]
     if len(bursts) < 2:
         soft.append(f"连拍抓动态（medium: burst）只有 {len(bursts)} 张，建议至少 2 张给组图加动感")
+    nv = sum(1 for s in extras if s.get("medium") == "video"); nl = sum(1 for s in extras if s.get("medium") == "live")
+    if nv < 5:
+        soft.append(f"短片（medium: video）只有 {nv} 条，建议至少 5 条（六个叙事角色各一）")
+    if nl < 6:
+        soft.append(f"手机实况（medium: live）只有 {nl} 条，建议至少 6 条（过渡、候场、室内、主要机位）")
     if (d / "outfit.json").exists():
         try:
             soft += outfit_checks(d)

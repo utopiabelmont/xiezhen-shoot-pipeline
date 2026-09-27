@@ -1,5 +1,9 @@
 # 变更记录
 
+## 1.2.1 — 2026-09-27
+
+- 动态素材配比改为 短片 ≥ 5 条、实况 ≥ 6 条（lint 提示）；箱根示例升到 v3.2：5 短片 / 6 实况 / 2 连拍。
+
 ## 1.2.0 — 2026-09-27
 
 - 阶段 2b「穿搭」：`pipeline.py palette` 从 Commons 场地照抽 6 个主色（`tools/palette.py`）；`docs/OUTFIT_GUIDE.md` 穿搭基本法；`outfit.json` → `tools/make_outfit_page.py` 渲染成小抄 PDF 第一页；`lint` 检查主色 ≤ 3 与服装色/场地色 ΔE ≥ 12。
