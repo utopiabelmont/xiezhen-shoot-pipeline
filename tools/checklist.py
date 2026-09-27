@@ -256,6 +256,13 @@ ul.items{list-style:none;margin:0;padding:0}
 details{margin-top:4px;font-size:13px}
 details summary{cursor:pointer;color:var(--green);width:max-content}
 details.mv{grid-column:1/-1;margin-top:2px}
+details.refs{margin:2px 0 6px;font-size:13px}
+details.refs summary{cursor:pointer;color:var(--green)}
+details.refs ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
+details.refs li{border-left:3px solid var(--line);padding-left:8px}
+details.refs a{color:var(--green);font-weight:600}
+details.refs .use{margin-top:2px}
+.chip.lv-hi{color:var(--green)} .chip.lv-mid{color:var(--burst)} .chip.lv-lo{color:var(--muted)}
 img.overview{display:block;width:100%;max-width:560px;height:auto;margin:8px 0;border-radius:6px;border:1px solid var(--line)}
 details.ov summary{cursor:pointer;color:var(--green)}
 details.ov .d{font-size:12.5px;color:var(--muted);margin:4px 0 0}
@@ -485,6 +492,29 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
                  '<p class="d">橙线为相机轨迹（圆点为每秒位置），绿线为人物移动；三帧为起 / 中 / 止的竖幅画面。每条的完整说明在下面对应短片的「运镜示意」里。</p>'
                  '</details></section>')
 
+    # SNS 参考机位（按停留点挂到分镜分组里）
+    SR = load(plan_dir / "sns_refs.json", {}) or {}
+    refs_by_stop = {}
+    for r in SR.get("refs", []):
+        refs_by_stop.setdefault(r.get("stop", ""), []).append(r)
+    DIRS = ["北", "北北东", "东北", "东北东", "东", "东南东", "东南", "南南东", "南", "南南西", "西南", "西南西", "西", "西北西", "西北", "北北西"]
+
+    def refs_html(stop):
+        rs = refs_by_stop.get(stop, [])
+        if not rs:
+            return ""
+        li = []
+        for r in rs:
+            lv = r["reproducible"]["level"]
+            dr = DIRS[int((r["cam_bearing"] % 360) / 22.5 + 0.5) % 16]
+            li.append(f'<li><a href="{esc(r["url"])}" target="_blank" rel="noopener">{esc(r["id"])} {esc(r["title"])}</a>'
+                      f' <span class="chip lv-{ {"高": "hi", "中": "mid", "低": "lo"}.get(lv, "lo") }">可复现 {esc(lv)}</span>'
+                      f'<div class="d">{esc(r["platform"])} · {esc(r["posted"])} · 相机在人物{dr}侧 {r["cam_dist"]:g} m · {esc(r["lens_est"])} · {esc(r["kind"])}'
+                      + ("（位置推测）" if r.get("location_confidence") == "低" else "") + '</div>'
+                      f'<div class="use">本组：{esc(r["use"])}</div></li>')
+        return (f'<details class="refs"><summary>SNS 参考机位（{len(rs)}）</summary><ul>{"".join(li)}</ul>'
+                '<p class="d">点标题在新页面打开原帖；机位为按照片推算，现场以实际为准。</p></details>')
+
     # 分镜
     H.append(f'<section><h2>分镜{"（按游览路线）" if R else ""}</h2>')
     for gi, g in enumerate(groups):
@@ -494,6 +524,7 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
         H.append(f'<div class="stop"{attrs}><h3><span class="seq">{gi + 1:02d}</span>{esc(g["name"])}'
                  f'<span class="t num">{esc(tt)}{esc(walk)}</span><span class="prog num" data-prog="#g{gi} input"></span></h3>'
                  + (f'<div class="note">{esc(g["note"])}</div>' if g.get("note") else "")
+                 + refs_html(g["name"])
                  + f'<ul class="items" id="g{gi}">' + "".join(shot_li(byid[i]) for i in g["ids"]) + "</ul></div>")
     H.append("</section>")
 

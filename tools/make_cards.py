@@ -285,12 +285,15 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     y = panel(d, (split + 6, 702, rx1, 912), "光线与备选", f_h)
     text_block(d, (split + 18, y), shot["light"] + "\n备选：" + shot["alt"], f_t, rx1 - split - 32, spacing=2)
     y = panel(d, (rx0, 924, rx1, H - 22), "时段 · 地点 · 注意", f_h)
-    text_block(d, (rx0 + 14, y), f"{shot['time']}　{shot['spot']}　注意：{shot['note']}", f_t, rx1 - rx0 - 28, spacing=2)
+    refs = SNS_BY_SHOT.get(shot["id"], [])
+    ref_txt = f"\nSNS 参考机位 {'、'.join(refs)}" if refs else ""
+    text_block(d, (rx0 + 14, y), f"{shot['time']}　{shot['spot']}　注意：{shot['note']}{ref_txt}", f_t, rx1 - rx0 - 28, spacing=2)
     foot = FOOT.get(medium, "AI 拍摄示意，非现场实拍；布局与站位以现场条件为准。光向按 sun.md 计算。")
     d.text((40, H - 42), foot, font=f_t, fill=MUTED)
     img.save(out_path, quality=92)
 
 
+SNS_BY_SHOT: dict = {}
 MEDIUM_BADGE = {"burst": "连拍抓动态", "video": "短片", "live": "手机实况"}
 MEDIUM_COLOR = {"burst": (176, 98, 40), "video": (70, 96, 150), "live": (110, 110, 105)}
 SETTINGS_TITLE = {"burst": "相机设置（连拍）", "video": "相机设置（S-Log3 短片）", "live": "iPhone 设置（实况）"}
@@ -355,6 +358,11 @@ def main():
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
     plan = json.load(open(Path(a.plan) / "shotlist.json", encoding="utf-8"))
+    sr = Path(a.plan) / "sns_refs.json"
+    if sr.exists():                                   # SNS 参考机位：分镜卡注明参考了哪几张机位卡
+        for r in json.load(open(sr, encoding="utf-8")).get("refs", []):
+            for sid in r.get("shots", []):
+                SNS_BY_SHOT.setdefault(sid, []).append(r["id"])
     meta = plan["meta"]
     global BASEMAPS
     bm = Path(a.plan) / "basemap_styled.png"; bmeta = Path(a.plan) / "basemap_meta.json"
