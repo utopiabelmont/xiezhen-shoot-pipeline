@@ -39,7 +39,7 @@
 
 ## 3 光线
 
-- 执行：`python pipeline.py sun <plan> [--step 30]`（内部：astral + pvlib 交叉验证；Open-Meteo 天气与高程；地形遮挡环采样 500–8000 m）
+- 执行：`python pipeline.py sun <plan> [--step 30] [--weather-only] [--weather-json f]`（内部：astral + pvlib 交叉验证；Open-Meteo 天气与高程；地形遮挡环采样 500–8000 m）
 - 输出：`sun.md`、`sun.json`（rows：time / azimuth / elevation / shadow_ratio / quality / terrain_horizon / blocked）、`sun_path.png`
 - 规则：日期超出 16 天预报范围时只用天文数据，临近再跑；出发当天早上再跑一次。
 - 天气光质判定：直射比 ≥ 0.5 且云量 < 60% → 晴天硬光；≥ 0.5 → 高云透光；0.2–0.5 → 薄云；< 0.2 → 阴天。
@@ -96,11 +96,12 @@
 - 记录：把 `out/<plan>/log.jsonl` 复制为 `plans/<plan>/generation_log.jsonl`；复用旧版图片的分镜加 `img_from` 与 `reused_from_v1: true`。
 - 规则：状态只写 test / failed，用户确认后才 final；重做时回到原始分镜与参考重新编译，不把上一轮生成图作为输入。
 
-## 10 小抄
+## 10 拍摄脚本与核对表
 
 - 执行：`python pipeline.py cards <plan> [--images out/<plan>]`（`make_cards.py`；图片按文件名前两位 = 分镜 id 匹配）
-- 输出：`cards/card_<id>.png`（1600×1067）、`<出行日期>_<地点>_拍摄小抄.pdf`（例：`2026-09-28_浅草寺_拍摄小抄.pdf`；改版加 `_v2`）
+- 输出：`cards/card_<id>.png`（1600×1067）、`<出行日期>_<地点>_拍摄脚本.pdf`（例：`2026-09-28_浅草寺_拍摄脚本.pdf`；改版加 `_v2`）
 - PDF 顺序：行程页（有 `trip.json`）→ 穿搭页（有 `outfit.json`）→ 路线页（有 `route_stops`）→ 分镜按路线顺序（静态与动态穿插）；没有路线时静态在前、动态在后。短片与实况的示意图是关键帧，页脚会注明。
+- 同时生成 `<出行日期>_<地点>_拍摄核对表.html`（`tools/checklist.py`，也可单独 `pipeline.py checklist <plan>`）：器材（按分镜的焦段与介质自动列）、服装道具妆发（`outfit.json`）、行程（`trip.json`）、到场核对（`arrival_checklist.md` 第一个二级标题之前的列表）、分镜按路线停留点分组（缩略图取 `out/<plan>/`，`--no-thumbs` 不嵌）、收尾。单文件，手机离线可用，勾选状态存在浏览器本地。
 - 页面规范见 `docs/CARD_SPEC.md`。俯视图里的太阳箭头必须与 `meta.sun` 该时刻一致；室内不画太阳；园外用各自底图。
 - 验收：逐页看：文字不溢出、俯视图标签不重叠、页脚「AI 拍摄示意，非现场实拍」在。
 
@@ -110,7 +111,7 @@
 - `model_sheet.md`（可再合成一张长图）：服装、道具、妆发、每张「对你说的一句话」。
 - `clips.md`（有短片时）：剪辑顺序、转场遮挡物（模板 `templates/clips_template.md`）；时间线里每条 video 加 1.5 分钟。
 - `arrival_checklist.md`：到场 10 分钟走一圈要核对的事项（装置在不在、站位能不能站、室内规则、天空状态、相机记忆位）。
-- 出发前一天：重跑 `sun`，预报变了就在 `shotlist.json` 的 `meta.forecast` 记录并决定用晴天版还是阴天版。
+- 出发前一天：`pipeline.py sun <plan> --weather-only` 只刷新预报（不重算地形；本机不能联网时用浏览器取回 Open-Meteo 响应存成 JSON，加 `--weather-json <文件>`）。预报变了就在 `shotlist.json` 的 `meta.forecast` 与 `trip.json` 的 `weather.summary` / `notes` 记录，决定用晴天版还是阴天版，然后重跑 `cards`（行程页天气栏、PDF、核对表一起更新）。
 
 ## 改版（v2）流程
 

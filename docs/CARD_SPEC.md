@@ -1,6 +1,6 @@
-# 拍摄小抄页面规范（make_cards.py）
+# 拍摄脚本页面规范（make_cards.py）
 
-页面 1600×1067，米色纸底。每张分镜一页，文件名 `cards/card_<id>.png`，全部页面合并为 `<出行日期>_<地点>_拍摄小抄.pdf`（地点取 `meta.place` 括号前的部分，`meta.version` 含 v2 及以上时追加 `_v2`）。
+页面 1600×1067，米色纸底。每张分镜一页，文件名 `cards/card_<id>.png`，全部页面合并为 `<出行日期>_<地点>_拍摄脚本.pdf`（地点取 `meta.place` 括号前的部分，`meta.version` 含 v2 及以上时追加 `_v2`）。
 
 ## 版式
 

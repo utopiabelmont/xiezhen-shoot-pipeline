@@ -20,7 +20,9 @@ trip.py　一日多景点的行程页：起点、各景点、点间交通、到�
  ],
  "sources": ["..."]
 }
-输出：trip.md 与 cards/trip_01.png（左：按真实经纬度的示意地图，直线连接并标交通方式与分钟；右：时刻表）。
+可选 "weather": {"summary": "一句话概括当天天气对行程的影响", "notes": ["雨具、衣物、镜头起雾等提醒"]}。
+逐时天气自动取主 plan 的 sun.json（pipeline.py sun 生成；出发前一天用 --weather-only 刷新），按行程起止时刻截取。
+输出：trip.md 与 cards/trip_01.png（左上：按真实经纬度的示意地图，直线连接并标交通方式与分钟；左下：当天天气；右：时刻表）。
 点间直线距离按经纬度算；道路距离没有路网时按直线 × 1.3 估算，标「估」。
 """
 from __future__ import annotations
@@ -45,6 +47,29 @@ def meters(a, b):
     return math.hypot((a[1] - b[1]) * kx, (a[0] - b[0]) * ky)
 
 
+def hhmm(t):
+    return int(t[:2]) * 60 + int(t[3:5]) if t else None
+
+
+def trip_weather(plan: Path, stops):
+    """从 sun.json 截取行程时段的逐时天气；没有 sun.json 或没有预报时返回 (None, 说明)。"""
+    f = plan / "sun.json"
+    if not f.exists():
+        return None, "未找到 sun.json，先跑 pipeline.py sun。"
+    S = json.loads(f.read_text(encoding="utf-8"))
+    WX = S.get("weather") or {}
+    if not WX.get("rows"):
+        return None, WX.get("note") or "sun.json 里没有预报（日期超出约 16 天时只有天文数据），临近出发再跑一次 sun。"
+    ts = [hhmm(t) for s in stops for t in (s.get("arrive"), s.get("leave")) if t]
+    h0, h1 = min(ts) // 60, max(ts) // 60
+    rows = [r for r in WX["rows"] if h0 <= int(r["time"][:2]) <= h1]
+    return {"rows": rows, "W": WX, "key": S.get("key_times", {})}, None
+
+
+def fnum(v, nd=0, unit=""):
+    return "—" if v is None else f"{v:.{nd}f}{unit}"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--plan", required=True)
@@ -62,6 +87,25 @@ def main():
     md += ["", "| 段 | 方式 | 线路 | 发 | 到 | 分钟 | 直线 km | 来源 |", "|---|---|---|---|---|---|---|---|"]
     for lg in legs:
         md.append(f"| {stops[lg['from']]['name']} → {stops[lg['to']]['name']} | {MODE.get(lg.get('mode',''), lg.get('mode',''))} | {lg.get('line','')} | {lg.get('depart','')} | {lg.get('arrive','')} | {lg.get('minutes','')} | {lg['km']} | {lg.get('source','')} |")
+    wx, wx_note = trip_weather(plan, stops)
+    TW = T.get("weather", {})
+    md += ["", "## 当天天气", ""]
+    if TW.get("summary"):
+        md.append(TW["summary"])
+        md.append("")
+    if wx:
+        WX, K = wx["W"], wx["key"]
+        md.append(f"全天 {fnum(WX.get('t_min'))}–{fnum(WX.get('t_max'))} °C，累计降水 {fnum(WX.get('precip_sum'), 1)} mm；"
+                  f"日落 {K.get('sunset', '—')}，地形遮挡后直射可用到 {K.get('terrain_last_direct_light') or '—'}。"
+                  f"来源 {WX.get('source', 'Open-Meteo')}" + (f"，{WX['fetched']} 拉取" if WX.get("fetched") else ""))
+        md += ["", "| 时刻 | 天气 | 降水 mm | 降水概率 | 气温（体感）°C | 风 m/s | 光 |", "|---|---|---|---|---|---|---|"]
+        for r in wx["rows"]:
+            md.append(f"| {r['time']} | {r['wmo']} | {fnum(r.get('precip_mm'), 1)} | {r['rain_prob']}% | "
+                      f"{fnum(r.get('temp'))}（{fnum(r.get('feels'))}） | {fnum(r.get('wind_ms'), 1)} | {r['light'].split('（')[0]} |")
+    else:
+        md.append(wx_note)
+    for n in TW.get("notes", []):
+        md.append(f"- {n}")
     if T.get("sources"):
         md += ["", "来源：" + "；".join(T["sources"])]
     (plan / "trip.md").write_text("\n".join(md) + "\n", encoding="utf-8")
@@ -74,7 +118,7 @@ def main():
     d.text((W - 40 - d.textlength(T.get("date", ""), font=f_s), 52), T.get("date", ""), font=f_s, fill=MUTED)
 
     # 左：示意地图（真实经纬度等比，北在上）
-    mx0, my0, mx1, my1 = 40, 110, 900, H - 60
+    mx0, my0, mx1, my1 = 40, 110, 900, 590
     d.rounded_rectangle((mx0, my0, mx1, my1), radius=10, fill=(236, 233, 222), outline=LINE)
     lats = [s["latlon"][0] for s in stops]; lons = [s["latlon"][1] for s in stops]
     lat0, lon0 = (max(lats) + min(lats)) / 2, (max(lons) + min(lons)) / 2
@@ -123,6 +167,47 @@ def main():
         nx = min(max(p[0] + 18, mx0 + 8), mx1 - tw - 8); ny = min(max(p[1] - 12, my0 + 8), my1 - 30)
         d.rectangle((nx - 3, ny - 2, nx + tw + 3, ny + 22), fill=(255, 255, 255)); d.text((nx, ny), name, font=f_s, fill=col)
 
+    # 左下：当天天气
+    wy0 = my1 + 14
+    y = panel(d, (mx0, wy0, mx1, H - 60), "当天天气", f_h)
+    if wx:
+        WX, K = wx["W"], wx["key"]
+        src = f"{WX.get('source', 'Open-Meteo')}" + (f" · {WX['fetched']} 拉取" if WX.get("fetched") else "")
+        d.text((mx1 - 14 - d.textlength(src, font=f_t), wy0 + 12), src, font=f_t, fill=(225, 232, 226))
+        rows = wx["rows"]
+        labels = ["时刻", "天气", "降水 mm", "降水概率", "气温 °C", "体感 °C", "风 m/s"]
+        lx, cw = mx0 + 14, (mx1 - mx0 - 28 - 92) / max(1, len(rows))
+        for k, lab in enumerate(labels):
+            yy = y + k * 25
+            if k % 2 == 1:
+                d.rectangle((mx0 + 8, yy - 3, mx1 - 8, yy + 21), fill=(244, 241, 232))
+            d.text((lx, yy), lab, font=font(15, k == 0), fill=MUTED if k else GREEN)
+        for j, r in enumerate(rows):
+            cx0 = lx + 92 + j * cw
+            pm = r.get("precip_mm")
+            heavy = pm is not None and pm >= 3
+            vals = [r["time"], r["wmo"], fnum(pm, 1), f"{r['rain_prob']}%", fnum(r.get("temp")), fnum(r.get("feels")), fnum(r.get("wind_ms"), 1)]
+            for k, v in enumerate(vals):
+                ff = font(15, k == 0 or (heavy and k in (1, 2)))
+                col = ACCENT if heavy and k in (1, 2) else (GREEN if k == 0 else INK)
+                d.text((cx0 + (cw - d.textlength(v, font=ff)) / 2, y + k * 25), v, font=ff, fill=col)
+        y += len(labels) * 25 + 6
+        d.line([(mx0 + 14, y), (mx1 - 14, y)], fill=LINE, width=1)
+        y += 8
+        lines = [f"全天 {fnum(WX.get('t_min'))}–{fnum(WX.get('t_max'))} °C，累计降水 {fnum(WX.get('precip_sum'), 1)} mm；"
+                 f"日落 {K.get('sunset', '—')}，地形遮挡后直射可用到 {K.get('terrain_last_direct_light') or '—'}；"
+                 f"光：{rows[0]['light'].split('（')[0] if rows else '—'}。"]
+    else:
+        lines = [wx_note]
+    if TW.get("summary"):
+        lines.append(TW["summary"])
+    for ln in lines:
+        y = text_block(d, (mx0 + 14, y), ln, f_t, mx1 - mx0 - 28, spacing=3) + 2
+    for n in TW.get("notes", []):
+        if y > H - 80:
+            break
+        y = text_block(d, (mx0 + 14, y), "· " + n, font(14), mx1 - mx0 - 28, fill=MUTED, spacing=2) + 1
+
     # 右：时刻表
     rx0, rx1 = 930, W - 40
     y = panel(d, (rx0, 110, rx1, 620), "地点与时刻", f_h)
@@ -143,7 +228,7 @@ def main():
         y += 4
     y = panel(d, (rx0, 914, rx1, H - 60), "来源", f_h)
     text_block(d, (rx0 + 12, y), "；".join(T.get("sources", [])) or "（trip.json 未填 sources）", font(13), rx1 - rx0 - 24, fill=MUTED, spacing=2)
-    d.text((40, H - 42), "行程页：地点按真实经纬度等比示意，连线为直线不代表道路；班次以出发当天查询为准。", font=f_t, fill=MUTED)
+    d.text((40, H - 42), "行程页：地点按真实经纬度等比示意，连线为直线不代表道路；班次与天气以出发当天查询为准。", font=f_t, fill=MUTED)
     img.save(out / "trip_01.png", quality=92)
     print("行程页：", out / "trip_01.png", plan / "trip.md")
 

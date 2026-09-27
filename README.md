@@ -1,23 +1,29 @@
 # xiezhen-shoot-pipeline
 
-**给真实景点、真实日期做人像外拍规划的流水线。** 输入景点（一个或一天里的几个）和日期，得到一套可以直接带去现场的东西：一日行程页、穿搭方案、园内游览路线页、每条分镜一页的拍摄小抄（示意图 + 相机设置 + 俯视站位与光向图 + 姿势引导 + 注意事项），外加时间线、模特一页纸、到场核对清单和短片剪辑单。
+**给真实景点、真实日期做人像外拍规划的流水线。** 输入景点（一个或一天里的几个）和日期，得到一套可以直接带去现场的东西：含当天天气的一日行程页、穿搭方案、园内游览路线页、每条分镜一页的拍摄脚本 PDF（示意图 + 相机设置 + 俯视站位与光向图 + 姿势引导 + 注意事项），一份手机上逐条勾选的核对表 HTML，外加时间线、模特一页纸、到场核对清单和短片剪辑单。
 
 底层由几类工具拼起来：OpenStreetMap 出园区几何、步道和周边 POI，astral / pvlib 与 Open-Meteo 算太阳位置、地形遮挡和天气光质，Wikimedia Commons 的场地照片抽主色给穿搭用，Claude 在已登录的 Chrome 里做小红书 / Instagram / 抖音 / TikTok 的机位与穿搭调研并写分镜，[nuyoah-xiezhen-prompt](https://github.com/nuyoah-ai-works/nuyoah-xiezhen-prompt) 把分镜编译成写真 prompt，[codex-imagegen-cli](https://github.com/jdmnk/codex-imagegen-cli) 用 ChatGPT 订阅内的 Codex 额度出示意图和水彩底图。
 
 > A portrait-shoot planning pipeline for a real location on a real date: OSM geometry, sun position with terrain occlusion and weather-based light quality, social-media research, an outfit plan checked against the site's dominant colours, a narrative shot list (stills, bursts, S-Log3 clips, Live Photos) validated by a linter, an in-park walking route computed on OSM footpaths, prompts compiled by nuyoah-xiezhen-prompt, preview images from Codex Image, and one printable cheat-sheet card per shot. Docs are in Chinese; the code and templates are language-neutral.
 
-![四张拍摄小抄](docs/img/cards_gallery.jpg)
+![四张拍摄脚本](docs/img/cards_gallery.jpg)
 
-## 一份小抄 PDF 里有什么
+## 拍摄脚本 PDF 与核对表
 
-以 [`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（箱根ガラスの森美術館，2026-09-28，13:00 到场，α7 V + 24-105mm F4，v3.3，37 页）为例，PDF 从前到后：
+每个企划产出两份给现场用的文件：`<日期>_<地点>_拍摄脚本.pdf`（打印或平板看）和 `<日期>_<地点>_拍摄核对表.html`（手机打开逐条勾选）。以 [`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（箱根ガラスの森美術館，2026-09-28，13:00 到场，α7 V + 24-105mm F4，v3.4，37 页）为例，PDF 从前到后：
 
 | 页 | 内容 | 由谁生成 |
 |---|---|---|
-| 行程页 | 一天里各景点按真实经纬度的示意地图、点间交通（线路、发到时刻、分钟）、每站到达离开时刻、来源 | `trip.json` → `tools/trip.py` |
+| 行程页 | 一天里各景点按真实经纬度的示意地图、点间交通（线路、发到时刻、分钟）、每站到达离开时刻；当天天气（行程时段逐时的天气、降水量、降水概率、气温与体感、风速，日落与地形遮挡后的直射截止，对行程和穿着的提醒）、来源 | `trip.json` + `sun.json` → `tools/trip.py` |
 | 穿搭页 ×2 | 场地主色（Commons 照片抽样）与服装色的 ΔE 分离度、路线（同系/邻近/补色点缀）、主方案、雨晴冷替换、道具妆发、逐张着装提醒 | `palette.py` + `outfit.json` → `make_outfit_page.py` |
 | 路线页 | 水彩底图上沿步道算出的游览路线、编号站点、每站分镜、步行距离、到达与离开时刻 | `meta.route_stops` → `tools/route.py` |
 | 分镜 ×33 | 按路线顺序排：20 张静态、2 张连拍、5 条 S-Log3 短片关键帧、6 条 iPhone 实况；每页一张示意图、相机设置（按介质切换）、俯视站位与光向、姿势引导、光线与备选、时段与注意 | `shotlist.json` + 示意图 → `make_cards.py` |
+
+核对表把同一份企划里要在现场确认的内容排成勾选清单：出发前的器材（按分镜用到的焦段与介质自动列出连拍、S-Log3 短片、ND、iPhone 实况的设置项）、服装道具与妆发、行程班次、到场核对、按路线停留点分组的全部分镜（缩略图、焦段景别视线、对模特说的一句话，展开可看机位、光线、短片起止与曝光）、收尾。顶部有总进度和按介质的计数，可以只看未完成或只看某种介质；出行当天打开会标出当前时刻所在的停留点。勾选状态只存在这台设备的浏览器里，不联网。
+
+![核对表](docs/img/checklist.jpg)
+
+![行程页](docs/img/trip_page.jpg)
 
 ![路线页](docs/img/route_page.jpg)
 
@@ -65,13 +71,13 @@ flowchart LR
 | 1 出片点 | `spots`：周边 POI、Commons 照片、调研关键词；再做网页调研 | 脚本 + Claude | |
 | 2 SNS 调研 | 小红书 / Instagram / 抖音 / TikTok 人工级浏览，记机位、时段、活动、穿搭观察 | Claude in Chrome | [WORKFLOW §2](docs/WORKFLOW.md) |
 | 2b 穿搭 | `palette` 抽场地主色 → `outfit.json`：≤ 3 色、与场地色 ΔE ≥ 12、替换方案、逐张提醒 | 脚本 + Claude | [OUTFIT_GUIDE](docs/OUTFIT_GUIDE.md) |
-| 3 光线 | `sun`：逐半小时方位高度、DEM 地形遮挡、天气光质 | 脚本 | |
+| 3 光线 | `sun`：逐半小时方位高度、DEM 地形遮挡、逐时天气（光质、降水、气温、风）；出发前一天 `sun --weather-only` 只刷新预报 | 脚本 | |
 | 4–5 底图 | `basemap` → `stylize`：OSM 几何 → Codex 水彩重绘 | 脚本 + 本机 Codex | |
 | 6 分镜 | 叙事角色、景别配比、寄り/引き 节奏、姿态视线，加连拍 ≥ 2 / 短片 ≥ 5 / 实况 ≥ 6；`lint` 检查 | Claude + 脚本 | [SHOT_DESIGN](docs/SHOT_DESIGN.md)、[VIDEO_NOTES](docs/VIDEO_NOTES.md) |
 | 6b 路线 | `meta.route_stops` → `route`：沿步道最短路、停留与时刻；多景点 `trip.json` → `trip` | Claude + 脚本 | [ROUTE_NOTES](docs/ROUTE_NOTES.md) |
 | 7 prompt | 系列母版 + 同系列变体，短片与实况写关键帧 | Claude | [prompt_chains](templates/prompt_chains.md) |
 | 8–9 出图与检查 | `jobs [--missing]` → `shots`；逐张按第六步检查，状态 test / failed | 脚本 + 本机 Codex + Claude | |
-| 10 小抄 | `cards`：行程 → 穿搭 → 路线 → 分镜（按路线顺序），`<日期>_<地点>_拍摄小抄.pdf` | 脚本 | [CARD_SPEC](docs/CARD_SPEC.md) |
+| 10 拍摄脚本 | `cards`：行程 → 穿搭 → 路线 → 分镜（按路线顺序），`<日期>_<地点>_拍摄脚本.pdf`；同时生成 `<日期>_<地点>_拍摄核对表.html` | 脚本 | [CARD_SPEC](docs/CARD_SPEC.md) |
 | 11 当天资料 | 时间线、模特页、到场清单、剪辑单 | Claude | [templates/](templates/) |
 
 ## 快速开始
@@ -99,7 +105,9 @@ python pipeline.py lint    hakone-1003           # 分镜基本法 + 动态素�
 python pipeline.py route   hakone-1003 --speed 0.85
 python pipeline.py jobs    hakone-1003           # prompts.md → inbox/hakone-1003.jsonl（先自动 lint）
 python pipeline.py shots   hakone-1003           # → out/hakone-1003/*.png + log.jsonl
-python pipeline.py cards   hakone-1003           # → 行程 / 穿搭 / 路线页 + 分镜卡 + PDF
+python pipeline.py cards   hakone-1003           # → 行程 / 穿搭 / 路线页 + 分镜卡 + 拍摄脚本 PDF + 核对表 HTML
+python pipeline.py checklist hakone-1003         # 只重做核对表（--no-thumbs 不嵌缩略图）
+python pipeline.py sun     hakone-1003 --weather-only   # 出发前一天只刷新预报，再跑 cards
 python pipeline.py status  hakone-1003
 ```
 
@@ -109,7 +117,7 @@ python pipeline.py status  hakone-1003
 
 [`skill/xiezhen-shoot-planner/SKILL.md`](skill/xiezhen-shoot-planner/SKILL.md) 是给 Claude（Claude Code / Cowork / claude.ai）用的流程 skill，安装方式见 [`INSTALL.md`](INSTALL.md) 第 4 节，阶段总览见 [`skill/README.md`](skill/README.md)。装好后只要说日期和地点：
 
-> 10 月 3 日去箱根玻璃之森和 Pola 美术馆，13 点到，帮我做拍摄小抄。
+> 10 月 3 日去箱根玻璃之森和 Pola 美术馆，13 点到，帮我做拍摄脚本。
 
 器材不说就用默认（Sony α7 V + 24-105mm F4 + HVL-F60RM2，iPhone 14 Pro 拍实况）。Claude 会按阶段号跑脚本、做网页与 SNS 调研、抽色定穿搭、写分镜和路线、编 prompt、出图、检查、合成 PDF，并给出时间线、模特页、到场清单和剪辑单。人工阶段的判断标准都写在 skill 与 `docs/` 里，生成图只标 test / failed，用户确认后才 final。
 
@@ -121,9 +129,9 @@ python pipeline.py status  hakone-1003
 
 **1. 单个景点，完整流程**
 
-> 9 月 28 日上午 10 点到浅草寺，帮我做拍摄小抄。
+> 9 月 28 日上午 10 点到浅草寺，帮我做拍摄脚本。
 
-立项 `asakusa-0928`，跑 spots、sun、basemap（寺域南北长，拆成两张底图）、stylize，做网页与 SNS 调研，写 12 张分镜并过 lint，编 prompt、出图、检查，合成 `2026-09-28_浅草寺_拍摄小抄.pdf`，附时间线、模特页、到场清单。成品见 [`examples/asakusa-0928`](examples/asakusa-0928)。
+立项 `asakusa-0928`，跑 spots、sun、basemap（寺域南北长，拆成两张底图）、stylize，做网页与 SNS 调研，写 12 张分镜并过 lint，编 prompt、出图、检查，合成 `2026-09-28_浅草寺_拍摄脚本.pdf`，附时间线、模特页、到场清单。成品见 [`examples/asakusa-0928`](examples/asakusa-0928)。
 
 **2. 一天多个景点，排行程和园内路线**
 
@@ -153,7 +161,7 @@ python pipeline.py status  hakone-1003
 
 > 明天就去了，再看一下天气。如果下雨，路线顺序和分镜要不要调？
 
-重跑 `sun`，把最新预报写进 `meta.forecast`；雨天把室内站和回廊提前、把 `route_speed_mps` 降到 0.85，改 `route_stops` 后重跑 `route` 与 `cards`，时间线同步更新。图片不重画。
+`sun --weather-only` 只刷新预报（本机不能联网时，用浏览器打开 Open-Meteo 接口存成 JSON，加 `--weather-json` 读入），把最新预报写进 `meta.forecast` 与 `trip.json` 的 `weather`；雨天把室内站和回廊提前、把 `route_speed_mps` 降到 0.85，改 `route_stops` 后重跑 `cards`，行程页的天气栏、路线页、PDF 与核对表一起更新，时间线同步改。图片不重画。
 
 **7. 追加动态素材**
 
@@ -194,7 +202,8 @@ tools/
   palette.py           场地照片抽主色（穿搭依据）
   make_outfit_page.py  穿搭页（色卡、ΔE 分离度、方案、逐张提醒）
   route.py             园内路线：步道图最短路、停留估算、路线页
-  trip.py              一日多景点行程页
+  trip.py              一日多景点行程页（含当天天气）
+  checklist.py         现场核对表（单文件 HTML，可勾选）
   make_cards.py        分镜小抄页：多底图、室内、园外窗口、半点太阳表、按介质切换设置块
   fixtures/            离线样本（Nominatim、Overpass、Commons、Open-Meteo、高程）
 templates/             分镜模板与 JSON Schema、prompt 词链、SNS 调研表、穿搭 / 行程 / 剪辑单 / 时间线 / 到场清单 / 模特页模板、底图风格指令、手工几何示例

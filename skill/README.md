@@ -18,5 +18,5 @@ skill 覆盖的流程（1.2.1）：
 | 6 分镜 | 分镜基本法（角色、景别配比、节奏、姿态视线）+ 动态素材（连拍 ≥ 2、短片 ≥ 5、实况 ≥ 6）→ `pipeline.py lint` | Claude + 脚本 |
 | 7 prompt | nuyoah-xiezhen-prompt 系列母版 + 变体；短片/实况写关键帧 | Claude |
 | 8–9 出图与检查 | `jobs [--missing]` → `shots` → 逐张检查 | 脚本 + 本机 Codex + Claude |
-| 10 小抄 | `pipeline.py cards`：穿搭页 → 静态 → 动态，`<日期>_<地点>_拍摄小抄.pdf` | 脚本 |
+| 10 拍摄脚本 | `pipeline.py cards`：行程 → 穿搭 → 路线 → 分镜，`<日期>_<地点>_拍摄脚本.pdf` + `<日期>_<地点>_拍摄核对表.html` | 脚本 |
 | 11 当天资料 | 时间线、模特页、到场清单、剪辑单 | Claude |

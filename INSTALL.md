@@ -115,7 +115,7 @@ python pipeline.py shots  asakusa-1003                     # 需要第 3 步
 python pipeline.py cards  asakusa-1003 --images out/asakusa-1003
 ```
 
-或者直接对 Claude 说「10 月 3 日上午十点去浅草寺，α7 V + 24-105 F4，做拍摄小抄」，其余由 skill 驱动。
+或者直接对 Claude 说「10 月 3 日上午十点去浅草寺，α7 V + 24-105 F4，做拍摄脚本」，其余由 skill 驱动。
 
 ## 6 Windows 上由 Claude 远程执行
 

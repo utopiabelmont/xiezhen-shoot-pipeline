@@ -1,5 +1,13 @@
 # 变更记录
 
+## 1.4.0 — 2026-09-27
+
+- 产物改名：PDF 由「拍摄小抄」改为 `<日期>_<地点>_拍摄脚本[_vN].pdf`；`cards` 会清掉旧名的 PDF；示例 PDF 同步改名。
+- 行程页加「当天天气」：按行程起止时刻截取 `sun.json` 的逐时天气（天气、降水量、降水概率、气温与体感、风速），加日落与地形遮挡后的直射截止；`trip.json` 新增可选 `weather.summary` / `weather.notes`。
+- `sun`：Open-Meteo 请求加气温、体感、降水量、风速、湿度与全天最高最低温、累计降水；`--weather-only` 只刷新已有 `sun.json` 的预报（出发前一天用）；`--weather-json` 读入浏览器等途径取回的响应。
+- 新增核对表：`tools/checklist.py`（`pipeline.py checklist`，`cards` 阶段自动生成）输出单文件 `<日期>_<地点>_拍摄核对表.html`，器材按分镜介质自动列、服装道具、行程、到场核对、分镜按路线分组可勾选（缩略图、展开细节、按介质筛选、总进度），勾选存在浏览器本地。
+- 箱根示例升到 v3.4：9/27 23:27 刷新预报（上午大雨，到馆后小雨转毛毛雨，风 4 m/s），行程页天气栏、到场清单与 `meta.forecast` 同步。
+
 ## 1.3.0 — 2026-09-27
 
 - 路线：`tools/route.py`（`pipeline.py route`）按 `meta.route_stops` 沿底图步道算游览路线，输出 `route.json` / `route.md` / `cards/route_01.png`；PDF 分镜改为按路线顺序排。

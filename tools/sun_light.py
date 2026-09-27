@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 sun_light.py　真实地点 + 真实日期 → 太阳方位/高度、黄金时刻、阴影、地形遮挡、天气光质，
-输出可直接写进拍摄小抄与写真 prompt 的「光线摘要」。
+输出可直接写进拍摄脚本与写真 prompt 的「光线摘要」。
 
 用法：
   python tools/sun_light.py --place "箱根ガラスの森美術館" --date 2026-10-03 --out plans/hakone-1003
@@ -99,15 +99,18 @@ def horizon_at(h: dict, az: float) -> float:
 
 
 # ---------- 天气 ----------
-def fetch_weather(lat, lon, date: dt.date, tz: str, *, fixture=False) -> dict | None:
+def fetch_weather(lat, lon, date: dt.date, tz: str, *, fixture=False, raw: dict | None = None) -> dict | None:
     today = dt.date.today()
-    if not fixture and not (today - dt.timedelta(days=1) <= date <= today + dt.timedelta(days=15)):
+    if raw is None and not fixture and not (today - dt.timedelta(days=1) <= date <= today + dt.timedelta(days=15)):
         return {"note": f"{date} 超出 Open-Meteo 预报范围（约 16 天），本次只给天文数据；临近再跑一次。"}
     url = (f"https://api.open-meteo.com/v1/forecast?latitude={lat:.4f}&longitude={lon:.4f}"
-           f"&hourly=cloud_cover,direct_radiation,diffuse_radiation,weather_code,precipitation_probability"
-           f"&daily=sunrise,sunset,weather_code&timezone={tz}&start_date={date}&end_date={date}")
-    j = http_json(url, fixture="open_meteo_forecast.json" if fixture else None)
+           f"&hourly=cloud_cover,direct_radiation,diffuse_radiation,weather_code,precipitation_probability,"
+           f"temperature_2m,apparent_temperature,precipitation,wind_speed_10m,relative_humidity_2m"
+           f"&daily=sunrise,sunset,weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum"
+           f"&wind_speed_unit=ms&timezone={tz}&start_date={date}&end_date={date}")
+    j = raw if raw is not None else http_json(url, fixture="open_meteo_forecast.json" if fixture else None)
     H = j["hourly"]
+    opt = lambda k, i: (H.get(k) or [None] * (i + 1))[i]          # 旧样本没有气温、风等字段时留空
     rows = []
     for i, t in enumerate(H["time"]):
         if not t.startswith(str(date)):
@@ -129,12 +132,19 @@ def fetch_weather(lat, lon, date: dt.date, tz: str, *, fixture=False) -> dict | 
         rows.append({"time": t[11:], "cloud": H["cloud_cover"][i], "direct": dr, "diffuse": df,
                      "direct_ratio": round(ratio, 2) if ratio is not None else None,
                      "rain_prob": H["precipitation_probability"][i],
-                     "wmo": WMO.get(H["weather_code"][i], str(H["weather_code"][i])), "light": light})
+                     "wmo": WMO.get(H["weather_code"][i], str(H["weather_code"][i])), "light": light,
+                     "temp": opt("temperature_2m", i), "feels": opt("apparent_temperature", i),
+                     "precip_mm": opt("precipitation", i), "wind_ms": opt("wind_speed_10m", i),
+                     "humidity": opt("relative_humidity_2m", i)})
     daily = j.get("daily", {})
     k = daily.get("time", []).index(str(date)) if str(date) in daily.get("time", []) else None
     return {"rows": rows, "sunrise_om": daily["sunrise"][k][11:] if k is not None else None,
             "sunset_om": daily["sunset"][k][11:] if k is not None else None,
-            "source": "Open-Meteo（离线样本）" if fixture else "Open-Meteo"}
+            "t_max": (daily.get("temperature_2m_max") or [None] * 9)[k] if k is not None else None,
+            "t_min": (daily.get("temperature_2m_min") or [None] * 9)[k] if k is not None else None,
+            "precip_sum": (daily.get("precipitation_sum") or [None] * 9)[k] if k is not None else None,
+            "fetched": dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "source": "Open-Meteo（离线样本）" if fixture else "Open-Meteo（浏览器取回）" if raw is not None else "Open-Meteo"}
 
 
 # ---------- 出图 ----------
@@ -217,8 +227,24 @@ def main():
     ap.add_argument("--weather", action="store_true")
     ap.add_argument("--terrain", action="store_true")
     ap.add_argument("--fixture", action="store_true", help="离线样本测试")
+    ap.add_argument("--weather-only", action="store_true", help="只刷新已有 sun.json 的天气（出发前一天用，不重算地形）")
+    ap.add_argument("--weather-json", help="用浏览器等其他途径取回的 Open-Meteo 响应 JSON，代替联网请求")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
+
+    raw = json.loads(Path(a.weather_json).read_text(encoding="utf-8")) if a.weather_json else None
+    if a.weather_only:
+        f = Path(a.out) / "sun.json"
+        if not f.exists():
+            sys.exit("--weather-only 需要先跑过一次完整的 sun")
+        data = json.loads(f.read_text(encoding="utf-8"))
+        data["weather"] = fetch_weather(data["lat"], data["lon"], dt.date.fromisoformat(data["date"]), data["tz"],
+                                        fixture=a.fixture, raw=raw)
+        data["generated"] = dt.datetime.now().isoformat(timespec="seconds")
+        f.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+        (Path(a.out) / "sun.md").write_text(render_md(data), encoding="utf-8")
+        print(f"天气已刷新 → {f}")
+        return
 
     if a.lat is None or a.lon is None:
         if not a.place:
@@ -282,7 +308,7 @@ def main():
     weather = None
     if a.weather:
         try:
-            weather = fetch_weather(a.lat, a.lon, date, tzname, fixture=a.fixture)
+            weather = fetch_weather(a.lat, a.lon, date, tzname, fixture=a.fixture, raw=raw)
         except Exception as e:
             weather = {"note": f"天气获取失败（{e.__class__.__name__}），本次只给天文数据。"}
             print("天气获取失败：", e)
@@ -325,7 +351,7 @@ def render_md(d: dict) -> str:
         hz = d["terrain"]["horizon"]
         worst = sorted(hz.items(), key=lambda x: -x[1])[:3]
         L.append(f"- 地形遮挡（观测点海拔 {d['terrain']['center_elevation_m']} m）：最高遮挡方位 "
-                 + "、".join(f"{compass(a)}{a}° 约{v}°" for a, v in worst)
+                 + "、".join(f"{compass(float(a))}{a}° 约{v}°" for a, v in worst)
                  + f"；受地形影响，直射光实际可用到约 **{k.get('terrain_last_direct_light')}**（几何日落 {k['sunset']}）")
     if k.get("crosscheck_pvlib_noon12"):
         c = k["crosscheck_pvlib_noon12"]
@@ -346,11 +372,18 @@ def render_md(d: dict) -> str:
         if W.get("note"):
             L.append(W["note"])
         else:
-            L.append("| 时间 | 云量 | 直射比 | 降水概率 | 天气 | 现场光判断 |")
-            L.append("|---|---|---|---|---|---|")
+            f1 = lambda v, u="": "—" if v is None else f"{v:.0f}{u}" if isinstance(v, (int, float)) else f"{v}{u}"
+            if W.get("t_max") is not None:
+                L.append(f"全天 {f1(W.get('t_min'))}–{f1(W.get('t_max'))} °C，累计降水 {W.get('precip_sum')} mm"
+                         + (f"（{W['fetched']} 拉取）" if W.get("fetched") else "") + "\n")
+            L.append("| 时间 | 天气 | 降水概率 | 降水 mm | 气温（体感）°C | 风 m/s | 湿度 | 云量 | 直射比 | 现场光判断 |")
+            L.append("|---|---|---|---|---|---|---|---|---|---|")
             for r in W["rows"]:
                 if 6 <= int(r["time"][:2]) <= 18:
-                    L.append(f"| {r['time']} | {r['cloud']}% | {r['direct_ratio'] if r['direct_ratio'] is not None else '—'} | {r['rain_prob']}% | {r['wmo']} | {r['light']} |")
+                    tt = f"{f1(r.get('temp'))}（{f1(r.get('feels'))}）" if r.get("temp") is not None else "—"
+                    L.append(f"| {r['time']} | {r['wmo']} | {r['rain_prob']}% | {r.get('precip_mm', '—') if r.get('precip_mm') is not None else '—'} | {tt} | "
+                             f"{'—' if r.get('wind_ms') is None else round(r['wind_ms'], 1)} | {f1(r.get('humidity'), '%')} | {r['cloud']}% | "
+                             f"{r['direct_ratio'] if r['direct_ratio'] is not None else '—'} | {r['light']} |")
             if W.get("sunrise_om"):
                 L.append(f"\nOpen-Meteo 给出的日出/日落：{W['sunrise_om']} / {W['sunset_om']}（与上面天文计算差几分钟属正常，海拔与大气折射口径不同）")
     # 关键时段的人物朝向表

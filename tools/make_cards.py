@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-make_cards.py　把分镜表 + 示意图 + 光线数据合成为「拍摄小抄」卡片（1600×1067 PNG，每张一页）。
+make_cards.py　把分镜表 + 示意图 + 光线数据合成为「拍摄脚本」卡片（1600×1067 PNG，每张一页）。
 
 用法：
   python tools/make_cards.py --plan plans/hakone-0928 --images out/20260928-箱根玻璃之森 --out plans/hakone-0928/cards
