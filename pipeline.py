@@ -198,10 +198,10 @@ def cmd_cards(a):
     if rc == 0 and (d / "trip.json").exists():
         run([PY, TOOLS / "trip.py", "--plan", d, "--out", d / "cards"])
     plan = json.loads((d / "shotlist.json").read_text(encoding="utf-8"))
-    if rc == 0 and any(x.get("medium") == "video" for x in plan.get("shots", [])):
-        run([PY, TOOLS / "moves.py", "--plan", d, "--out", d / "cards"])      # 短片运镜示意页
     if rc == 0 and plan.get("meta", {}).get("route_stops"):
         run([PY, TOOLS / "route.py", "--plan", d, "--out", d / "cards", "--speed", str(plan["meta"].get("route_speed_mps", 1.0))])
+    if rc == 0 and any(x.get("medium") == "video" for x in plan.get("shots", [])):
+        run([PY, TOOLS / "moves.py", "--plan", d, "--out", d / "cards"])      # 短片运镜示意页与短片一览（在路线之后跑，一览按游览顺序）
     if rc == 0:
         try:
             from PIL import Image
@@ -215,7 +215,8 @@ def cmd_cards(a):
             rest = [i for i in sorted(cards) if i not in order]
             rest = [i for i in rest if medium.get(i, "still") == "still"] + [i for i in rest if medium.get(i, "still") != "still"]
             pngs = (sorted((d / "cards").glob("trip_*.png")) + sorted((d / "cards").glob("outfit_*.png"))
-                    + sorted((d / "cards").glob("route_*.png")) + [q for i in order + rest for q in [cards[i], moves.get(i)] if q])   # 行程 → 穿搭 → 路线 → 分镜（按路线顺序；无路线则静态在前）
+                    + sorted((d / "cards").glob("route_*.png")) + sorted((d / "cards").glob("moves_overview_[0-9]*.png"))
+                    + [q for i in order + rest for q in [cards[i], moves.get(i)] if q])   # 行程 → 穿搭 → 路线 → 短片一览 → 分镜（按路线顺序，短片卡后接运镜页；无路线则静态在前）
             if pngs:
                 meta = plan.get("meta", {})
                 name = pdf_name(meta)

@@ -677,6 +677,72 @@ def render_library(out_path, outfit=None):
     return out_path
 
 
+LEGEND = ["橙线：相机轨迹，圆点为每秒位置；空心图标为起点，实心为终点。",
+          "绿线：人物移动；圆点上的短线是人物朝向。浅色扇形是终点时的视野。",
+          "三帧：起 / 中 / 止的竖幅画面，按焦段、距离、机高和俯仰推算，白线为三分线，虚线为 90% 安全框。",
+          "每条起止各停 0.5–1 秒；同一动作最多拍两条。详细做法见各条短片后面的运镜页。"]
+
+
+def _tile(img, x, y, tw, th, label, sub, P, cols):
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle((x, y, x + tw, y + th), radius=10, fill=PANEL, outline=LINE, width=2)
+    d.text((x + 16, y + 10), label, font=font(22, True), fill=GREEN)
+    fw, fh, gap = 110, 196, 18
+    frames_w = 3 * fw + 2 * gap
+    room = tw - frames_w - 50
+    f14 = font(14)
+    while sub and d.textlength(sub, font=f14) > room:
+        sub = sub[:-2] + "…" if not sub.endswith("…") else sub[:-2] + "…"
+    d.text((x + 16, y + 40), sub, font=f14, fill=MUTED)
+    draw_top(img, (x + 12, y + 64, x + tw - frames_w - 30, y + th - 12), P, small=True)
+    draw_frames(img, x + tw - frames_w - 14, y + 40, P, fw, fh, gap, cols, captions=True)
+
+
+def render_overview(shots, outfit, out_dir, prefix="moves_overview"):
+    """本组短片一览：横版（PDF，每页 5 条 + 图例）与竖版（核对表，单列）。返回生成的文件列表。"""
+    cols = outfit_cols(outfit or {})
+    made = []
+    items = []
+    for sh in shots:
+        P = params(sh)
+        c = sh.get("clip", {})
+        mode = {"24p": "24p 实时", "sq60": "S&Q 60→24", "sq120": "S&Q 120→24"}.get(P["mode"], P["mode"])
+        items.append((f"{sh['id']}  {P['move']}", f"{sh.get('lens', '').split()[0]} · {mode} · 实录 {P['dur']:g} s · {sh.get('title', '')}", P))
+    per = 5
+    tw, th = 750, 300
+    for pg in range(0, len(items), per):
+        chunk = items[pg:pg + per]
+        img = Image.new("RGB", (W, H), BG)
+        d = ImageDraw.Draw(img)
+        d.text((40, 26), "短片一览", font=font(46, True), fill=GREEN)
+        d.text((270, 46), f"本组 {len(items)} 条短片的运镜轨迹与画面变化，按游览顺序排列" + (f"（{pg // per + 1}/{math.ceil(len(items) / per)}）" if len(items) > per else ""),
+               font=font(18), fill=MUTED)
+        for i, (lab, sub, P) in enumerate(chunk):
+            _tile(img, 40 + (i % 2) * (tw + 20), 100 + (i // 2) * (th + 12), tw, th, lab, sub, P, cols)
+        i = len(chunk)
+        x, y = 40 + (i % 2) * (tw + 20), 100 + (i // 2) * (th + 12)
+        if i < 6:
+            d.rounded_rectangle((x, y, x + tw, y + th), radius=10, fill=PANEL, outline=LINE, width=2)
+            d.text((x + 16, y + 12), "看图方法", font=font(22, True), fill=GREEN)
+            yy = y + 52
+            for k, t in enumerate(LEGEND):
+                d.text((x + 16, yy), f"{k + 1}", font=font(16, True), fill=CAM)
+                yy = text_block(d, (x + 40, yy), t, font(16), tw - 60, spacing=3) + 8
+        d.text((40, H - 32), "短片一览：轨迹与三帧为估算示意，现场以取景器为准。", font=font(15), fill=MUTED)
+        f = out_dir / f"{prefix}_{pg // per + 1}.png"
+        img.save(f, quality=92)
+        made.append(f)
+    # 竖版单列（核对表）
+    tw2 = 760
+    img = Image.new("RGB", (tw2 + 20, 20 + len(items) * (th + 12)), BG)
+    for i, (lab, sub, P) in enumerate(items):
+        _tile(img, 10, 10 + i * (th + 12), tw2, th, lab, sub, P, cols)
+    f = out_dir / f"{prefix}_m.png"
+    img.save(f, quality=90)
+    made.append(f)
+    return made
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--plan")
@@ -692,15 +758,19 @@ def main():
     outfit = {}
     if (plan / "outfit.json").exists():
         outfit = json.loads((plan / "outfit.json").read_text(encoding="utf-8"))
-    for old in [*out.glob("move_*.png"), *out.glob("movem_*.png")]:
+    for old in [*out.glob("move_*.png"), *out.glob("movem_*.png"), *out.glob("moves_overview_*.png")]:
         old.unlink()
-    n = 0
-    for s in SL["shots"]:
-        if s.get("medium") == "video" and s.get("clip"):
-            render_page(s, SL["meta"], outfit, out / f"move_{s['id']}.png")
-            render_compact(s, outfit, out / f"movem_{s['id']}.png")
-            n += 1
-    print(f"运镜示意：{n} 页 → {out}")
+    vids = [s for s in SL["shots"] if s.get("medium") == "video" and s.get("clip")]
+    rj = plan / "route.json"
+    if rj.exists():                                   # 一览按游览顺序
+        order = json.loads(rj.read_text(encoding="utf-8")).get("order", [])
+        vids.sort(key=lambda s: order.index(s["id"]) if s["id"] in order else 999)
+    for s in vids:
+        render_page(s, SL["meta"], outfit, out / f"move_{s['id']}.png")
+        render_compact(s, outfit, out / f"movem_{s['id']}.png")
+    if vids:
+        render_overview(vids, outfit, out)
+    print(f"运镜示意：{len(vids)} 页 + 短片一览 → {out}")
 
 
 if __name__ == "__main__":

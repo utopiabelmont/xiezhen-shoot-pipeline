@@ -100,8 +100,8 @@
 
 - 执行：`python pipeline.py cards <plan> [--images out/<plan>]`（`make_cards.py`；图片按文件名前两位 = 分镜 id 匹配）
 - 输出：`cards/card_<id>.png`（1600×1067）、`<出行日期>_<地点>_拍摄脚本.pdf`（例：`2026-09-28_浅草寺_拍摄脚本.pdf`；改版加 `_v2`）
-- PDF 顺序：行程页（有 `trip.json`）→ 穿搭页（有 `outfit.json`）→ 路线页（有 `route_stops`）→ 分镜按路线顺序（静态与动态穿插）；没有路线时静态在前、动态在后。短片与实况的示意图是关键帧，页脚会注明。
-- 有短片时，每条短片的分镜卡后面插一页运镜示意（`tools/moves.py`，`cards/move_<id>.png`：俯视轨迹、侧视高度与俯仰、操作要点、起中止三帧、时间条），另出手机竖版 `cards/movem_<id>.png` 给核对表用。
+- PDF 顺序：行程页（有 `trip.json`）→ 穿搭页（有 `outfit.json`）→ 路线页（有 `route_stops`）→ 短片一览（有短片时，`cards/moves_overview_<n>.png`，每页 5 条）→ 分镜按路线顺序（静态与动态穿插）；没有路线时静态在前、动态在后。短片与实况的示意图是关键帧，页脚会注明。
+- 有短片时，每条短片的分镜卡后面插一页运镜示意（`tools/moves.py`，`cards/move_<id>.png`：俯视轨迹、侧视高度与俯仰、操作要点、起中止三帧、时间条），另出手机竖版 `cards/movem_<id>.png` 给核对表用；全部短片再汇成一页「短片一览」（PDF 用横版，核对表用单列竖版 `moves_overview_m.png`）。
 - 同时生成 `<出行日期>_<地点>_拍摄核对表.html`（`tools/checklist.py`，也可单独 `pipeline.py checklist <plan>`）：器材（按分镜的焦段与介质自动列）、服装道具妆发（`outfit.json`）、行程（`trip.json`）、到场核对（`arrival_checklist.md` 第一个二级标题之前的列表）、分镜按路线停留点分组（缩略图取 `out/<plan>/`，`--no-thumbs` 不嵌）、收尾。单文件，手机离线可用，勾选状态存在浏览器本地。
 - 页面规范见 `docs/CARD_SPEC.md`。俯视图里的太阳箭头必须与 `meta.sun` 该时刻一致；室内不画太阳；园外用各自底图。
 - 验收：逐页看：文字不溢出、俯视图标签不重叠、页脚「AI 拍摄示意，非现场实拍」在。

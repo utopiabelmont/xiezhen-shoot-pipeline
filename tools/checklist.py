@@ -256,6 +256,9 @@ ul.items{list-style:none;margin:0;padding:0}
 details{margin-top:4px;font-size:13px}
 details summary{cursor:pointer;color:var(--green);width:max-content}
 details.mv{grid-column:1/-1;margin-top:2px}
+img.overview{display:block;width:100%;max-width:560px;height:auto;margin:8px 0;border-radius:6px;border:1px solid var(--line)}
+details.ov summary{cursor:pointer;color:var(--green)}
+details.ov .d{font-size:12.5px;color:var(--muted);margin:4px 0 0}
 .shot img.move{display:block;width:100%;max-width:480px;height:auto;aspect-ratio:auto;object-fit:contain;margin:8px 0 4px;border-radius:6px;border:1px solid var(--line);background:#fffdf8}
 dl{display:grid;grid-template-columns:max-content 1fr;gap:3px 10px;margin:6px 0 0}
 dt{color:var(--muted)} dd{margin:0}
@@ -471,6 +474,16 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
     if arr:
         H.append('<section class="side"><h2>到场核对<span class="prog num" data-prog="#sec-arr input"></span></h2><ul class="items" id="sec-arr">'
                  + "".join(item(f"arr-{i}", a) for i, a in enumerate(arr)) + "</ul></section>")
+
+    # 短片一览
+    ov = move_img(plan_dir / "cards" / "moves_overview_m.png", width=780)
+    if ov:
+        n_v = sum(1 for s in shots if s.get("medium") == "video")
+        H.append(f'<section class="side"><h2>短片运镜一览</h2>'
+                 f'<details class="ov"><summary>展开 {n_v} 条短片的轨迹与起中止三帧</summary>'
+                 f'<img class="overview" src="{ov}" alt="本组短片的运镜轨迹与画面变化一览" loading="lazy">'
+                 '<p class="d">橙线为相机轨迹（圆点为每秒位置），绿线为人物移动；三帧为起 / 中 / 止的竖幅画面。每条的完整说明在下面对应短片的「运镜示意」里。</p>'
+                 '</details></section>')
 
     # 分镜
     H.append(f'<section><h2>分镜{"（按游览路线）" if R else ""}</h2>')
