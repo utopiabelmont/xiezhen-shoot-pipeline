@@ -31,7 +31,7 @@ cd xiezhen-shoot-pipeline
    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
    ```
    离线机器可以把 `uv.exe` 直接放到 `<root>\bin\`，`setup.cmd` 会优先找这里。
-2. 双击 `<root>\setup.cmd`。它会装 Python 3.12 到 `<root>\.venv`，装依赖，跑 `check_env.py`，再用离线样本跑三条自测（spots / sun / osm_geometry）。
+2. 双击 `<root>\setup.cmd`。它会装 Python 3.12 到 `<root>\.venv`，装依赖，跑 `check_env.py`，用离线样本跑三条自测（spots / sun / osm_geometry），最后把仓库路径登记到 `%USERPROFILE%\.xiezhen-pipeline\config.json`（第 4 节）。
 3. 看 `<root>\setup_log.txt`。最后几行应当是 `== done ==`，并且 `setup_done.txt` 已生成。`check_env.py` 那一段里七个依赖都要是 `OK`。
 
 以后所有脚本都用 `<root>\.venv\Scripts\python.exe`，与系统 Python 无关。
@@ -43,6 +43,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python check_env.py
+python pipeline.py register
 ```
 
 Linux 另装字体：`sudo apt install fonts-noto-cjk`（小抄与太阳图要用）。
@@ -89,7 +90,13 @@ python pipeline.py status selftest
 - Claude 桌面版 / claude.ai：在 skills 设置里新建，把 SKILL.md 内容贴进去。
 - 在 Claude 对话里把 SKILL.md 作为附件发给它，说「把这个存成 skill」。
 
-SKILL.md 开头写着仓库在本机的路径（默认 `<root>`）。换电脑后把这一行改成新的 `<root>`，Claude 才知道去哪里跑脚本。
+skill 里不写死仓库路径。Claude 找仓库的顺序是：对话里你指定的路径 → 连接给它的文件夹里含 `pipeline.py` 的目录 → `~/.xiezhen-pipeline/config.json` 里登记的 `root`。Windows 上 `setup.cmd` 最后一步已自动登记；macOS / Linux 或换了目录后手动跑一次：
+
+```bash
+python pipeline.py register            # 登记当前仓库；--root <路径> 可指定别处；--show 查看
+```
+
+登记文件在 `%USERPROFILE%\.xiezhen-pipeline\config.json`（Windows）或 `~/.xiezhen-pipeline/config.json`，记录 root、venv 的 python 路径、系统与日期。想放别处用环境变量 `XIEZHEN_CONFIG` 指定。
 
 它依赖另一个 skill [nuyoah-xiezhen-prompt](https://github.com/nuyoah-ai-works/nuyoah-xiezhen-prompt)（分镜编译成 prompt 用），一并装上。
 
@@ -121,7 +128,7 @@ git pull
 pip install -r requirements.txt      # Windows：再双击一次 setup.cmd
 ```
 
-`plans/`、`out/`、`inbox/` 不入库，更新不会碰到你的企划。skill 有改动时（见 `docs/CHANGELOG.md`）把新的 SKILL.md 重新装一次。
+`plans/`、`out/`、`inbox/` 不入库，更新不会碰到你的企划。仓库挪了位置就再跑一次 `python pipeline.py register`。skill 有改动时（见 `docs/CHANGELOG.md`）把新的 SKILL.md 重新装一次。
 
 ## 常见问题
 

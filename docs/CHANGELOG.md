@@ -1,5 +1,10 @@
 # 变更记录
 
+## 1.1.2 — 2026-09-27
+
+- `pipeline.py register [--root] [--show]`：把仓库路径登记到 `~/.xiezhen-pipeline/config.json`（可用 `XIEZHEN_CONFIG` 改位置）；`setup.cmd` 最后一步自动调用。
+- skill 不再写死本机路径，改为「对话指定 → 已连接文件夹 → config.json」三级查找；INSTALL.md 第 4 节同步。
+
 ## 1.1.1 — 2026-09-27
 
 - 新增 `INSTALL.md`：新电脑安装（Windows / macOS / Linux、codex-imagegen、skill 安装、自测、更新、常见问题）；README 快速开始与目录同步。

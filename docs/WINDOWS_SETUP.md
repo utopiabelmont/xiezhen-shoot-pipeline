@@ -16,6 +16,7 @@
    - `uv pip install -r requirements.txt`
    - 跑 `check_env.py` 与三条离线自测（spots / sun / osm_geometry 用 fixtures）
    - 检查 codex、codex-imagegen、git 是否在 PATH
+   - `pipeline.py register`：把仓库路径写到 `%USERPROFILE%\.xiezhen-pipeline\config.json`，Claude 的 skill 靠它找到本机仓库
    结果在 `setup_log.txt`，结束标记 `setup_done.txt`。
 
 以后所有脚本都用 `<root>\.venv\Scripts\python.exe`，不依赖系统 Python。

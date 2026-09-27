@@ -103,7 +103,7 @@ python pipeline.py status  hakone-0928
 ## 目录
 
 ```
-pipeline.py            统一入口：init / spots / sun / basemap / stylize / lint / jobs / shots / cards / status
+pipeline.py            统一入口：init / spots / sun / basemap / stylize / lint / jobs / shots / cards / status / register
 run_shots.py           inbox/*.jsonl → codex-imagegen 逐条出图 → out/<批次>/ + log.jsonl（每条只提交一次，失败只记录）
 check_env.py           依赖与工具自检
 tools/

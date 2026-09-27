@@ -38,6 +38,8 @@ foreach ($c in "codex","codex-imagegen","git") {
 }
 "codex-imagegen (uv tool): " + (Test-Path "$env:USERPROFILE\.local\bin\codex-imagegen.exe")
 "auth.json exists: " + (Test-Path "$env:USERPROFILE\.codex\auth.json")
+"== 7 登记仓库路径（skill 据此找到本机仓库） =="
+cmd /c """$py"" pipeline.py register 2>&1"
 "== done =="
 Stop-Transcript | Out-Null
 "done" | Out-File "$root\setup_done.txt"

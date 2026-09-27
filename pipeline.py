@@ -13,6 +13,7 @@ pipeline.py　外拍规划流水线的统一入口。每个阶段一个子命令
   python pipeline.py shots   <plan>                                       → out/<plan>/<id>.png + log.jsonl（run_shots.py）
   python pipeline.py cards   <plan> [--images out/<plan>]                 → cards/card_<id>.png + <日期>_<地点>_拍摄小抄.pdf
   python pipeline.py status  <plan>                                       → 各阶段产物清单
+  python pipeline.py register [--root PATH] [--show]                      → 把仓库路径登记到 ~/.xiezhen-pipeline/config.json（skill 据此找到本机仓库）
 
 所有子命令都可加 --fixture 走离线样本（仅 spots / sun / basemap）。
 """
@@ -316,6 +317,31 @@ def cmd_status(a):
     print(f"  [{'x' if out.exists() else ' '}] {'shots':28s} out/{a.plan}/ ({len(list(out.glob('*.png'))) if out.exists() else 0} 张)")
 
 
+CONFIG = Path(os.environ.get("XIEZHEN_CONFIG") or Path.home() / ".xiezhen-pipeline" / "config.json")
+
+
+def cmd_register(a):
+    """登记本机仓库路径。setup.cmd 结束时自动调用；换目录后重新跑一次即可。"""
+    import datetime, platform
+    if a.show:
+        if CONFIG.exists():
+            print(CONFIG); print(CONFIG.read_text(encoding="utf-8"))
+        else:
+            print(f"未登记：{CONFIG} 不存在。先跑 python pipeline.py register")
+        return 0 if CONFIG.exists() else 1
+    root = Path(a.root).expanduser().resolve() if a.root else ROOT
+    if not (root / "pipeline.py").exists():
+        print(f"{root} 下没有 pipeline.py，不是仓库根目录"); return 1
+    venv = root / (".venv/Scripts/python.exe" if os.name == "nt" else ".venv/bin/python")
+    cfg = {"root": str(root), "python": str(venv if venv.exists() else Path(PY).resolve()),
+           "platform": platform.system(), "registered_at": datetime.date.today().isoformat()}
+    CONFIG.parent.mkdir(parents=True, exist_ok=True)
+    CONFIG.write_text(json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"已登记 → {CONFIG}")
+    for k, v in cfg.items(): print(f"  {k:14s} {v}")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -335,6 +361,7 @@ def main():
     s = sub.add_parser("cards"); s.add_argument("plan"); s.add_argument("--images"); s.set_defaults(fn=cmd_cards)
     s = sub.add_parser("lint"); s.add_argument("plan"); s.set_defaults(fn=cmd_lint)
     s = sub.add_parser("status"); s.add_argument("plan"); s.set_defaults(fn=cmd_status)
+    s = sub.add_parser("register"); s.add_argument("--root"); s.add_argument("--show", action="store_true"); s.set_defaults(fn=cmd_register)
 
     a = ap.parse_args()
     rc = a.fn(a)
