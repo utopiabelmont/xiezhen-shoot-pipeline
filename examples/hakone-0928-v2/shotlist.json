@@ -97,7 +97,10 @@
    ],
    "look": "IN（全组固定），WB 阴天预设",
    "flash": "关。晴天逆光版：TTL −1.7 EV 补脸，HSS，柔光罩",
-   "img_from": "01"
+   "img_from": "01",
+   "role": "opening",
+   "pose": "walk",
+   "gaze": "away"
   },
   {
    "id": "02",
@@ -128,7 +131,11 @@
    ],
    "look": "IN（全组固定），WB 阴天预设",
    "flash": "可选。TTL −2 EV，柔光罩，闪光头正对人物，水晶出细碎高光；快门 ≤1/250",
-   "img_from": "02"
+   "img_from": "02",
+   "role": "interaction",
+   "pose": "walk",
+   "gaze": "camera",
+   "hero": true
   },
   {
    "id": "03",
@@ -158,7 +165,10 @@
     35.26612,
     139.01742
    ],
-   "alt_time": "15:30"
+   "alt_time": "15:30",
+   "role": "detail",
+   "pose": "stand",
+   "gaze": "away"
   },
   {
    "id": "04",
@@ -189,7 +199,10 @@
    ],
    "look": "IN（全组固定），WB 阴天预设",
    "flash": "关。晴天逆光版：TTL −1.3 EV 补脸，HSS 到 1/1000",
-   "img_from": "04"
+   "img_from": "04",
+   "role": "portrait",
+   "pose": "stand",
+   "gaze": "away"
   },
   {
    "id": "05",
@@ -219,7 +232,10 @@
     35.2662,
     139.01766
    ],
-   "alt_time": "14:30"
+   "alt_time": "14:30",
+   "role": "portrait",
+   "pose": "lean",
+   "gaze": "camera"
   },
   {
    "id": "06",
@@ -249,7 +265,10 @@
    ],
    "look": "IN（全组固定），WB 阴天预设",
    "flash": "关。露台开口的窗光是主光，闪光会盖掉方向感",
-   "img_from": "05"
+   "img_from": "05",
+   "role": "interaction",
+   "pose": "sit",
+   "gaze": "away"
   },
   {
    "id": "07",
@@ -280,7 +299,10 @@
    ],
    "look": "IN（全组固定），WB 阴天预设",
    "flash": "关。晴天后侧光版：TTL −1.7 EV 补脸",
-   "img_from": "06"
+   "img_from": "06",
+   "role": "context",
+   "pose": "stand",
+   "gaze": "camera"
   },
   {
    "id": "08",
@@ -311,7 +333,10 @@
    ],
    "look": "IN；可另拍一张 BW 作对照",
    "flash": "关",
-   "img_from": "07"
+   "img_from": "07",
+   "role": "context",
+   "pose": "stand",
+   "gaze": "away"
   },
   {
    "id": "09",
@@ -342,7 +367,10 @@
    ],
    "look": "IN（全组固定），WB 阴天预设",
    "flash": "可选。TTL −2 EV 弱补，铜钟出一点高光；避免正面直打",
-   "img_from": "08"
+   "img_from": "08",
+   "role": "interaction",
+   "pose": "stand",
+   "gaze": "camera"
   },
   {
    "id": "10",
@@ -373,7 +401,10 @@
    ],
    "look": "IN（全组固定），WB 阴天预设",
    "flash": "关。俯拍时闪光会在湿台阶留下反光斑",
-   "img_from": "09"
+   "img_from": "09",
+   "role": "context",
+   "pose": "walk",
+   "gaze": "camera"
   },
   {
    "id": "11",
@@ -404,7 +435,10 @@
    ],
    "look": "IN（全组固定），WB 阴天预设",
    "flash": "开。后帘同步，TTL −1 EV，快门 1/60 收环境光，人物在 4–5 m 内，水晶被闪光点亮成细碎高光；雨天黄昏版最有效的一张",
-   "img_from": "10"
+   "img_from": "10",
+   "role": "closing",
+   "pose": "walk",
+   "gaze": "away"
   },
   {
    "id": "12",
@@ -436,7 +470,11 @@
     35.26636,
     139.01776
    ],
-   "basemap": "main"
+   "basemap": "main",
+   "role": "portrait",
+   "pose": "stand",
+   "gaze": "away",
+   "optional": true
   },
   {
    "id": "13",
@@ -469,7 +507,11 @@
     139.02099
    ],
    "basemap": "pola",
-   "map_window_m": 110
+   "map_window_m": 110,
+   "role": "context",
+   "pose": "walk",
+   "gaze": "away",
+   "optional": true
   }
  ]
 }

@@ -20,7 +20,13 @@
 ## 2 社交平台调研
 
 - 执行：Claude in Chrome，用户已登录的账号，人工级浏览（不批量抓取、不下载图片）。
-- 平台与检索词：小红书「<中文名>」「<中文名> 机位」；Instagram `#<日文名>`；抖音「<中文名>」；TikTok「<日文名>」+ 官方账号。
+- 平台与检索词：小红书「<中文名>」「<中文名> 机位」；Instagram `#<日文名>`；抖音「<中文名> 拍照机位」；TikTok「<日文名>」+ 官方账号。
+- 各平台在 Chrome（用户已登录）里的可行路径（2026-09-27 实测）：
+  - 小红书：直接打开 `search_result?keyword=` 常常空白；要在 `/explore` 首页的搜索框里输入关键词回车，结果页右侧的「点点」AI 会汇总 30 篇左右笔记的机位与时段，先读它，再点 1–3 篇高赞帖看正文（视频帖正文很短）。用 JS 直接跳转 `/explore/<id>` 会触发 300031 风控，拦一次就停。
+  - 抖音：`https://www.douyin.com/search/<关键词>` 可用，等 10 秒以上再读页面文字；图文帖的文案含机位说明。
+  - TikTok：`https://www.tiktok.com/search?q=<关键词>` 首次常报「不明なエラー」，点「もう一度お試しください」即出结果；未登录也能看列表。
+  - Instagram：`https://www.instagram.com/explore/search/keyword/?q=%23<标签>` 可用，读图片 alt 文本（含器材与参数的帖子最有用）。
+- 平台最新动态也要看：祭典、灯笼祭、投影活动、临时封闭（TikTok/抖音的近期帖最快）。
 - 记录：`spots_social.md`（模板 `templates/sns_research.md`）：机位、朝向、时段、人流、规则、票价、交通；每条附标题/作者/赞数便于回查。
 - 验收：末尾「对分镜的影响」写清：与主流机位重合的、本组差异化机位、新增备选（雨天/室内/园外）、需现场核实的。
 
@@ -52,7 +58,8 @@
 - 硬性要求：≥ 9 条；景别覆盖特写、近景、半身、全身、环境远景中至少 4 种；焦段只从器材里选；每条写太阳方位、光型、人物朝向、机位距离；每条给晴天/阴天/雨天备选；同组内动作、视线、机位不重复。
 - 俯视图字段：`subject_latlon`、`cam_bearing`、`cam_dist`、`face_bearing`、`bg_bearing`、`bg_label`；园外点加 `basemap`，室内点加 `indoor: true`；`alt_time` 指晴天版时刻；`meta.sun` 从 `sun.json` 取整点与半点。
 - SNS 影响：阶段 2 的结论要体现在分镜上（新增/替换机位、时段调整），并在 `meta.sns` 一句话记录。
-- 验收：`python -c "import json,jsonschema"` 可用时按 schema 校验；否则至少检查必填字段齐全。
+- 基本法：每条写 `role`（opening/context/interaction/portrait/detail/closing）、`pose`、`gaze`，主图 `hero: true`，备选 `optional: true`；景别配比、节奏、姿态视线规则见 `docs/SHOT_DESIGN.md`。
+- 验收：`python pipeline.py lint <plan>` 硬性项全部通过（`jobs` 阶段会先跑 lint，不过不生成任务）；提示项逐条看，能改就改。
 
 ## 7 prompt
 

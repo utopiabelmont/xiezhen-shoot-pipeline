@@ -3,70 +3,281 @@
  "title": "shotlist.json",
  "description": "分镜表。meta 为整组共用信息，shots 至少 9 条。make_cards.py 直接读取本文件。",
  "type": "object",
- "required": ["meta", "shots"],
+ "required": [
+  "meta",
+  "shots"
+ ],
  "properties": {
   "meta": {
    "type": "object",
-   "required": ["place", "date", "arrive", "gear", "sun"],
+   "required": [
+    "place",
+    "date",
+    "arrive",
+    "gear",
+    "sun"
+   ],
    "properties": {
-    "place": {"type": "string"},
-    "date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
-    "arrive": {"type": "string"},
-    "close": {"type": "string"},
-    "gear": {"type": "string", "description": "机身 + 镜头焦段范围，例：全画幅机身 + 24-105mm F4"},
-    "body": {"type": "string"},
-    "flash_unit": {"type": "string"},
-    "look_policy": {"type": "string", "description": "创意外观 / 白平衡策略"},
-    "forecast": {"type": "string"},
-    "sun": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
-            "description": "{\"HH:MM\": [方位角, 高度角]}，从 sun.json 的 rows 取整点与半点"},
-    "terrain_note": {"type": "string"},
-    "layout": {"type": "string"},
-    "outfit": {"type": "string"},
-    "rules": {"type": "string"},
-    "version": {"type": "string"},
-    "sns": {"type": "string"},
-    "transport": {"type": "string"}
+    "place": {
+     "type": "string"
+    },
+    "date": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "arrive": {
+     "type": "string"
+    },
+    "close": {
+     "type": "string"
+    },
+    "gear": {
+     "type": "string",
+     "description": "机身 + 镜头焦段范围，例：全画幅机身 + 24-105mm F4"
+    },
+    "body": {
+     "type": "string"
+    },
+    "flash_unit": {
+     "type": "string"
+    },
+    "look_policy": {
+     "type": "string",
+     "description": "创意外观 / 白平衡策略"
+    },
+    "forecast": {
+     "type": "string"
+    },
+    "sun": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2
+     },
+     "description": "{\"HH:MM\": [方位角, 高度角]}，从 sun.json 的 rows 取整点与半点"
+    },
+    "terrain_note": {
+     "type": "string"
+    },
+    "layout": {
+     "type": "string"
+    },
+    "outfit": {
+     "type": "string"
+    },
+    "rules": {
+     "type": "string"
+    },
+    "version": {
+     "type": "string"
+    },
+    "sns": {
+     "type": "string"
+    },
+    "transport": {
+     "type": "string"
+    }
    }
   },
   "shots": {
-   "type": "array", "minItems": 9,
+   "type": "array",
+   "minItems": 9,
    "items": {
     "type": "object",
-    "required": ["id", "title", "time", "spot", "kind", "lens", "shutter", "camera", "subject", "light", "action", "alt", "note",
-                 "cam_bearing", "cam_dist", "bg_bearing", "bg_label", "face_bearing", "size"],
+    "required": [
+     "id",
+     "title",
+     "time",
+     "spot",
+     "kind",
+     "lens",
+     "shutter",
+     "camera",
+     "subject",
+     "light",
+     "action",
+     "alt",
+     "note",
+     "cam_bearing",
+     "cam_dist",
+     "bg_bearing",
+     "bg_label",
+     "face_bearing",
+     "size",
+     "role",
+     "pose",
+     "gaze"
+    ],
     "properties": {
-     "id": {"type": "string", "pattern": "^\\d{2}$"},
-     "title": {"type": "string"},
-     "time": {"type": "string", "description": "HH:MM–HH:MM，或含时刻的说明文字"},
-     "spot": {"type": "string"},
-     "bg_dir": {"type": "string"},
-     "kind": {"type": "string", "description": "景别：特写 / 近景 / 半身 / 七分 / 全身 / 环境远景"},
-     "lens": {"type": "string", "description": "只从器材里选，例：85mm F4"},
-     "shutter": {"type": "string"},
-     "camera": {"type": "string", "description": "机位：高度、方位、距离"},
-     "subject": {"type": "string", "description": "站位与朝向"},
-     "light": {"type": "string", "description": "来源—落点—结果；晴天版引用 sun.md 的方位/高度"},
-     "fg_bg": {"type": "string"},
-     "action": {"type": "string", "description": "对模特说的一句话"},
-     "alt": {"type": "string", "description": "晴天/阴天/雨天备选"},
-     "note": {"type": "string"},
-     "cam_bearing": {"type": "number", "description": "相机相对人物的方位角（正北 0，顺时针）"},
-     "cam_dist": {"type": "number", "description": "米"},
-     "bg_bearing": {"type": "number"},
-     "bg_label": {"type": "string"},
-     "face_bearing": {"type": "number"},
-     "size": {"type": "string", "pattern": "^\\d+x\\d+$"},
-     "look": {"type": "string"},
-     "flash": {"type": "string"},
-     "subject_latlon": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
-     "basemap": {"type": "string", "default": "main", "description": "俯视图用哪张底图：basemaps/<name>_styled.png"},
-     "map_window_m": {"type": "number", "default": 84, "description": "俯视图裁切宽度（米）"},
-     "alt_time": {"type": "string", "description": "晴天版建议时刻 HH:MM，俯视图太阳箭头按此取 meta.sun"},
-     "indoor": {"type": "boolean", "description": "true 时不画太阳与散射光箭头"},
-     "topview_note": {"type": "string", "description": "覆盖俯视图左上角说明文字"},
-     "img_from": {"type": "string", "description": "复用上一版本图片时记录来源编号"},
-     "images": {"type": "array", "items": {"type": "string"}, "description": "参考图（走 edit 模式）"}
+     "id": {
+      "type": "string",
+      "pattern": "^\\d{2}$"
+     },
+     "title": {
+      "type": "string"
+     },
+     "time": {
+      "type": "string",
+      "description": "HH:MM–HH:MM，或含时刻的说明文字"
+     },
+     "spot": {
+      "type": "string"
+     },
+     "bg_dir": {
+      "type": "string"
+     },
+     "kind": {
+      "type": "string",
+      "description": "景别：特写 / 近景 / 半身 / 七分 / 全身 / 环境远景"
+     },
+     "lens": {
+      "type": "string",
+      "description": "只从器材里选，例：85mm F4"
+     },
+     "shutter": {
+      "type": "string"
+     },
+     "camera": {
+      "type": "string",
+      "description": "机位：高度、方位、距离"
+     },
+     "subject": {
+      "type": "string",
+      "description": "站位与朝向"
+     },
+     "light": {
+      "type": "string",
+      "description": "来源—落点—结果；晴天版引用 sun.md 的方位/高度"
+     },
+     "fg_bg": {
+      "type": "string"
+     },
+     "action": {
+      "type": "string",
+      "description": "对模特说的一句话"
+     },
+     "alt": {
+      "type": "string",
+      "description": "晴天/阴天/雨天备选"
+     },
+     "note": {
+      "type": "string"
+     },
+     "cam_bearing": {
+      "type": "number",
+      "description": "相机相对人物的方位角（正北 0，顺时针）"
+     },
+     "cam_dist": {
+      "type": "number",
+      "description": "米"
+     },
+     "bg_bearing": {
+      "type": "number"
+     },
+     "bg_label": {
+      "type": "string"
+     },
+     "face_bearing": {
+      "type": "number"
+     },
+     "size": {
+      "type": "string",
+      "pattern": "^\\d+x\\d+$"
+     },
+     "look": {
+      "type": "string"
+     },
+     "flash": {
+      "type": "string"
+     },
+     "subject_latlon": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2
+     },
+     "basemap": {
+      "type": "string",
+      "default": "main",
+      "description": "俯视图用哪张底图：basemaps/<name>_styled.png"
+     },
+     "map_window_m": {
+      "type": "number",
+      "default": 84,
+      "description": "俯视图裁切宽度（米）"
+     },
+     "alt_time": {
+      "type": "string",
+      "description": "晴天版建议时刻 HH:MM，俯视图太阳箭头按此取 meta.sun"
+     },
+     "indoor": {
+      "type": "boolean",
+      "description": "true 时不画太阳与散射光箭头"
+     },
+     "topview_note": {
+      "type": "string",
+      "description": "覆盖俯视图左上角说明文字"
+     },
+     "img_from": {
+      "type": "string",
+      "description": "复用上一版本图片时记录来源编号"
+     },
+     "images": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "参考图（走 edit 模式）"
+     },
+     "role": {
+      "type": "string",
+      "enum": [
+       "opening",
+       "context",
+       "interaction",
+       "portrait",
+       "detail",
+       "closing"
+      ],
+      "description": "叙事角色（docs/SHOT_DESIGN.md）：opening 开场、context 环境、interaction 互动/动作、portrait 肖像、detail 细节、closing 收尾"
+     },
+     "hero": {
+      "type": "boolean",
+      "description": "主图：这组的代表作，至少一张"
+     },
+     "pose": {
+      "type": "string",
+      "enum": [
+       "stand",
+       "walk",
+       "sit",
+       "lean",
+       "back",
+       "crouch"
+      ],
+      "description": "姿态，全组至少三种"
+     },
+     "gaze": {
+      "type": "string",
+      "enum": [
+       "camera",
+       "away",
+       "down",
+       "closed",
+       "back"
+      ],
+      "description": "视线；看镜头不超过 60%"
+     },
+     "optional": {
+      "type": "boolean",
+      "description": "备选/机动分镜：不参与首尾与相邻节奏检查"
+     }
     }
    }
   }

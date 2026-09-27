@@ -90,7 +90,10 @@
     139.79642
    ],
    "basemap": "south",
-   "alt_time": "10:00"
+   "alt_time": "10:00",
+   "role": "opening",
+   "pose": "stand",
+   "gaze": "camera"
   },
   {
    "id": "02",
@@ -121,7 +124,10 @@
     139.7965
    ],
    "basemap": "south",
-   "alt_time": "10:30"
+   "alt_time": "10:30",
+   "role": "context",
+   "pose": "walk",
+   "gaze": "away"
   },
   {
    "id": "03",
@@ -153,7 +159,10 @@
    ],
    "basemap": "south",
    "alt_time": "10:30",
-   "topview_note": "有顶拱廊：屋顶下散射光；金色箭头为放晴时太阳方位（拱廊内影响小）"
+   "topview_note": "有顶拱廊：屋顶下散射光；金色箭头为放晴时太阳方位（拱廊内影响小）",
+   "role": "interaction",
+   "pose": "stand",
+   "gaze": "camera"
   },
   {
    "id": "04",
@@ -184,7 +193,10 @@
     139.7966
    ],
    "basemap": "north",
-   "alt_time": "11:00"
+   "alt_time": "11:00",
+   "role": "interaction",
+   "pose": "stand",
+   "gaze": "camera"
   },
   {
    "id": "05",
@@ -215,7 +227,11 @@
     139.79625
    ],
    "basemap": "north",
-   "alt_time": "11:00"
+   "alt_time": "11:00",
+   "role": "portrait",
+   "pose": "stand",
+   "gaze": "camera",
+   "hero": true
   },
   {
    "id": "06",
@@ -246,7 +262,10 @@
     139.79665
    ],
    "basemap": "north",
-   "alt_time": "11:30"
+   "alt_time": "11:30",
+   "role": "detail",
+   "pose": "stand",
+   "gaze": "away"
   },
   {
    "id": "07",
@@ -277,7 +296,10 @@
     139.79672
    ],
    "basemap": "north",
-   "alt_time": "11:30"
+   "alt_time": "11:30",
+   "role": "portrait",
+   "pose": "lean",
+   "gaze": "away"
   },
   {
    "id": "08",
@@ -308,7 +330,10 @@
     139.79755
    ],
    "basemap": "north",
-   "alt_time": "12:00"
+   "alt_time": "12:00",
+   "role": "portrait",
+   "pose": "stand",
+   "gaze": "away"
   },
   {
    "id": "09",
@@ -339,7 +364,10 @@
     139.79802
    ],
    "basemap": "north",
-   "alt_time": "12:00"
+   "alt_time": "12:00",
+   "role": "context",
+   "pose": "stand",
+   "gaze": "camera"
   },
   {
    "id": "10",
@@ -370,7 +398,10 @@
     139.79615
    ],
    "basemap": "south",
-   "alt_time": "12:00"
+   "alt_time": "12:00",
+   "role": "context",
+   "pose": "walk",
+   "gaze": "away"
   },
   {
    "id": "11",
@@ -403,7 +434,10 @@
    "basemap": "south",
    "alt_time": "12:00",
    "map_window_m": 110,
-   "topview_note": "8 层露台（有顶）：俯瞰方向朝北北东；金色箭头为放晴时太阳方位"
+   "topview_note": "8 层露台（有顶）：俯瞰方向朝北北东；金色箭头为放晴时太阳方位",
+   "role": "closing",
+   "pose": "lean",
+   "gaze": "back"
   },
   {
    "id": "12",
@@ -434,7 +468,11 @@
     139.79745
    ],
    "basemap": "north",
-   "alt_time": "11:30"
+   "alt_time": "11:30",
+   "role": "detail",
+   "pose": "sit",
+   "gaze": "away",
+   "optional": true
   }
  ]
 }

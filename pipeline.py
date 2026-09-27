@@ -8,6 +8,7 @@ pipeline.py　外拍规划流水线的统一入口。每个阶段一个子命令
   python pipeline.py basemap <plan> [--name main] [--meters 130] [--center lat,lon] [--extra x.json]
                                                                           → basemaps/<name>_geometry.json / _osm.png / _meta.json
   python pipeline.py stylize <plan> [--name main]                         → basemaps/<name>_styled.png（需本机 codex-imagegen）
+  python pipeline.py lint    <plan>                                       → 按 docs/SHOT_DESIGN.md 检查 shotlist.json（景别配比、叙事角色、节奏、姿态视线）
   python pipeline.py jobs    <plan>                                       → inbox/<plan>.jsonl（从 prompts.md 与 shotlist.json）
   python pipeline.py shots   <plan>                                       → out/<plan>/<id>.png + log.jsonl（run_shots.py）
   python pipeline.py cards   <plan> [--images out/<plan>]                 → cards/card_<id>.png + <日期>_<地点>_拍摄小抄.pdf
@@ -145,6 +146,8 @@ def cmd_stylize(a):
 
 
 def cmd_jobs(a):
+    if cmd_lint(a) != 0 and not getattr(a, "force", False):
+        raise SystemExit("分镜未通过基本法硬性检查；修正后再生成任务，或加 --force 跳过")
     d = PLANS / a.plan
     shots = {s["id"]: s for s in json.loads((d / "shotlist.json").read_text(encoding="utf-8"))["shots"]}
     md = (d / "prompts.md").read_text(encoding="utf-8")
@@ -196,6 +199,99 @@ def cmd_cards(a):
     return rc
 
 
+# ---------- lint：分镜基本法（docs/SHOT_DESIGN.md） ----------
+
+KIND_ORDER = ["远景", "全身", "七分", "半身", "近景", "特写"]
+
+
+def kind_of(shot: dict) -> str:
+    k = shot.get("kind", "")
+    if "远景" in k or "环境" in k and "全身" not in k:
+        return "远景"
+    for key, name in (("特写", "特写"), ("近景", "近景"), ("半身", "半身"), ("七分", "七分"), ("中景", "七分"), ("全身", "全身")):
+        if key in k:
+            return name
+    return "其它"
+
+
+def focal_band(shot: dict) -> str:
+    m = re.search(r"(\d{2,3})\s*(?:[–-]\s*(\d{2,3}))?\s*mm", shot.get("lens", ""))
+    if not m:
+        return "?"
+    f = int(m.group(1))
+    return "广" if f <= 35 else ("标" if f < 70 else "中长")
+
+
+def cmd_lint(a):
+    d = PLANS / a.plan
+    plan = json.loads((d / "shotlist.json").read_text(encoding="utf-8"))
+    shots = plan["shots"]
+    main = [s for s in shots if not s.get("optional")]      # 备选/机动分镜不参与首尾与相邻检查
+    hard, soft = [], []
+    n = len(shots)
+    if n < 9:
+        hard.append(f"张数 {n} < 9")
+    roles = [s.get("role", "") for s in main]
+    if not roles or roles[0] != "opening":
+        hard.append("第一张的 role 应为 opening（开场：交代环境）")
+    if not roles or roles[-1] != "closing":
+        hard.append("最后一张的 role 应为 closing（收尾：背影/远眺/离开）")
+    heroes = [s["id"] for s in shots if s.get("hero") or s.get("role") == "hero"]
+    if not heroes:
+        hard.append("没有主图：至少一张 hero: true")
+    if roles.count("interaction") < 2:
+        hard.append(f"interaction（互动/动作）只有 {roles.count('interaction')} 张，至少 2")
+    if roles.count("detail") < 1:
+        hard.append("没有 detail（细节/特写）")
+    kinds = [kind_of(s) for s in shots]
+    cover = {k for k in kinds if k in KIND_ORDER}
+    if len(cover) < 4:
+        hard.append(f"景别只覆盖 {sorted(cover)}，至少 4 类")
+    for k in KIND_ORDER:
+        c = kinds.count(k)
+        if c > 0.4 * n:
+            hard.append(f"景别「{k}」占 {c}/{n}，超过 40%")
+    mins = {"远景": 1, "全身": 2, "半身": 2, "近景": 1, "特写": 1}
+    for k, m in mins.items():
+        if kinds.count(k) < m:
+            soft.append(f"景别「{k}」{kinds.count(k)} 张，建议至少 {m}")
+    if kinds.count("七分") < 1:
+        soft.append("没有七分/中景，建议至少 1 张")
+    bands = {focal_band(s) for s in shots} - {"?"}
+    if len(bands) < 3:
+        hard.append(f"焦段只有 {sorted(bands)}，需要 广(≤35)/标(50)/中长(70–105) 三档")
+    poses = {s.get("pose", "") for s in shots} - {""}
+    if len(poses) < 3:
+        hard.append(f"姿态只有 {sorted(poses)}，至少三种（stand/walk/sit/lean/back/crouch）")
+    gazes = [s.get("gaze", "") for s in shots]
+    if "camera" not in gazes or not any(g in ("away", "down", "closed", "back") for g in gazes):
+        hard.append("视线要同时有看镜头（camera）和不看镜头（away/down/closed/back）")
+    elif gazes.count("camera") > 0.6 * n:
+        soft.append(f"看镜头 {gazes.count('camera')}/{n}，超过 60%")
+    mk = [kind_of(s) for s in main]
+    for i in range(1, len(main)):
+        if mk[i] == mk[i - 1] and mk[i] != "其它":
+            soft.append(f"{main[i-1]['id']}→{main[i]['id']} 相邻景别相同（{mk[i]}），寄り/引き 交替")
+        if focal_band(main[i]) == focal_band(main[i - 1]) and abs(main[i].get("cam_bearing", 0) - main[i - 1].get("cam_bearing", 0)) < 30:
+            soft.append(f"{main[i-1]['id']}→{main[i]['id']} 相邻焦段档与机位方向都相同")
+    if not any(("俯" in s.get("camera", "") or "仰" in s.get("camera", "")) for s in shots):
+        soft.append("没有俯拍或仰拍机位，至少一张非眼平")
+    if sum(1 for s in shots if s.get("fg_bg") and "前景" in s["fg_bg"] and "前景空" not in s["fg_bg"]) < 2:
+        soft.append("有前景层次的分镜少于 2 张")
+    if not any(("逆光" in s.get("light", "")) for s in shots):
+        soft.append("没有逆光/侧逆光（晴天版也算），建议至少 1 张")
+    print(f"分镜 lint：{a.plan}，{n} 张（主线 {len(main)}，备选 {n - len(main)}）")
+    print("  景别：" + "，".join(f"{k} {kinds.count(k)}" for k in KIND_ORDER if kinds.count(k)) + (f"，其它 {kinds.count('其它')}" if kinds.count("其它") else ""))
+    print("  焦段档：" + "，".join(sorted(bands)) + "　姿态：" + "，".join(sorted(poses)) + "　主图：" + ",".join(heroes))
+    for h in hard:
+        print("  [硬] " + h)
+    for w in soft:
+        print("  [提示] " + w)
+    if not hard and not soft:
+        print("  通过，无提示")
+    return 1 if hard else 0
+
+
 def cmd_status(a):
     d = PLANS / a.plan
     items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("sun.md", "sun"),
@@ -234,9 +330,10 @@ def main():
     s = sub.add_parser("basemap"); s.add_argument("plan"); s.add_argument("--name", default="main"); s.add_argument("--meters", type=float, default=200)
     s.add_argument("--size", type=int, default=1024); s.add_argument("--center"); s.add_argument("--extra"); s.add_argument("--fixture"); s.set_defaults(fn=cmd_basemap)
     s = sub.add_parser("stylize"); s.add_argument("plan"); s.add_argument("--name", default="main"); s.add_argument("--prompt-extra", default=""); s.set_defaults(fn=cmd_stylize)
-    s = sub.add_parser("jobs"); s.add_argument("plan"); s.set_defaults(fn=cmd_jobs)
+    s = sub.add_parser("jobs"); s.add_argument("plan"); s.add_argument("--force", action="store_true"); s.set_defaults(fn=cmd_jobs)
     s = sub.add_parser("shots"); s.add_argument("plan"); s.add_argument("--dry-run", action="store_true"); s.set_defaults(fn=cmd_shots)
     s = sub.add_parser("cards"); s.add_argument("plan"); s.add_argument("--images"); s.set_defaults(fn=cmd_cards)
+    s = sub.add_parser("lint"); s.add_argument("plan"); s.set_defaults(fn=cmd_lint)
     s = sub.add_parser("status"); s.add_argument("plan"); s.set_defaults(fn=cmd_status)
 
     a = ap.parse_args()

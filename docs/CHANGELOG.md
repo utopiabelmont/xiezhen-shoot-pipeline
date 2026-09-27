@@ -1,5 +1,11 @@
 # 变更记录
 
+## 1.1.0 — 2026-09-27
+
+- 新增 `docs/SHOT_DESIGN.md` 分镜基本法（叙事角色、景别配比、寄り/引き 节奏、姿态与视线、裁切、光线、一致性）与 `pipeline.py lint`；`jobs` 阶段先 lint，硬性项不过不生成任务。
+- `shotlist.json` 新增 `role` / `hero` / `pose` / `gaze` / `optional` 字段；两个示例已补字段（示例分镜早于本规则，lint 仍有若干提示项，作为改版参考保留）。
+- SNS 调研补充各平台的可行路径（小红书在首页搜索框输入、抖音搜索 URL、TikTok 报错点「もう一度」、Instagram 关键词页）。
+
 ## 1.0.2 — 2026-09-27
 
 - 小抄 PDF 改为 `<出行日期>_<地点>_拍摄小抄[_vN].pdf`（按 `meta.date` / `meta.place` / `meta.version` 自动命名），`cards` 阶段会清掉旧命名的副本；示例与文档同步。

@@ -38,6 +38,14 @@
 - 备选：晴天时同一站位改成人物朝西南 30°做后侧光，玻璃出高光点；雨天改到回廊内侧屋檐下，机位不变
 - 注意事项：只在步道取景，不靠近装置；阴天 16:30 后光量下降快
 
+## 分镜基本法（docs/SHOT_DESIGN.md，`pipeline.py lint` 检查）
+
+- 叙事角色 `role`：第一张 opening，最后一张 closing，interaction ≥ 2，detail ≥ 1，主图 `hero: true` ≥ 1；备选分镜标 `optional: true`。
+- 景别配比（9–13 张）：远景 ≥1、全身 ≥2、七分/中景 ≥1、半身 ≥2、近景 ≥1、特写 ≥1，单一景别 ≤ 40%。
+- 节奏：相邻两张景别不同，相邻两张焦段档或机位方向不同；焦段覆盖 广(≤35)/标(50)/中长(70–105) 三档；至少一张俯或仰。
+- 姿态 `pose` 至少三种（stand/walk/sit/lean/back/crouch）；视线 `gaze` 看镜头（camera）不超过 60%，其余 away/down/closed/back。
+- 裁切不在关节处；至少两张有前景层次；晴天版至少一张逆光/侧逆光。
+
 ## shotlist.json 字段（完整定义见 shotlist_schema.json，示例见 shotlist_example.json）
 
 - `subject_latlon`: [纬度, 经度]，有此字段时俯视图用风格化底图裁切并按坐标叠加站位；没有时画通用示意图
@@ -49,3 +57,4 @@
 - `topview_note`: 覆盖俯视图底部的天气说明（园外备选点、室内点用）
 - `look` / `flash`: 创意外观与闪光灯建议，直接显示在相机设置栏
 - `meta.sun`: {"HH:MM": [方位, 高度]}，建议从 sun.json 的 rows 取整点与半点
+- `role` / `hero` / `pose` / `gaze` / `optional`：叙事角色、主图、姿态、视线、备选（见上「分镜基本法」）

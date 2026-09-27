@@ -58,7 +58,7 @@ flowchart LR
   G --> L[11 时间线 / 模特页 / 到场清单]
 ```
 
-阶段 0、1、3、4、5、8、10 是脚本（`pipeline.py` 子命令）；2、6、7、9、11 由 Claude（或人）按 `templates/` 里的模板完成。每个阶段的输入、输出、验收标准写在 [`docs/WORKFLOW.md`](docs/WORKFLOW.md)。
+阶段 0、1、3、4、5、8、10 是脚本（`pipeline.py` 子命令）；2、6、7、9、11 由 Claude（或人）按 `templates/` 里的模板完成。每个阶段的输入、输出、验收标准写在 [`docs/WORKFLOW.md`](docs/WORKFLOW.md)；分镜怎么分景别、排节奏、定角色，写在 [`docs/SHOT_DESIGN.md`](docs/SHOT_DESIGN.md)，`pipeline.py lint` 按它检查，不过硬性项就不生成出图任务。
 
 ## 快速开始
 
@@ -77,7 +77,8 @@ python pipeline.py stylize hakone-0928           # 需要本机 codex-imagegen�
 
 # 人工阶段：填 plans/hakone-0928/spots_social.md，写 shotlist.json，用 nuyoah-xiezhen-prompt 写 prompts.md
 
-python pipeline.py jobs    hakone-0928           # prompts.md → inbox/hakone-0928.jsonl
+python pipeline.py lint    hakone-0928           # 分镜基本法检查（景别配比、叙事角色、节奏、姿态视线）
+python pipeline.py jobs    hakone-0928           # prompts.md → inbox/hakone-0928.jsonl（先自动 lint）
 python pipeline.py shots   hakone-0928           # → out/hakone-0928/*.png + log.jsonl
 python pipeline.py cards   hakone-0928           # → cards/ + 2026-09-28_箱根ガラスの森美術館_拍摄小抄.pdf
 python pipeline.py status  hakone-0928
@@ -96,7 +97,7 @@ python pipeline.py status  hakone-0928
 ## 目录
 
 ```
-pipeline.py            统一入口：init / spots / sun / basemap / stylize / jobs / shots / cards / status
+pipeline.py            统一入口：init / spots / sun / basemap / stylize / lint / jobs / shots / cards / status
 run_shots.py           inbox/*.jsonl → codex-imagegen 逐条出图 → out/<批次>/ + log.jsonl（每条只提交一次，失败只记录）
 check_env.py           依赖与工具自检
 tools/
@@ -111,7 +112,7 @@ templates/             分镜模板与 JSON Schema、prompt 词链、SNS 调研�
 scripts/               Windows：setup.ps1（uv + venv）、job.example.ps1（一次性任务模板，UTF-8 BOM）
 setup.cmd run_job.cmd run_shots.cmd   Windows 双击入口
 skill/xiezhen-shoot-planner/          Claude 用的流程 skill
-docs/                  WORKFLOW（SOP）、WINDOWS_SETUP（部署与已知坑）、CARD_SPEC（小抄版式）、CAMERA_NOTES（α7 V 外观与闪光灯策略）、CHANGELOG
+docs/                  WORKFLOW（SOP）、SHOT_DESIGN（分镜基本法）、WINDOWS_SETUP（部署与已知坑）、CARD_SPEC（小抄版式）、CAMERA_NOTES（α7 V 外观与闪光灯策略）、CHANGELOG
 examples/hakone-0928-v2/   完整示例企划
 plans/ inbox/ out/ refs/   运行时目录（out/ 与 plans/ 不入库；要保留的企划复制到 examples/）
 ```
