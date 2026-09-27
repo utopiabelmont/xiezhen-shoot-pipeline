@@ -15,11 +15,11 @@ description: 真实景点 + 真实日期的人像外拍规划：查出片点与�
 
 0. **立项**　`pipeline.py init <plan> --place ... --date ... --arrive ... --hours ... [--elev-m] [--gear] [--body] [--flash]`。
 1. **出片点**　`pipeline.py spots <plan>`，读 `spots.md`，按末尾关键词做网页调研（官方见どころ页、日文/中文攻略、拍摄规则、票价、开放时间）。
-2. **SNS 调研**　用户已在 Chrome 登录小红书 / Instagram / 抖音 / TikTok 时，人工级浏览并填 `spots_social.md`（模板 `templates/sns_research.md`）；不批量抓取、不保存图片。末尾必须写「对分镜的影响」。
+2. **SNS 调研**　用户已在 Chrome 登录小红书 / Instagram / 抖音 / TikTok 时，人工级浏览并填 `spots_social.md`（模板 `templates/sns_research.md`）；不批量抓取、不保存图片。路径：小红书在 `/explore` 搜索框输入回车，先读右侧「点点」AI 汇总，再点 1–3 篇高赞帖；抖音用 `douyin.com/search/<词>` 多等几秒；TikTok 首次报错点「もう一度お試しください」；Instagram 用 `explore/search/keyword/?q=%23<标签>` 读图片 alt。被风控拦一次就停。末尾必须写「对分镜的影响」。
 3. **光线**　`pipeline.py sun <plan>`，读 `sun.md`：逐时方位/高度/影长、地形遮挡后的实际直射截止、天气光质、人物朝向与光型表。日期超出 16 天只用天文数据，临近再跑。
 4. **底图**　`pipeline.py basemap <plan> --meters <园区最长边×1.2>`；园外备选点另做 `--name <x> --center lat,lon`；OSM 缺失的步道用 `--extra`。
 5. **风格化**　`pipeline.py stylize <plan> [--name]`（本机 codex-imagegen）。并排核对几何未漂移。
-6. **分镜**　按 `templates/shotlist_template.md` 与 `shotlist_schema.json` 写 `shotlist.json`，导出 `shotlist.md`。硬性要求：≥ 9 条；景别至少 4 种；焦段只从器材里选；每条写太阳方位、光型、人物朝向、机位距离、晴天/阴天/雨天备选；同组内动作、视线、机位不重复；每条有 `subject_latlon` 与方位字段；室内 `indoor: true`；园外 `basemap`；`meta.sun` 从 `sun.json` 取整点与半点。SNS 结论要体现在分镜上并写进 `meta.sns`。
+6. **分镜**　先读 `docs/SHOT_DESIGN.md`（分镜基本法：叙事角色 opening/context/interaction/portrait/detail/closing、景别配比、寄り/引き 节奏、姿态与视线、裁切、光线、一致性），按 `templates/shotlist_template.md` 与 `shotlist_schema.json` 写 `shotlist.json`，导出 `shotlist.md`；每条写 `role`、`pose`、`gaze`，主图 `hero: true`，备选 `optional: true`。写完跑 `pipeline.py lint <plan>`，硬性项不过就改分镜，提示项能改则改。硬性要求：≥ 9 条；景别至少 4 种；焦段只从器材里选；每条写太阳方位、光型、人物朝向、机位距离、晴天/阴天/雨天备选；同组内动作、视线、机位不重复；每条有 `subject_latlon` 与方位字段；室内 `indoor: true`；园外 `basemap`；`meta.sun` 从 `sun.json` 取整点与半点。SNS 结论要体现在分镜上并写进 `meta.sns`。
 7. **prompt**　`nuyoah-xiezhen-prompt` 系列母版 + 同系列变体：固定风格词链、成像词链、人物与服装（`templates/prompt_chains.md`），每张只改取景与机位、动作与视线、环境与光线；光线引用 `sun.md`，写「来源—落点—结果」；无参考图时写「本张重新生成一位「…」类型的成年原创女性」。输出 `prompts.md`（`## <id>-<标题>` + ```text 块）。
 8. **出图**　`pipeline.py jobs <plan>` → `pipeline.py shots <plan>`。每条只提交一次，失败只记录。
 9. **检查**　逐张按 nuyoah-xiezhen-prompt 第六步检查，另核对光向与 `sun.md`、背景方位与底图一致。状态只写 test / failed，用户确认后才 final；重做回到原始分镜重新编译，不用上一轮生成图做输入。把 `out/<plan>/log.jsonl` 复制为 `plans/<plan>/generation_log.jsonl`。
