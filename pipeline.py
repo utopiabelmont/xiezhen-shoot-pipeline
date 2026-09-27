@@ -5,11 +5,13 @@ pipeline.py　外拍规划流水线的统一入口。每个阶段一个子命令
   python pipeline.py init    <plan> --place "箱根ガラスの森美術館" --date 2026-09-28 --arrive 13:00 --hours 12-18 [--lat --lon] [--elev-m 657] [--gear "..."]
   python pipeline.py spots   <plan> [--radius 1500]                       → spots.md / spots.json
   python pipeline.py sun     <plan> [--step 30]                           → sun.md / sun.json / sun_path.png
+  python pipeline.py palette <plan> [--images dir] [--n 12]               → palette.json / palette.png（场地主色，阶段 2b 穿搭依据）
+  python pipeline.py outfit  <plan>                                       → 按 outfit.json 渲染 cards/outfit_01.png（cards 阶段也会自动做）
   python pipeline.py basemap <plan> [--name main] [--meters 130] [--center lat,lon] [--extra x.json]
                                                                           → basemaps/<name>_geometry.json / _osm.png / _meta.json
   python pipeline.py stylize <plan> [--name main]                         → basemaps/<name>_styled.png（需本机 codex-imagegen）
   python pipeline.py lint    <plan>                                       → 按 docs/SHOT_DESIGN.md 检查 shotlist.json（景别配比、叙事角色、节奏、姿态视线）
-  python pipeline.py jobs    <plan>                                       → inbox/<plan>.jsonl（从 prompts.md 与 shotlist.json）
+  python pipeline.py jobs    <plan> [--missing]                           → inbox/<plan>.jsonl（从 prompts.md 与 shotlist.json；--missing 只排还没出图的）
   python pipeline.py shots   <plan>                                       → out/<plan>/<id>.png + log.jsonl（run_shots.py）
   python pipeline.py cards   <plan> [--images out/<plan>]                 → cards/card_<id>.png + <日期>_<地点>_拍摄小抄.pdf
   python pipeline.py status  <plan>                                       → 各阶段产物清单
@@ -158,10 +160,13 @@ def cmd_jobs(a):
         raise SystemExit("prompts.md 里没有找到 `## <id>-<title>` + ```text 块")
     (ROOT / "inbox").mkdir(exist_ok=True)
     out = ROOT / "inbox" / f"{a.plan}.jsonl"
+    done = {p.name[:2] for p in (ROOT / "out" / a.plan).glob("*.png")} if getattr(a, "missing", False) else set()
     n = 0
     with open(out, "w", encoding="utf-8") as f:
         for head, prompt in blocks:
             sid = head.split("-")[0]
+            if sid in done:
+                continue
             shot = shots.get(sid, {})
             job = {"id": head, "prompt": " ".join(prompt.split()), "size": shot.get("size", "1152x1536"), "quality": "high"}
             if shot.get("images"):
@@ -181,13 +186,20 @@ def cmd_cards(a):
     d = PLANS / a.plan
     images = Path(a.images) if a.images else ROOT / "out" / a.plan
     rc = run([PY, TOOLS / "make_cards.py", "--plan", d, "--images", images, "--out", d / "cards"])
+    if rc == 0 and (d / "outfit.json").exists():
+        run([PY, TOOLS / "make_outfit_page.py", "--plan", d, "--out", d / "cards"])
     if rc == 0:
         try:
             from PIL import Image
             import PIL.JpegImagePlugin  # noqa: F401  注册 JPEG 保存器
-            pngs = sorted((d / "cards").glob("card_*.png"))
+            plan = json.loads((d / "shotlist.json").read_text(encoding="utf-8"))
+            medium = {s["id"]: s.get("medium", "still") for s in plan["shots"]}
+            cards = sorted((d / "cards").glob("card_*.png"))
+            stills = [p for p in cards if medium.get(p.stem[5:], "still") == "still"]
+            dyn = [p for p in cards if medium.get(p.stem[5:], "still") != "still"]
+            pngs = sorted((d / "cards").glob("outfit_*.png")) + stills + dyn   # 穿搭页 → 静态分镜 → 连拍/短片/实况
             if pngs:
-                meta = json.loads((d / "shotlist.json").read_text(encoding="utf-8")).get("meta", {})
+                meta = plan.get("meta", {})
                 name = pdf_name(meta)
                 ims = [Image.open(p).convert("RGB") for p in pngs]
                 ims[0].save(d / name, save_all=True, append_images=ims[1:], resolution=150)
@@ -198,6 +210,23 @@ def cmd_cards(a):
         except Exception as e:  # PDF 只是附带产物
             print("PDF 未生成：", e)
     return rc
+
+
+def cmd_palette(a):
+    d = PLANS / a.plan
+    cmd = [PY, TOOLS / "palette.py", "--plan", d, "--n", str(a.n)]
+    if a.images:
+        cmd += ["--images", a.images]
+    if a.offline:
+        cmd.append("--offline")
+    return run(cmd)
+
+
+def cmd_outfit(a):
+    d = PLANS / a.plan
+    if not (d / "outfit.json").exists():
+        raise SystemExit(f"缺少 {d / 'outfit.json'}（模板：templates/outfit_template.md）")
+    return run([PY, TOOLS / "make_outfit_page.py", "--plan", d, "--out", d / "cards"])
 
 
 # ---------- lint：分镜基本法（docs/SHOT_DESIGN.md） ----------
@@ -223,13 +252,55 @@ def focal_band(shot: dict) -> str:
     return "广" if f <= 35 else ("标" if f < 70 else "中长")
 
 
+def outfit_checks(d: Path):
+    """docs/OUTFIT_GUIDE.md 的两条可算规则：服装色 ≤ 3 色；主色与场地主色的 ΔE 不能太近。"""
+    sys.path.insert(0, str(TOOLS))
+    from palette import rgb_to_lab, delta_e  # type: ignore
+    o = json.loads((d / "outfit.json").read_text(encoding="utf-8"))
+    out = []
+    cols = o.get("colors", [])
+    if len([c for c in cols if not c.get("accent")]) > 3:
+        out.append(f"穿搭主色 {len(cols)} 个，全身不超过 3 色（点缀色标 accent: true 不计）")
+    if (d / "palette.json").exists():
+        pal = json.loads((d / "palette.json").read_text(encoding="utf-8")).get("colors", [])[:4]
+        for c in cols:
+            h = c["hex"].lstrip("#"); lab = rgb_to_lab(tuple(int(h[i:i + 2], 16) for i in (0, 2, 4)))
+            de, sc = min(((delta_e(lab, p["lab"]), p) for p in pal), key=lambda t: t[0])
+            if de < 12 and not c.get("blend_ok"):
+                out.append(f"穿搭「{c.get('name', c['hex'])}」与场地主色 {sc['name']} ΔE {de:.0f}，会融进背景（有意为之就标 blend_ok: true）")
+    return out
+
+
 def cmd_lint(a):
     d = PLANS / a.plan
     plan = json.loads((d / "shotlist.json").read_text(encoding="utf-8"))
-    shots = plan["shots"]
-    main = [s for s in shots if not s.get("optional")]      # 备选/机动分镜不参与首尾与相邻检查
+    all_shots = plan["shots"]
     hard, soft = [], []
+    MEDIA = ("still", "burst", "video", "live")
+    for s in all_shots:
+        m = s.get("medium", "still")
+        if m not in MEDIA:
+            hard.append(f"{s['id']} medium「{m}」不在 {MEDIA}")
+        if m == "video":
+            c = s.get("clip", {})
+            for k in ("mode", "move", "start", "end"):
+                if not c.get(k):
+                    hard.append(f"{s['id']} 短片缺 clip.{k}")
+            if c.get("mode") and c["mode"] not in ("24p", "sq60", "sq120"):
+                hard.append(f"{s['id']} clip.mode 只能是 24p / sq60 / sq120")
+    # 短片与手机实况是补充素材，不计入张数、景别配比与顺序；连拍出的是照片，计入
+    shots = [s for s in all_shots if s.get("medium", "still") in ("still", "burst")]
+    extras = [s for s in all_shots if s.get("medium", "still") in ("video", "live")]
+    main = [s for s in shots if not s.get("optional") and not s.get("supplement")]   # 备选与补充分镜不参与首尾与相邻检查
     n = len(shots)
+    bursts = [s["id"] for s in shots if s.get("medium") == "burst"]
+    if len(bursts) < 2:
+        soft.append(f"连拍抓动态（medium: burst）只有 {len(bursts)} 张，建议至少 2 张给组图加动感")
+    if (d / "outfit.json").exists():
+        try:
+            soft += outfit_checks(d)
+        except Exception as e:  # noqa: BLE001
+            soft.append(f"outfit.json 检查失败：{e}")
     if n < 9:
         hard.append(f"张数 {n} < 9")
     roles = [s.get("role", "") for s in main]
@@ -281,7 +352,8 @@ def cmd_lint(a):
         soft.append("有前景层次的分镜少于 2 张")
     if not any(("逆光" in s.get("light", "")) for s in shots):
         soft.append("没有逆光/侧逆光（晴天版也算），建议至少 1 张")
-    print(f"分镜 lint：{a.plan}，{n} 张（主线 {len(main)}，备选 {n - len(main)}）")
+    print(f"分镜 lint：{a.plan}，{n} 张照片（主线 {len(main)}，备选 {n - len(main)}，连拍 {len(bursts)}）"
+          + (f"，另有 短片 {sum(1 for s in extras if s.get('medium') == 'video')} 条 / 实况 {sum(1 for s in extras if s.get('medium') == 'live')} 条" if extras else ""))
     print("  景别：" + "，".join(f"{k} {kinds.count(k)}" for k in KIND_ORDER if kinds.count(k)) + (f"，其它 {kinds.count('其它')}" if kinds.count("其它") else ""))
     print("  焦段档：" + "，".join(sorted(bands)) + "　姿态：" + "，".join(sorted(poses)) + "　主图：" + ",".join(heroes))
     for h in hard:
@@ -295,7 +367,7 @@ def cmd_lint(a):
 
 def cmd_status(a):
     d = PLANS / a.plan
-    items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("sun.md", "sun"),
+    items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("palette.json", "palette（场地色）"), ("outfit.json", "穿搭（Claude）"), ("sun.md", "sun"),
              ("basemaps/main_osm.png", "basemap"), ("basemaps/main_styled.png", "stylize"), ("shotlist.json", "分镜（人工/Claude）"),
              ("prompts.md", "prompt（nuyoah-xiezhen-prompt）"), ("timeline.md", "时间线"), ("model_sheet.md", "模特一页纸"),
              ("arrival_checklist.md", "到场清单"), ("cards", "cards")]
@@ -356,10 +428,12 @@ def main():
     s = sub.add_parser("basemap"); s.add_argument("plan"); s.add_argument("--name", default="main"); s.add_argument("--meters", type=float, default=200)
     s.add_argument("--size", type=int, default=1024); s.add_argument("--center"); s.add_argument("--extra"); s.add_argument("--fixture"); s.set_defaults(fn=cmd_basemap)
     s = sub.add_parser("stylize"); s.add_argument("plan"); s.add_argument("--name", default="main"); s.add_argument("--prompt-extra", default=""); s.set_defaults(fn=cmd_stylize)
-    s = sub.add_parser("jobs"); s.add_argument("plan"); s.add_argument("--force", action="store_true"); s.set_defaults(fn=cmd_jobs)
+    s = sub.add_parser("jobs"); s.add_argument("plan"); s.add_argument("--force", action="store_true"); s.add_argument("--missing", action="store_true"); s.set_defaults(fn=cmd_jobs)
     s = sub.add_parser("shots"); s.add_argument("plan"); s.add_argument("--dry-run", action="store_true"); s.set_defaults(fn=cmd_shots)
     s = sub.add_parser("cards"); s.add_argument("plan"); s.add_argument("--images"); s.set_defaults(fn=cmd_cards)
     s = sub.add_parser("lint"); s.add_argument("plan"); s.set_defaults(fn=cmd_lint)
+    s = sub.add_parser("palette"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--n", type=int, default=12); s.add_argument("--offline", action="store_true"); s.set_defaults(fn=cmd_palette)
+    s = sub.add_parser("outfit"); s.add_argument("plan"); s.set_defaults(fn=cmd_outfit)
     s = sub.add_parser("status"); s.add_argument("plan"); s.set_defaults(fn=cmd_status)
     s = sub.add_parser("register"); s.add_argument("--root"); s.add_argument("--show", action="store_true"); s.set_defaults(fn=cmd_register)
 

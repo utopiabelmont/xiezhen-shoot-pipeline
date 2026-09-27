@@ -26,9 +26,15 @@
 
 ![浅草寺四张小抄](docs/img/cards_gallery_asakusa.jpg)
 
-第三个示例 [`examples/hakone-0928-v3/`](examples/hakone-0928-v3/) 是 1.1.0 的分镜基本法（`docs/SHOT_DESIGN.md` + `pipeline.py lint`）落地后重跑的箱根：19 张主线 + 1 张 Pola 雨天备选，按开场 → 环境 → 互动 → 肖像 → 细节 → 收尾排叙事，景别 远景 2 / 全身 6 / 七分 2 / 半身 4 / 近景 3 / 特写 3，焦段 24–105 三档、姿态四种、看镜头 7/19，lint 硬性与提示项全部通过。20 张示意图一轮生成无失败（单张 28–151 秒）。
+第三个示例 [`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（1.2.0 起升到 v3.1：前面加 2 页穿搭方案，后面接 2 张连拍、3 条 S-Log3 短片、2 条 iPhone 实况的小抄）是 1.1.0 的分镜基本法（`docs/SHOT_DESIGN.md` + `pipeline.py lint`）落地后重跑的箱根：19 张主线 + 1 张 Pola 雨天备选，按开场 → 环境 → 互动 → 肖像 → 细节 → 收尾排叙事，景别 远景 2 / 全身 6 / 七分 2 / 半身 4 / 近景 3 / 特写 3，焦段 24–105 三档、姿态四种、看镜头 7/19，lint 硬性与提示项全部通过。20 张示意图一轮生成无失败（单张 28–151 秒）。
 
 ![箱根 v3 示意图一览](docs/img/hakone_v3_contact.jpg)
+
+v3.1 在前面加了穿搭页（场地色卡、服装色分离度、主方案与替换方案、逐张提醒），后面接了 2 张连拍、3 条 S-Log3 短片、2 条 iPhone 实况的小抄，短片小抄的设置块换成模式 / 快门 / ND / 曝光基准 / 运镜 / 起止：
+
+![穿搭页](docs/img/outfit_page.jpg)
+
+![动态素材关键帧](docs/img/hakone_v31_dynamic.jpg)
 
 底图：左为 OSM 几何直接渲染，右为 Codex `edit` 模式按固定指令重绘的版本，形状位置不变，所以能在上面按经纬度精确叠加站位、相机与太阳方向。
 
@@ -62,7 +68,7 @@ flowchart LR
   G --> L[11 时间线 / 模特页 / 到场清单]
 ```
 
-阶段 0、1、3、4、5、8、10 是脚本（`pipeline.py` 子命令）；2、6、7、9、11 由 Claude（或人）按 `templates/` 里的模板完成。每个阶段的输入、输出、验收标准写在 [`docs/WORKFLOW.md`](docs/WORKFLOW.md)；分镜怎么分景别、排节奏、定角色，写在 [`docs/SHOT_DESIGN.md`](docs/SHOT_DESIGN.md)，`pipeline.py lint` 按它检查，不过硬性项就不生成出图任务。
+阶段 0、1、2b（抽色）、3、4、5、8、10 是脚本（`pipeline.py` 子命令）；2、2b（写穿搭）、6、7、9、11 由 Claude（或人）按 `templates/` 里的模板完成。穿搭怎么配色在 [`docs/OUTFIT_GUIDE.md`](docs/OUTFIT_GUIDE.md)，连拍 / 短片 / 手机实况怎么拍在 [`docs/VIDEO_NOTES.md`](docs/VIDEO_NOTES.md)。每个阶段的输入、输出、验收标准写在 [`docs/WORKFLOW.md`](docs/WORKFLOW.md)；分镜怎么分景别、排节奏、定角色，写在 [`docs/SHOT_DESIGN.md`](docs/SHOT_DESIGN.md)，`pipeline.py lint` 按它检查，不过硬性项就不生成出图任务。
 
 ## 快速开始
 
@@ -78,6 +84,7 @@ python check_env.py
 python pipeline.py init    hakone-0928 --place "箱根ガラスの森美術館" --date 2026-09-28 --arrive 13:00 --hours 12-18 --elev-m 657
 python pipeline.py spots   hakone-0928
 python pipeline.py sun     hakone-0928
+python pipeline.py palette hakone-0928           # 场地主色 → 写 outfit.json（穿搭）
 python pipeline.py basemap hakone-0928 --meters 130
 python pipeline.py stylize hakone-0928           # 需要本机 codex-imagegen（ChatGPT 登录）
 
@@ -103,7 +110,7 @@ python pipeline.py status  hakone-0928
 ## 目录
 
 ```
-pipeline.py            统一入口：init / spots / sun / basemap / stylize / lint / jobs / shots / cards / status / register
+pipeline.py            统一入口：init / spots / sun / palette / basemap / stylize / lint / jobs / shots / outfit / cards / status / register
 run_shots.py           inbox/*.jsonl → codex-imagegen 逐条出图 → out/<批次>/ + log.jsonl（每条只提交一次，失败只记录）
 check_env.py           依赖与工具自检
 tools/
@@ -112,14 +119,16 @@ tools/
   sun_light.py         太阳位置（astral，pvlib 交叉验证）、地形遮挡（DEM 环采样）、天气光质
   osm_geometry.py      Overpass out geom → 分层几何（林地/空地/草地/水面/建筑/道路/步道/POI）→ 底图
   basemap.py           几何渲染，v1 手工格式与 v2 分层格式都能读
-  make_cards.py        小抄页面合成：多底图、室内、园外窗口、半点太阳表、自动截断
+  make_cards.py        小抄页面合成：多底图、室内、园外窗口、半点太阳表、自动截断、按介质切换设置块
+  palette.py           场地照片抽主色（穿搭依据）
+  make_outfit_page.py  穿搭页（PDF 第一页）
   fixtures/            离线样本（Nominatim、Overpass、Commons、Open-Meteo、高程）
 templates/             分镜模板与 JSON Schema、prompt 词链、SNS 调研表、时间线 / 到场清单 / 模特页模板、底图风格指令、手工几何示例
 scripts/               Windows：setup.ps1（uv + venv）、job.example.ps1（一次性任务模板，UTF-8 BOM）
 setup.cmd run_job.cmd run_shots.cmd   Windows 双击入口
 skill/xiezhen-shoot-planner/          Claude 用的流程 skill
 INSTALL.md             新电脑安装说明
-docs/                  WORKFLOW（SOP）、SHOT_DESIGN（分镜基本法）、WINDOWS_SETUP（部署与已知坑）、CARD_SPEC（小抄版式）、CAMERA_NOTES（α7 V 外观与闪光灯策略）、CHANGELOG
+docs/                  WORKFLOW（SOP）、SHOT_DESIGN（分镜基本法）、OUTFIT_GUIDE（穿搭）、VIDEO_NOTES（连拍/短片/实况）、WINDOWS_SETUP（部署与已知坑）、CARD_SPEC（小抄版式）、CAMERA_NOTES（α7 V 外观与闪光灯策略）、CHANGELOG
 examples/                  三个完整示例企划：hakone-0928-v2（13 张）、asakusa-0928（12 张，双底图）、hakone-0928-v3（20 张，分镜基本法）
 plans/ inbox/ out/ refs/   运行时目录（out/ 与 plans/ 不入库；要保留的企划复制到 examples/）
 ```

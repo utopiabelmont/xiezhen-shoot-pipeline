@@ -58,3 +58,4 @@
 - `look` / `flash`: 创意外观与闪光灯建议，直接显示在相机设置栏
 - `meta.sun`: {"HH:MM": [方位, 高度]}，建议从 sun.json 的 rows 取整点与半点
 - `role` / `hero` / `pose` / `gaze` / `optional`：叙事角色、主图、姿态、视线、备选（见上「分镜基本法」）
+- `medium` / `burst` / `clip` / `live` / `supplement`：动态素材（连拍 / 短片 / 手机实况）与补充条目标记，字段与规则见 `docs/VIDEO_NOTES.md`；短片的 `clip.mode` 只能是 24p / sq60 / sq120

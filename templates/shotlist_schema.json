@@ -277,6 +277,37 @@
      "optional": {
       "type": "boolean",
       "description": "备选/机动分镜：不参与首尾与相邻节奏检查"
+     },
+     "supplement": {
+      "type": "boolean",
+      "description": "补充条目（连拍/短片/实况等加在静态分镜之后）：不参与首尾与相邻检查"
+     },
+     "medium": {
+      "type": "string",
+      "enum": ["still", "burst", "video", "live"],
+      "description": "介质：still 静态照片（缺省）、burst 连拍抓动态（出照片）、video 相机短片、live 手机实况；见 docs/VIDEO_NOTES.md"
+     },
+     "burst": {
+      "type": "object",
+      "properties": {"fps": {"type": "number"}, "precap_s": {"type": "number"}, "action": {"type": "string"}},
+      "description": "连拍：帧率、预拍秒数、动作与选片说明"
+     },
+     "clip": {
+      "type": "object",
+      "required": ["mode", "move", "start", "end"],
+      "properties": {
+       "mode": {"type": "string", "enum": ["24p", "sq60", "sq120"]},
+       "move": {"type": "string", "description": "运镜名（docs/VIDEO_NOTES.md 第 5 节）"},
+       "dur_s": {"type": "number", "description": "实录秒数，实时 ≤ 5"},
+       "start": {"type": "string"},
+       "end": {"type": "string"},
+       "nd": {"type": "string"},
+       "exposure": {"type": "string", "description": "本条曝光基准，例：脸放斑马 52%"}
+      }
+     },
+     "live": {
+      "type": "object",
+      "properties": {"device": {"type": "string"}, "lens": {"type": "string"}, "exposure": {"type": "string"}, "action": {"type": "string"}}
      }
     }
    }

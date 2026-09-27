@@ -27,8 +27,15 @@
   - TikTok：`https://www.tiktok.com/search?q=<关键词>` 首次常报「不明なエラー」，点「もう一度お試しください」即出结果；未登录也能看列表。
   - Instagram：`https://www.instagram.com/explore/search/keyword/?q=%23<标签>` 可用，读图片 alt 文本（含器材与参数的帖子最有用）。
 - 平台最新动态也要看：祭典、灯笼祭、投影活动、临时封闭（TikTok/抖音的近期帖最快）。
-- 记录：`spots_social.md`（模板 `templates/sns_research.md`）：机位、朝向、时段、人流、规则、票价、交通；每条附标题/作者/赞数便于回查。
+- 记录：`spots_social.md`（模板 `templates/sns_research.md`）：机位、朝向、时段、人流、规则、票价、交通；每条附标题/作者/赞数便于回查。另记「穿搭」栏：出片帖里主流穿什么颜色、场地着装限制、当季游客色彩倾向（给阶段 2b）。
 - 验收：末尾「对分镜的影响」写清：与主流机位重合的、本组差异化机位、新增备选（雨天/室内/园外）、需现场核实的。
+
+## 2b 穿搭
+
+- 执行：`python pipeline.py palette <plan> [--n 12]`（从阶段 1 的 Commons 照片抽 6 个场地主色 → `palette.json` / `palette.png`；也可 `--images <目录>` 用自己的现场照）。然后 Claude 按 `docs/OUTFIT_GUIDE.md` 与 `templates/outfit_template.md` 写 `outfit.json`（路线、色、主方案、替换方案、道具妆发、逐张提醒、SNS 观察），导出 `outfit.md`。
+- 输入：`palette.json`、`spots_social.md` 的穿搭栏、`sun.md` 的天气与季节、分镜动作需求（走/坐/蹲/背影/撑伞）、场地规则。
+- 输出：`outfit.json`、`outfit.md`；阶段 10 会把它渲染成 PDF 第一页；`meta.outfit`、prompt 的 OUTFIT 词链、`model_sheet.md` 都从它来。
+- 验收：`lint` 的两条：主色 ≤ 3（点缀 `accent: true` 不计）；主色与场地前四个主色 ΔE ≥ 12（有意融入标 `blend_ok: true`）。
 
 ## 3 光线
 
@@ -59,6 +66,7 @@
 - 俯视图字段：`subject_latlon`、`cam_bearing`、`cam_dist`、`face_bearing`、`bg_bearing`、`bg_label`；园外点加 `basemap`，室内点加 `indoor: true`；`alt_time` 指晴天版时刻；`meta.sun` 从 `sun.json` 取整点与半点。
 - SNS 影响：阶段 2 的结论要体现在分镜上（新增/替换机位、时段调整），并在 `meta.sns` 一句话记录。
 - 基本法：每条写 `role`（opening/context/interaction/portrait/detail/closing）、`pose`、`gaze`，主图 `hero: true`，备选 `optional: true`；景别配比、节奏、姿态视线规则见 `docs/SHOT_DESIGN.md`。
+- 动态素材：每条可写 `medium`（still / burst / video / live，缺省 still），规则与字段见 `docs/VIDEO_NOTES.md`。连拍出的照片计入组图；短片与实况不计入张数与景别配比。作为补充加在静态分镜之后的条目标 `supplement: true`（不参与首尾与相邻检查）。一组建议 ≥ 2 张 burst、3–6 条 video、2–4 条 live。
 - 验收：`python pipeline.py lint <plan>` 硬性项全部通过（`jobs` 阶段会先跑 lint，不过不生成任务）；提示项逐条看，能改就改。
 
 ## 7 prompt
@@ -70,7 +78,7 @@
 
 ## 8 出图
 
-- 执行：`python pipeline.py jobs <plan>` → `inbox/<plan>.jsonl`；`python pipeline.py shots <plan>`（`run_shots.py`：每条只提交一次，失败只记录，不改词不重试）
+- 执行：`python pipeline.py jobs <plan>`（追加分镜后用 `--missing` 只排还没出图的） → `inbox/<plan>.jsonl`；`python pipeline.py shots <plan>`（`run_shots.py`：每条只提交一次，失败只记录，不改词不重试）
 - 输出：`out/<plan>/<id>.png`、`<id>.txt`（本张完整 prompt）、`log.jsonl`
 - 尺寸：3:4 → 1152x1536；4:5 → 1216x1520；1:1 → 1024x1024；横幅 → 1536x1152。后端会改成 1086x1448 等，属正常。
 - 验收：`log.jsonl` 每条 status 为 test 或 failed，`generated_image_inputs: none`。
@@ -85,6 +93,7 @@
 
 - 执行：`python pipeline.py cards <plan> [--images out/<plan>]`（`make_cards.py`；图片按文件名前两位 = 分镜 id 匹配）
 - 输出：`cards/card_<id>.png`（1600×1067）、`<出行日期>_<地点>_拍摄小抄.pdf`（例：`2026-09-28_浅草寺_拍摄小抄.pdf`；改版加 `_v2`）
+- PDF 顺序：穿搭页（有 `outfit.json` 时，`cards/outfit_01.png`、`outfit_02.png`）→ 静态分镜（medium still）→ 连拍 / 短片 / 实况。短片与实况的示意图是关键帧，页脚会注明。
 - 页面规范见 `docs/CARD_SPEC.md`。俯视图里的太阳箭头必须与 `meta.sun` 该时刻一致；室内不画太阳；园外用各自底图。
 - 验收：逐页看：文字不溢出、俯视图标签不重叠、页脚「AI 拍摄示意，非现场实拍」在。
 
@@ -92,6 +101,7 @@
 
 - `timeline.md`：交通班次（NAVITIME 等，注明查询日期）、每张分镜的时段、分岔点、最后入馆、回程后续 3 班。
 - `model_sheet.md`（可再合成一张长图）：服装、道具、妆发、每张「对你说的一句话」。
+- `clips.md`（有短片时）：剪辑顺序、转场遮挡物（模板 `templates/clips_template.md`）；时间线里每条 video 加 1.5 分钟。
 - `arrival_checklist.md`：到场 10 分钟走一圈要核对的事项（装置在不在、站位能不能站、室内规则、天空状态、相机记忆位）。
 - 出发前一天：重跑 `sun`，预报变了就在 `shotlist.json` 的 `meta.forecast` 记录并决定用晴天版还是阴天版。
 

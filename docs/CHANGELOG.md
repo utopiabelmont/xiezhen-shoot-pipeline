@@ -1,5 +1,12 @@
 # 变更记录
 
+## 1.2.0 — 2026-09-27
+
+- 阶段 2b「穿搭」：`pipeline.py palette` 从 Commons 场地照抽 6 个主色（`tools/palette.py`）；`docs/OUTFIT_GUIDE.md` 穿搭基本法；`outfit.json` → `tools/make_outfit_page.py` 渲染成小抄 PDF 第一页；`lint` 检查主色 ≤ 3 与服装色/场地色 ΔE ≥ 12。
+- 动态素材：分镜 `medium`（still / burst / video / live）与 `burst` / `clip` / `live` 字段；`docs/VIDEO_NOTES.md`（α7 V 连拍与预拍、S-Log3 曝光基准与 ND、24p 实时 ≤ 5 s 与 S&Q 升格、运镜库、iPhone 实况）；小抄按介质换「相机设置」块与页脚徽章；PDF 顺序 穿搭页 → 静态 → 动态；`lint` 提示连拍 < 2；短片/实况不计入 9 张与景别配比；`supplement: true` 补充条目不参与顺序检查。
+- `jobs --missing` 只排还没出图的分镜；`templates/outfit_template.md`、`templates/clips_template.md`；SNS 调研模板加「穿搭观察」。
+- 示例 `examples/hakone-0928-v3` 升到 v3.1：穿搭页 2 张 + 原 20 张静态 + 2 连拍 / 3 短片 / 2 实况。
+
 ## 1.1.2 — 2026-09-27
 
 - `pipeline.py register [--root] [--show]`：把仓库路径登记到 `~/.xiezhen-pipeline/config.json`（可用 `XIEZHEN_CONFIG` 改位置）；`setup.cmd` 最后一步自动调用。

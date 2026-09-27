@@ -248,6 +248,13 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     d.text((40, 26), shot["id"], font=font(52, True), fill=GREEN)
     d.line([(118, 34), (118, 84)], fill=GREEN, width=3)
     d.text((136, 30), shot["title"], font=f_title, fill=GREEN)
+    medium = shot.get("medium", "still")
+    badge = MEDIUM_BADGE.get(medium)
+    if badge:
+        bx = 136 + d.textlength(shot["title"], font=f_title) + 18
+        bw = d.textlength(badge, font=f_h) + 24
+        d.rounded_rectangle((bx, 40, bx + bw, 76), radius=8, fill=MEDIUM_COLOR.get(medium, GOLD))
+        d.text((bx + 12, 45), badge, font=f_h, fill=(255, 255, 255))
     sub = f"{meta['place'].split('（')[0]}　{meta['date']}　{meta['gear'].split('+')[-1].strip().split('，')[0]}"
     d.text((W - 40 - d.textlength(sub, font=f_s), 52), sub, font=f_s, fill=MUTED)
     # 照片
@@ -263,9 +270,8 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
         d.text((px0 + 30, py0 + 30), "（示意图待生成）", font=f_b, fill=MUTED)
     # 右栏
     rx0, rx1 = 970, W - 40
-    y = panel(d, (rx0, 110, rx1, 318), "相机设置", f_h)
-    rows = [("焦段光圈", shot["lens"]), ("快门 ISO", shot["shutter"]), ("创意外观", shot.get("look", "")), ("闪光灯", shot.get("flash", "")),
-            ("景别", shot["kind"]), ("机位", shot["camera"])]
+    y = panel(d, (rx0, 110, rx1, 318), SETTINGS_TITLE.get(medium, "相机设置"), f_h)
+    rows = settings_rows(shot, medium)
     for k, v in rows:
         d.text((rx0 + 14, y), k, font=f_t, fill=GREEN)
         y = text_block(d, (rx0 + 100, y), v, f_t, rx1 - rx0 - 118, spacing=2)
@@ -280,9 +286,48 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     text_block(d, (split + 18, y), shot["light"] + "\n备选：" + shot["alt"], f_t, rx1 - split - 32, spacing=2)
     y = panel(d, (rx0, 924, rx1, H - 22), "时段 · 地点 · 注意", f_h)
     text_block(d, (rx0 + 14, y), f"{shot['time']}　{shot['spot']}　注意：{shot['note']}", f_t, rx1 - rx0 - 28, spacing=2)
-    foot = "AI 拍摄示意，非现场实拍；布局与站位以现场条件为准。光向按 sun.md 计算。"
+    foot = FOOT.get(medium, "AI 拍摄示意，非现场实拍；布局与站位以现场条件为准。光向按 sun.md 计算。")
     d.text((40, H - 42), foot, font=f_t, fill=MUTED)
     img.save(out_path, quality=92)
+
+
+MEDIUM_BADGE = {"burst": "连拍抓动态", "video": "短片", "live": "手机实况"}
+MEDIUM_COLOR = {"burst": (176, 98, 40), "video": (70, 96, 150), "live": (110, 110, 105)}
+SETTINGS_TITLE = {"burst": "相机设置（连拍）", "video": "相机设置（S-Log3 短片）", "live": "iPhone 设置（实况）"}
+FOOT = {"video": "关键帧 AI 示意，非现场实拍；运镜、时长与曝光基准见 docs/VIDEO_NOTES.md。",
+        "burst": "AI 示意为连拍中要选的那一帧；连拍与预拍设置见 docs/VIDEO_NOTES.md。",
+        "live": "AI 示意，非现场实拍；手机实况图用于过渡与小红书，不占相机时间。"}
+CLIP_MODE = {"24p": "動画位 4K 24p（实时，≤5 s）", "sq60": "S&Q 60→24p（2.5 倍慢）", "sq120": "S&Q 120→24p（5 倍慢，裁 1.52×）"}
+
+
+def settings_rows(shot, medium):
+    """右上「相机设置」块按 medium 换内容；每行 (标签, 文本)，面板高度只够 6 行，文本要短。"""
+    if medium == "video":
+        c = shot.get("clip", {})
+        return [("焦段光圈", shot["lens"]),
+                ("模式快门", f"{CLIP_MODE.get(c.get('mode', '24p'), c.get('mode', ''))}　{shot.get('shutter', '')}"),
+                ("曝光 ND", f"{c.get('exposure', '脸放斑马 52%')}　ND {c.get('nd', '按现场')}"),
+                ("运镜", f"{c.get('move', '')}　{c.get('dur_s', 5)} s"),
+                ("起 / 止", f"{c.get('start', '')} → {c.get('end', '')}"),
+                ("机位", shot["camera"])]
+    if medium == "burst":
+        b = shot.get("burst", {})
+        return [("焦段光圈", shot["lens"]),
+                ("连拍", f"{'电子 30' if b.get('fps', 30) >= 20 else '机械 10'} 张/秒 · 预拍 {b.get('precap_s', 0.5)} s · AF-C 人物"),
+                ("快门 ISO", shot["shutter"]),
+                ("创意外观", shot.get("look", "")),
+                ("动作", b.get("action", shot.get("action", ""))),
+                ("机位", shot["camera"])]
+    if medium == "live":
+        l = shot.get("live", {})
+        return [("设备", l.get("device", "iPhone 14 Pro 实况（3 s）")),
+                ("镜头", l.get("lens", "主摄 24mm")),
+                ("曝光", l.get("exposure", "长按锁 AE/AF，滑块按脸")),
+                ("动作", l.get("action", shot.get("action", ""))),
+                ("景别", shot["kind"]),
+                ("机位", shot["camera"])]
+    return [("焦段光圈", shot["lens"]), ("快门 ISO", shot["shutter"]), ("创意外观", shot.get("look", "")), ("闪光灯", shot.get("flash", "")),
+            ("景别", shot["kind"]), ("机位", shot["camera"])]
 
 
 def meta_weather_note(meta):
