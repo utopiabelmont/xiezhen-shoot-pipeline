@@ -78,6 +78,13 @@
     "sns": {
      "type": "string"
     },
+    "route_stops": {
+     "type": "array",
+     "items": {"type": "object", "required": ["name", "shots"], "properties": {"name": {"type": "string"}, "shots": {"type": "array", "items": {"type": "string"}}, "note": {"type": "string"}}},
+     "description": "园内游览顺序：每站列分镜 id（拍摄顺序）；tools/route.py 据此沿步道算路线（docs/ROUTE_NOTES.md）"
+    },
+    "route_source": {"type": "string", "description": "路线依据：官网順路 / 攻略 / 预报"},
+    "route_speed_mps": {"type": "number", "description": "步行速度 m/s，默认 1.0，雨天 0.85"},
     "transport": {
      "type": "string"
     }

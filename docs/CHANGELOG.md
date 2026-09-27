@@ -1,5 +1,11 @@
 # 变更记录
 
+## 1.3.0 — 2026-09-27
+
+- 路线：`tools/route.py`（`pipeline.py route`）按 `meta.route_stops` 沿底图步道算游览路线，输出 `route.json` / `route.md` / `cards/route_01.png`；PDF 分镜改为按路线顺序排。
+- 行程：`tools/trip.py`（`pipeline.py trip`）按 `trip.json` 画一日多景点行程页 `cards/trip_01.png`；PDF 顺序 行程 → 穿搭 → 路线 → 分镜。
+- `docs/ROUTE_NOTES.md`、`templates/trip_template.md`、schema 加 `route_stops` / `route_source` / `route_speed_mps`；箱根示例升到 v3.3（14 站路线页 + 行程页，37 页）。
+
 ## 1.2.1 — 2026-09-27
 
 - `skill/xiezhen-shoot-planner/SKILL.md` 与已保存的 skill 同步（描述加穿搭与动态素材，交付项加 lint 结果与剪辑单）；新增 `skill/README.md` 阶段总览。

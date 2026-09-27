@@ -14,6 +14,7 @@ skill 覆盖的流程（1.2.1）：
 | 2b 穿搭 | `pipeline.py palette` 抽场地色 → `outfit.json`（路线、≤3 色、ΔE ≥ 12、替换方案、逐张提醒） | 脚本 + Claude |
 | 3 光线 | `pipeline.py sun`：太阳、地形遮挡、天气光质 | 脚本 |
 | 4–5 底图 | `basemap` → `stylize`（Codex 水彩风格化） | 脚本 + 本机 Codex |
+| 6b 路线 | `meta.route_stops` + `trip.json` → `pipeline.py route` / `trip`：园内步道最短路与时刻、一日行程页 | Claude + 脚本 |
 | 6 分镜 | 分镜基本法（角色、景别配比、节奏、姿态视线）+ 动态素材（连拍 ≥ 2、短片 ≥ 5、实况 ≥ 6）→ `pipeline.py lint` | Claude + 脚本 |
 | 7 prompt | nuyoah-xiezhen-prompt 系列母版 + 变体；短片/实况写关键帧 | Claude |
 | 8–9 出图与检查 | `jobs [--missing]` → `shots` → 逐张检查 | 脚本 + 本机 Codex + Claude |

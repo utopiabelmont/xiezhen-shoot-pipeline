@@ -69,6 +69,13 @@
 - 动态素材：每条可写 `medium`（still / burst / video / live，缺省 still），规则与字段见 `docs/VIDEO_NOTES.md`。连拍出的照片计入组图；短片与实况不计入张数与景别配比。作为补充加在静态分镜之后的条目标 `supplement: true`（不参与首尾与相邻检查）。一组要求 ≥ 2 张 burst、≥ 5 条 video、≥ 6 条 live（lint 提示项）。
 - 验收：`python pipeline.py lint <plan>` 硬性项全部通过（`jobs` 阶段会先跑 lint，不过不生成任务）；提示项逐条看，能改就改。
 
+## 6b 路线
+
+- 执行：在 `shotlist.json` 的 `meta.route_stops` 写停留点顺序（每站的分镜 id 与备注）、`meta.route_source`、`meta.route_speed_mps`；`python pipeline.py route <plan>`（`cards` 阶段也会自动跑）。一天多景点另写 `trip.json`（模板 `templates/trip_template.md`），`pipeline.py trip <plan>`。
+- 依据与规则见 `docs/ROUTE_NOTES.md`：官网設施顺序 / 順路 → 攻略「先拍哪里」→ 天气 → 地理最短路；交通班次注明来源与查询日期。
+- 输出：`route.json` / `route.md` / `cards/route_01.png`（底图上的步道路线与编号站点、到达离开时刻）；`trip.md` / `cards/trip_01.png`（一日行程示意与时刻表）。
+- 验收：路线不穿建筑与水面（穿了就改底图 `--extra` 补步道）；终点在出口附近；总时长不超过营业时间；`timeline.md` 的班次与之一致。
+
 ## 7 prompt
 
 - 执行：`nuyoah-xiezhen-prompt`「系列母版 + 同系列变体」：全组固定风格词链、成像词链、人物与服装（`templates/prompt_chains.md`），每张只改取景与机位、动作与视线、环境与光线。
@@ -93,7 +100,7 @@
 
 - 执行：`python pipeline.py cards <plan> [--images out/<plan>]`（`make_cards.py`；图片按文件名前两位 = 分镜 id 匹配）
 - 输出：`cards/card_<id>.png`（1600×1067）、`<出行日期>_<地点>_拍摄小抄.pdf`（例：`2026-09-28_浅草寺_拍摄小抄.pdf`；改版加 `_v2`）
-- PDF 顺序：穿搭页（有 `outfit.json` 时，`cards/outfit_01.png`、`outfit_02.png`）→ 静态分镜（medium still）→ 连拍 / 短片 / 实况。短片与实况的示意图是关键帧，页脚会注明。
+- PDF 顺序：行程页（有 `trip.json`）→ 穿搭页（有 `outfit.json`）→ 路线页（有 `route_stops`）→ 分镜按路线顺序（静态与动态穿插）；没有路线时静态在前、动态在后。短片与实况的示意图是关键帧，页脚会注明。
 - 页面规范见 `docs/CARD_SPEC.md`。俯视图里的太阳箭头必须与 `meta.sun` 该时刻一致；室内不画太阳；园外用各自底图。
 - 验收：逐页看：文字不溢出、俯视图标签不重叠、页脚「AI 拍摄示意，非现场实拍」在。
 

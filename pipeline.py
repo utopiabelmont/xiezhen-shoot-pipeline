@@ -7,6 +7,8 @@ pipeline.py　外拍规划流水线的统一入口。每个阶段一个子命令
   python pipeline.py sun     <plan> [--step 30]                           → sun.md / sun.json / sun_path.png
   python pipeline.py palette <plan> [--images dir] [--n 12]               → palette.json / palette.png（场地主色，阶段 2b 穿搭依据）
   python pipeline.py outfit  <plan>                                       → 按 outfit.json 渲染 cards/outfit_01.png（cards 阶段也会自动做）
+  python pipeline.py route   <plan> [--speed 1.0] [--basemap main]        → 按 meta.route_stops 沿底图步道算游览路线 → route.json / route.md / cards/route_01.png
+  python pipeline.py trip    <plan>                                       → 按 trip.json 画一日多景点行程页 cards/trip_01.png（cards 阶段也会自动做）
   python pipeline.py basemap <plan> [--name main] [--meters 130] [--center lat,lon] [--extra x.json]
                                                                           → basemaps/<name>_geometry.json / _osm.png / _meta.json
   python pipeline.py stylize <plan> [--name main]                         → basemaps/<name>_styled.png（需本机 codex-imagegen）
@@ -188,16 +190,24 @@ def cmd_cards(a):
     rc = run([PY, TOOLS / "make_cards.py", "--plan", d, "--images", images, "--out", d / "cards"])
     if rc == 0 and (d / "outfit.json").exists():
         run([PY, TOOLS / "make_outfit_page.py", "--plan", d, "--out", d / "cards"])
+    if rc == 0 and (d / "trip.json").exists():
+        run([PY, TOOLS / "trip.py", "--plan", d, "--out", d / "cards"])
+    plan = json.loads((d / "shotlist.json").read_text(encoding="utf-8"))
+    if rc == 0 and plan.get("meta", {}).get("route_stops"):
+        run([PY, TOOLS / "route.py", "--plan", d, "--out", d / "cards", "--speed", str(plan["meta"].get("route_speed_mps", 1.0))])
     if rc == 0:
         try:
             from PIL import Image
             import PIL.JpegImagePlugin  # noqa: F401  注册 JPEG 保存器
-            plan = json.loads((d / "shotlist.json").read_text(encoding="utf-8"))
             medium = {s["id"]: s.get("medium", "still") for s in plan["shots"]}
-            cards = sorted((d / "cards").glob("card_*.png"))
-            stills = [p for p in cards if medium.get(p.stem[5:], "still") == "still"]
-            dyn = [p for p in cards if medium.get(p.stem[5:], "still") != "still"]
-            pngs = sorted((d / "cards").glob("outfit_*.png")) + stills + dyn   # 穿搭页 → 静态分镜 → 连拍/短片/实况
+            cards = {p.stem[5:]: p for p in (d / "cards").glob("card_*.png")}
+            order = []
+            if (d / "route.json").exists():                # 有路线：全部分镜按游览顺序
+                order = [i for i in json.loads((d / "route.json").read_text(encoding="utf-8")).get("order", []) if i in cards]
+            rest = [i for i in sorted(cards) if i not in order]
+            rest = [i for i in rest if medium.get(i, "still") == "still"] + [i for i in rest if medium.get(i, "still") != "still"]
+            pngs = (sorted((d / "cards").glob("trip_*.png")) + sorted((d / "cards").glob("outfit_*.png"))
+                    + sorted((d / "cards").glob("route_*.png")) + [cards[i] for i in order + rest])   # 行程 → 穿搭 → 路线 → 分镜（按路线顺序；无路线则静态在前）
             if pngs:
                 meta = plan.get("meta", {})
                 name = pdf_name(meta)
@@ -220,6 +230,18 @@ def cmd_palette(a):
     if a.offline:
         cmd.append("--offline")
     return run(cmd)
+
+
+def cmd_route(a):
+    d = PLANS / a.plan
+    return run([PY, TOOLS / "route.py", "--plan", d, "--out", d / "cards", "--speed", str(a.speed), "--basemap", a.basemap])
+
+
+def cmd_trip(a):
+    d = PLANS / a.plan
+    if not (d / "trip.json").exists():
+        raise SystemExit(f"缺少 {d / 'trip.json'}（模板：templates/trip_template.md）")
+    return run([PY, TOOLS / "trip.py", "--plan", d, "--out", d / "cards"])
 
 
 def cmd_outfit(a):
@@ -372,7 +394,7 @@ def cmd_lint(a):
 
 def cmd_status(a):
     d = PLANS / a.plan
-    items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("palette.json", "palette（场地色）"), ("outfit.json", "穿搭（Claude）"), ("sun.md", "sun"),
+    items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("palette.json", "palette（场地色）"), ("outfit.json", "穿搭（Claude）"), ("sun.md", "sun"), ("route.json", "路线（route）"), ("trip.json", "行程（Claude）"),
              ("basemaps/main_osm.png", "basemap"), ("basemaps/main_styled.png", "stylize"), ("shotlist.json", "分镜（人工/Claude）"),
              ("prompts.md", "prompt（nuyoah-xiezhen-prompt）"), ("timeline.md", "时间线"), ("model_sheet.md", "模特一页纸"),
              ("arrival_checklist.md", "到场清单"), ("cards", "cards")]
@@ -439,6 +461,8 @@ def main():
     s = sub.add_parser("lint"); s.add_argument("plan"); s.set_defaults(fn=cmd_lint)
     s = sub.add_parser("palette"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--n", type=int, default=12); s.add_argument("--offline", action="store_true"); s.set_defaults(fn=cmd_palette)
     s = sub.add_parser("outfit"); s.add_argument("plan"); s.set_defaults(fn=cmd_outfit)
+    s = sub.add_parser("route"); s.add_argument("plan"); s.add_argument("--speed", type=float, default=1.0); s.add_argument("--basemap", default="main"); s.set_defaults(fn=cmd_route)
+    s = sub.add_parser("trip"); s.add_argument("plan"); s.set_defaults(fn=cmd_trip)
     s = sub.add_parser("status"); s.add_argument("plan"); s.set_defaults(fn=cmd_status)
     s = sub.add_parser("register"); s.add_argument("--root"); s.add_argument("--show", action="store_true"); s.set_defaults(fn=cmd_register)
 
