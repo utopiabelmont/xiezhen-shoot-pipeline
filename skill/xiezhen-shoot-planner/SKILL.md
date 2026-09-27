@@ -23,7 +23,7 @@ description: 真实景点 + 真实日期的人像外拍规划：查出片点与�
 7. **prompt**　`nuyoah-xiezhen-prompt` 系列母版 + 同系列变体：固定风格词链、成像词链、人物与服装（`templates/prompt_chains.md`），每张只改取景与机位、动作与视线、环境与光线；光线引用 `sun.md`，写「来源—落点—结果」；无参考图时写「本张重新生成一位「…」类型的成年原创女性」。输出 `prompts.md`（`## <id>-<标题>` + ```text 块）。
 8. **出图**　`pipeline.py jobs <plan>` → `pipeline.py shots <plan>`。每条只提交一次，失败只记录。
 9. **检查**　逐张按 nuyoah-xiezhen-prompt 第六步检查，另核对光向与 `sun.md`、背景方位与底图一致。状态只写 test / failed，用户确认后才 final；重做回到原始分镜重新编译，不用上一轮生成图做输入。把 `out/<plan>/log.jsonl` 复制为 `plans/<plan>/generation_log.jsonl`。
-10. **小抄**　`pipeline.py cards <plan>`，逐页检查（文字溢出、标签重叠、太阳箭头方向、页脚「AI 拍摄示意，非现场实拍」）。
+10. **小抄**　`pipeline.py cards <plan>`，逐页检查（文字溢出、标签重叠、太阳箭头方向、页脚「AI 拍摄示意，非现场实拍」）。PDF 文件名固定为 `<出行日期>_<地点>_拍摄小抄.pdf`（例 `2026-09-28_浅草寺_拍摄小抄.pdf`，改版加 `_v2`），由 `pipeline.py` 按 `shotlist.json` 的 `meta.date` 与 `meta.place` 自动命名；交付给用户的文件也用这个名字，不用「拍摄小抄.pdf」这类无日期无地点的名字。
 11. **当天资料**　`timeline.md`（交通班次注明来源与查询日期）、`model_sheet.md`、`arrival_checklist.md`；出发前一天重跑 `sun`。
 
 改版：复制为 `<plan>-v2`，只重做变动的分镜，复用图片记 `img_from`，新增分镜单独出图，最后统一重跑 `cards`。

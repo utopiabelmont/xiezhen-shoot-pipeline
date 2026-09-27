@@ -10,7 +10,7 @@ pipeline.py　外拍规划流水线的统一入口。每个阶段一个子命令
   python pipeline.py stylize <plan> [--name main]                         → basemaps/<name>_styled.png（需本机 codex-imagegen）
   python pipeline.py jobs    <plan>                                       → inbox/<plan>.jsonl（从 prompts.md 与 shotlist.json）
   python pipeline.py shots   <plan>                                       → out/<plan>/<id>.png + log.jsonl（run_shots.py）
-  python pipeline.py cards   <plan> [--images out/<plan>]                 → cards/card_<id>.png + 拍摄小抄.pdf
+  python pipeline.py cards   <plan> [--images out/<plan>]                 → cards/card_<id>.png + <日期>_<地点>_拍摄小抄.pdf
   python pipeline.py status  <plan>                                       → 各阶段产物清单
 
 所有子命令都可加 --fixture 走离线样本（仅 spots / sun / basemap）。
@@ -55,6 +55,16 @@ def geo_args(plan: dict) -> list[str]:
     if plan.get("lat") is not None and plan.get("lon") is not None:
         return ["--lat", str(plan["lat"]), "--lon", str(plan["lon"]), "--place", plan["place"]]
     return ["--place", plan["place"]]
+
+
+def pdf_name(meta: dict) -> str:
+    """小抄 PDF 文件名：<出行日期>_<地点>_拍摄小抄[_vN].pdf。地点取 meta.place 括号前的部分，去掉文件名非法字符。"""
+    place = re.split(r"[（(]", meta.get("place", "plan"))[0].strip()
+    place = re.sub(r'[\\/:*?"<>|\s]+', "", place) or "plan"
+    date = meta.get("date", "").strip() or "undated"
+    m = re.search(r"\bv(\d+)", meta.get("version", ""))
+    ver = f"_v{m.group(1)}" if m and int(m.group(1)) >= 2 else ""
+    return f"{date}_{place}_拍摄小抄{ver}.pdf"
 
 
 # ---------- stages ----------
@@ -173,9 +183,14 @@ def cmd_cards(a):
             import PIL.JpegImagePlugin  # noqa: F401  注册 JPEG 保存器
             pngs = sorted((d / "cards").glob("card_*.png"))
             if pngs:
+                meta = json.loads((d / "shotlist.json").read_text(encoding="utf-8")).get("meta", {})
+                name = pdf_name(meta)
                 ims = [Image.open(p).convert("RGB") for p in pngs]
-                ims[0].save(d / "拍摄小抄.pdf", save_all=True, append_images=ims[1:], resolution=150)
-                print("拍摄小抄.pdf", len(ims), "页")
+                ims[0].save(d / name, save_all=True, append_images=ims[1:], resolution=150)
+                for old in d.glob("*拍摄小抄*.pdf"):        # 只保留当前命名的一份
+                    if old.name != name:
+                        old.unlink()
+                print(name, len(ims), "页")
         except Exception as e:  # PDF 只是附带产物
             print("PDF 未生成：", e)
     return rc
@@ -186,7 +201,7 @@ def cmd_status(a):
     items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("sun.md", "sun"),
              ("basemaps/main_osm.png", "basemap"), ("basemaps/main_styled.png", "stylize"), ("shotlist.json", "分镜（人工/Claude）"),
              ("prompts.md", "prompt（nuyoah-xiezhen-prompt）"), ("timeline.md", "时间线"), ("model_sheet.md", "模特一页纸"),
-             ("arrival_checklist.md", "到场清单"), ("cards", "cards"), ("拍摄小抄.pdf", "PDF")]
+             ("arrival_checklist.md", "到场清单"), ("cards", "cards")]
     tmpl = {"spots_social.md": "sns_research.md", "timeline.md": "timeline_template.md",
             "model_sheet.md": "model_sheet_template.md", "arrival_checklist.md": "arrival_checklist_template.md"}
     for f, stage in items:
@@ -197,6 +212,8 @@ def cmd_status(a):
             mark = "-"   # 还是模板原样，未填写
         print(f"  [{mark}] {stage:28s} {f}")
     print("  [x] 已完成  [-] 仍是模板未填写  [ ] 缺失")
+    pdfs = sorted(d.glob("*拍摄小抄*.pdf"))
+    print(f"  [{'x' if pdfs else ' '}] {'PDF':28s} {pdfs[0].name if pdfs else '<日期>_<地点>_拍摄小抄.pdf'}")
     jobs = ROOT / "inbox" / f"{a.plan}.jsonl"
     print(f"  [{'x' if jobs.exists() else ' '}] {'jobs':28s} inbox/{a.plan}.jsonl")
     out = ROOT / "out" / a.plan

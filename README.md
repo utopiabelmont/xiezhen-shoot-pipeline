@@ -19,7 +19,7 @@
 | `basemaps/` | OSM 几何渲染的俯视底图，以及 Codex 重绘、几何不变的水彩版；园外备选点（Pola 美术馆）单独一张 | 见下图 |
 | `shotlist.json` / `shotlist.md` | 13 条分镜：景别、焦段、机位、站位朝向、光型、动作引导、晴天/阴天/雨天备选、创意外观与闪光灯建议 | [shotlist.md](examples/hakone-0928-v2/shotlist.md) |
 | `prompts.md` → `out/<plan>/` | 每张分镜的完整中文 prompt 与生成的示意图，`generation_log.jsonl` 记录每次提交 | [prompts.md](examples/hakone-0928-v2/prompts.md) |
-| `cards/` + `拍摄小抄.pdf` | 每张一页，1600×1067，可打印可手机翻 | [拍摄小抄.pdf](examples/hakone-0928-v2/拍摄小抄.pdf) |
+| `cards/` + `<日期>_<地点>_拍摄小抄.pdf` | 每张一页，1600×1067，可打印可手机翻 | [2026-09-28_箱根ガラスの森美術館_拍摄小抄_v2.pdf](examples/hakone-0928-v2/2026-09-28_箱根ガラスの森美術館_拍摄小抄_v2.pdf) |
 | `timeline.md` / `model_sheet.md` / `arrival_checklist.md` | 巴士班次与每张分镜的时段、分岔点；给模特看的一页纸；到场 10 分钟要核对的事 | [timeline.md](examples/hakone-0928-v2/timeline.md) |
 
 第二个示例 [`examples/asakusa-0928/`](examples/asakusa-0928/)（浅草寺，2026-09-28 上午，雨天，12 张）是用 `pipeline.py` 从零跑出来的：密集城区用南北两张底图（`--name north/south`），俯瞰、拱廊、门洞、香炉等都有对应的俯视站位。
@@ -79,7 +79,7 @@ python pipeline.py stylize hakone-0928           # 需要本机 codex-imagegen�
 
 python pipeline.py jobs    hakone-0928           # prompts.md → inbox/hakone-0928.jsonl
 python pipeline.py shots   hakone-0928           # → out/hakone-0928/*.png + log.jsonl
-python pipeline.py cards   hakone-0928           # → cards/ + 拍摄小抄.pdf
+python pipeline.py cards   hakone-0928           # → cards/ + 2026-09-28_箱根ガラスの森美術館_拍摄小抄.pdf
 python pipeline.py status  hakone-0928
 ```
 

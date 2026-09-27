@@ -77,7 +77,7 @@
 ## 10 小抄
 
 - 执行：`python pipeline.py cards <plan> [--images out/<plan>]`（`make_cards.py`；图片按文件名前两位 = 分镜 id 匹配）
-- 输出：`cards/card_<id>.png`（1600×1067）、`拍摄小抄.pdf`
+- 输出：`cards/card_<id>.png`（1600×1067）、`<出行日期>_<地点>_拍摄小抄.pdf`（例：`2026-09-28_浅草寺_拍摄小抄.pdf`；改版加 `_v2`）
 - 页面规范见 `docs/CARD_SPEC.md`。俯视图里的太阳箭头必须与 `meta.sun` 该时刻一致；室内不画太阳；园外用各自底图。
 - 验收：逐页看：文字不溢出、俯视图标签不重叠、页脚「AI 拍摄示意，非现场实拍」在。
 
