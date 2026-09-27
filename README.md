@@ -22,6 +22,10 @@
 | `cards/` + `拍摄小抄.pdf` | 每张一页，1600×1067，可打印可手机翻 | [拍摄小抄.pdf](examples/hakone-0928-v2/拍摄小抄.pdf) |
 | `timeline.md` / `model_sheet.md` / `arrival_checklist.md` | 巴士班次与每张分镜的时段、分岔点；给模特看的一页纸；到场 10 分钟要核对的事 | [timeline.md](examples/hakone-0928-v2/timeline.md) |
 
+第二个示例 [`examples/asakusa-0928/`](examples/asakusa-0928/)（浅草寺，2026-09-28 上午，雨天，12 张）是用 `pipeline.py` 从零跑出来的：密集城区用南北两张底图（`--name north/south`），俯瞰、拱廊、门洞、香炉等都有对应的俯视站位。
+
+![浅草寺四张小抄](docs/img/cards_gallery_asakusa.jpg)
+
 底图：左为 OSM 几何直接渲染，右为 Codex `edit` 模式按固定指令重绘的版本，形状位置不变，所以能在上面按经纬度精确叠加站位、相机与太阳方向。
 
 ![底图前后对比](docs/img/basemap_before_after.jpg)

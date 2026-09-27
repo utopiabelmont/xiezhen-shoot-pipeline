@@ -5,6 +5,7 @@ import json
 import math
 import time
 import urllib.parse
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -24,8 +25,21 @@ def http_json(url: str, *, data: bytes | None = None, headers: dict | None = Non
     if headers:
         h.update(headers)
     req = urllib.request.Request(url, data=data, headers=h)
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return json.loads(r.read().decode("utf-8"))
+    last = None
+    for attempt in range(3):                       # Overpass / Open-Meteo 偶发 5xx 或超时，退避重试
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return json.loads(r.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            last = e
+            if e.code < 500 or attempt == 2:
+                raise
+        except (urllib.error.URLError, TimeoutError, OSError) as e:
+            last = e
+            if attempt == 2:
+                raise
+        time.sleep(5 * (attempt + 1))
+    raise last
 
 
 def geocode(place: str, *, fixture: bool = False) -> dict:

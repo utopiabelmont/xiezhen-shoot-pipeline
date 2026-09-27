@@ -151,7 +151,7 @@ def render(L: dict, proj: Proj) -> Image.Image:
         if pt.get("kind") == "chandelier":
             d.ellipse((x - 5, y - 5, x + 5, y + 5), fill=(240, 240, 250), outline=(90, 80, 70))
         elif pt.get("kind") in ("poi", "landmark"):
-            d.ellipse((x - 4, y - 4, x + 4, y + 4), fill=POINT, outline=(90, 80, 70))
+            d.ellipse((x - 3, y - 3, x + 3, y + 3), fill=POINT, outline=(90, 80, 70))
     return img
 
 

@@ -85,9 +85,14 @@ def build_layers(elements, lat, lon, meters):
         if e["type"] == "node":
             if not _inside([e["lat"], e["lon"]], lat, lon, half_lat, half_lon):
                 continue
-            name = t.get("name") or t.get("amenity") or t.get("tourism")
-            kind = "poi" if (t.get("tourism") or t.get("amenity") in ("cafe", "restaurant", "parking", "taxi", "toilets")) else "label"
-            L["points"].append({"name": name, "kind": kind, "latlon": [e["lat"], e["lon"]], "tags": {k: v for k, v in t.items() if k in ("amenity", "tourism", "highway", "name", "name:en")}})
+            # 只保留地标类点位（雕塑、观景点、历史点、寺社、塔），商铺/咖啡/停车等不进底图，免得密集城区一片黑点
+            landmark = (t.get("tourism") in ("attraction", "artwork", "viewpoint", "museum", "gallery")
+                        or "historic" in t or t.get("man_made") in ("tower", "lighthouse", "monument")
+                        or t.get("amenity") in ("place_of_worship", "fountain", "bell") or t.get("natural") == "tree" and t.get("name"))
+            if not landmark:
+                continue
+            name = t.get("name") or t.get("tourism") or t.get("historic") or t.get("amenity")
+            L["points"].append({"name": name, "kind": "poi", "latlon": [e["lat"], e["lon"]], "tags": {k: v for k, v in t.items() if k in ("amenity", "tourism", "historic", "man_made", "name", "name:en")}})
             continue
         if e["type"] == "way":
             pts = _pts(e.get("geometry"))
@@ -142,6 +147,9 @@ def build_layers(elements, lat, lon, meters):
                         if len(pts) >= 3 and any_inside(pts):
                             seen_building_ids.add(m.get("ref"))
                             L["buildings"].append({"name": t.get("name", ""), "poly": pts, "osm": f"relation/{e['id']}"})
+    if len(L["points"]) > 60:
+        L["points"].sort(key=lambda p: (p["latlon"][0] - lat) ** 2 + (p["latlon"][1] - lon) ** 2)
+        L["points"] = L["points"][:60]
     return L
 
 

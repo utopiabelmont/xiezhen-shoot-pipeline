@@ -1,5 +1,12 @@
 # 变更记录
 
+## 1.0.1 — 2026-09-27
+
+- `osm_geometry.py`：底图只保留地标类点位（雕塑、观景点、历史点、寺社、塔），上限 60 个，密集城区不再一片黑点。
+- `geo_common.http_json`：5xx / 超时自动重试 3 次（Overpass 偶发 504）。
+- `stylize --prompt-extra`：可追加指令，例如城区底图「没有河流，宽道路仍画成路面」。
+- 新增示例 `examples/asakusa-0928`：浅草寺雨天上午 12 张，南北两张底图。
+
 ## 1.0.0 — 2026-09-27
 
 - 首个规范化版本：`pipeline.py` 统一入口，阶段 0–11 SOP（docs/WORKFLOW.md）。
