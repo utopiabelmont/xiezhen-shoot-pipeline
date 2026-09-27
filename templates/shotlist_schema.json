@@ -309,7 +309,15 @@
        "start": {"type": "string"},
        "end": {"type": "string"},
        "nd": {"type": "string"},
-       "exposure": {"type": "string", "description": "本条曝光基准，例：脸放斑马 52%"}
+       "exposure": {"type": "string", "description": "本条曝光基准，例：脸放斑马 52%"},
+       "move_type": {"type": "string", "enum": ["tilt_down_reveal", "wipe_reveal", "track_side", "track_behind", "track_front", "push_in", "orbit_quarter", "static_turn", "static", "pull_back_tilt_up", "static_walk_out"], "description": "运镜示意页用的类型；不写时按 move 文字判断"},
+       "cam_h": {"type": "number", "description": "机位高度（米），不写时从 camera 文字判断"},
+       "walk_m": {"type": "number", "description": "跟拍时人物走的距离（米），默认 0.8 m/s × 运动秒数"},
+       "tilt_start": {"type": "number", "description": "下摇起始仰角（度），默认 35"},
+       "tilt_end": {"type": "number", "description": "后拉上摇结束仰角（度），默认 22"},
+       "orbit_side": {"type": "string", "enum": ["left", "right"], "description": "环绕从人物哪一侧起"},
+       "cam_dist_start": {"type": "number"},
+       "cam_dist_end": {"type": "number"}
       }
      },
      "live": {

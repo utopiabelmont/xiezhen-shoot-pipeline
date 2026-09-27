@@ -10,7 +10,7 @@
 
 ## 拍摄脚本 PDF 与核对表
 
-每个企划产出两份给现场用的文件：`<日期>_<地点>_拍摄脚本.pdf`（打印或平板看）和 `<日期>_<地点>_拍摄核对表.html`（手机打开逐条勾选）。以 [`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（箱根ガラスの森美術館，2026-09-28，13:00 到场，α7 V + 24-105mm F4，v3.4，37 页）为例，PDF 从前到后：
+每个企划产出两份给现场用的文件：`<日期>_<地点>_拍摄脚本.pdf`（打印或平板看）和 `<日期>_<地点>_拍摄核对表.html`（手机打开逐条勾选）。以 [`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（箱根ガラスの森美術館，2026-09-28，13:00 到场，α7 V + 24-105mm F4，v3.5，42 页）为例，PDF 从前到后：
 
 | 页 | 内容 | 由谁生成 |
 |---|---|---|
@@ -18,10 +18,17 @@
 | 穿搭页 ×2 | 场地主色（Commons 照片抽样）与服装色的 ΔE 分离度、路线（同系/邻近/补色点缀）、主方案、雨晴冷替换、道具妆发、逐张着装提醒 | `palette.py` + `outfit.json` → `make_outfit_page.py` |
 | 路线页 | 水彩底图上沿步道算出的游览路线、编号站点、每站分镜、步行距离、到达与离开时刻 | `meta.route_stops` → `tools/route.py` |
 | 分镜 ×33 | 按路线顺序排：20 张静态、2 张连拍、5 条 S-Log3 短片关键帧、6 条 iPhone 实况；每页一张示意图、相机设置（按介质切换）、俯视站位与光向、姿势引导、光线与备选、时段与注意 | `shotlist.json` + 示意图 → `make_cards.py` |
+| 运镜页 ×5 | 每条短片卡后面一页：以人物为中心的俯视轨迹（相机与人物的起止位置、每秒位置）、侧视机高与俯仰、操作要点、起 / 中 / 止三帧竖幅画面、时间条与 S&Q 成片时长 | `clip` → `tools/moves.py` |
 
 核对表把同一份企划里要在现场确认的内容排成勾选清单：出发前的器材（按分镜用到的焦段与介质自动列出连拍、S-Log3 短片、ND、iPhone 实况的设置项）、服装道具与妆发、行程班次、到场核对、按路线停留点分组的全部分镜（缩略图、焦段景别视线、对模特说的一句话，展开可看机位、光线、短片起止与曝光）、收尾。顶部有总进度和按介质的计数，可以只看未完成或只看某种介质；出行当天打开会标出当前时刻所在的停留点。勾选状态只存在这台设备的浏览器里，不联网。
 
 ![核对表](docs/img/checklist.jpg)
+
+运镜页与运镜库（每种运镜的俯视轨迹和起 / 中 / 止三帧；三帧按焦段、距离和俯仰推算）：
+
+![运镜页](docs/img/move_page.jpg)
+
+![运镜库](docs/img/moves_library.jpg)
 
 ![行程页](docs/img/trip_page.jpg)
 
@@ -77,7 +84,7 @@ flowchart LR
 | 6b 路线 | `meta.route_stops` → `route`：沿步道最短路、停留与时刻；多景点 `trip.json` → `trip` | Claude + 脚本 | [ROUTE_NOTES](docs/ROUTE_NOTES.md) |
 | 7 prompt | 系列母版 + 同系列变体，短片与实况写关键帧 | Claude | [prompt_chains](templates/prompt_chains.md) |
 | 8–9 出图与检查 | `jobs [--missing]` → `shots`；逐张按第六步检查，状态 test / failed | 脚本 + 本机 Codex + Claude | |
-| 10 拍摄脚本 | `cards`：行程 → 穿搭 → 路线 → 分镜（按路线顺序），`<日期>_<地点>_拍摄脚本.pdf`；同时生成 `<日期>_<地点>_拍摄核对表.html` | 脚本 | [CARD_SPEC](docs/CARD_SPEC.md) |
+| 10 拍摄脚本 | `cards`：行程 → 穿搭 → 路线 → 分镜（按路线顺序，短片卡后接运镜页），`<日期>_<地点>_拍摄脚本.pdf`；同时生成 `<日期>_<地点>_拍摄核对表.html` | 脚本 | [CARD_SPEC](docs/CARD_SPEC.md) |
 | 11 当天资料 | 时间线、模特页、到场清单、剪辑单 | Claude | [templates/](templates/) |
 
 ## 快速开始
@@ -204,6 +211,7 @@ tools/
   route.py             园内路线：步道图最短路、停留估算、路线页
   trip.py              一日多景点行程页（含当天天气）
   checklist.py         现场核对表（单文件 HTML，可勾选）
+  moves.py             短片运镜示意页与运镜库总览图
   make_cards.py        分镜小抄页：多底图、室内、园外窗口、半点太阳表、按介质切换设置块
   fixtures/            离线样本（Nominatim、Overpass、Commons、Open-Meteo、高程）
 templates/             分镜模板与 JSON Schema、prompt 词链、SNS 调研表、穿搭 / 行程 / 剪辑单 / 时间线 / 到场清单 / 模特页模板、底图风格指令、手工几何示例

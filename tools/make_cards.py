@@ -294,7 +294,7 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
 MEDIUM_BADGE = {"burst": "连拍抓动态", "video": "短片", "live": "手机实况"}
 MEDIUM_COLOR = {"burst": (176, 98, 40), "video": (70, 96, 150), "live": (110, 110, 105)}
 SETTINGS_TITLE = {"burst": "相机设置（连拍）", "video": "相机设置（S-Log3 短片）", "live": "iPhone 设置（实况）"}
-FOOT = {"video": "关键帧 AI 示意，非现场实拍；运镜、时长与曝光基准见 docs/VIDEO_NOTES.md。",
+FOOT = {"video": "关键帧 AI 示意，非现场实拍；运镜轨迹与三帧画面变化见下一页，曝光基准见 docs/VIDEO_NOTES.md。",
         "burst": "AI 示意为连拍中要选的那一帧；连拍与预拍设置见 docs/VIDEO_NOTES.md。",
         "live": "AI 示意，非现场实拍；手机实况图用于过渡与小红书，不占相机时间。"}
 CLIP_MODE = {"24p": "動画位 4K 24p（实时，≤5 s）", "sq60": "S&Q 60→24p（2.5 倍慢）", "sq120": "S&Q 120→24p（5 倍慢，裁 1.52×）"}

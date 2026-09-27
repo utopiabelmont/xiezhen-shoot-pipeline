@@ -64,6 +64,20 @@ def thumb(images: Path, sid: str, width=220) -> str | None:
         return None
 
 
+def move_img(p: Path, width=900) -> str | None:
+    if not p.exists():
+        return None
+    try:
+        from PIL import Image
+        im = Image.open(p).convert("RGB")
+        im.thumbnail((width, width))
+        buf = io.BytesIO()
+        im.save(buf, "JPEG", quality=72, optimize=True)
+        return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
+    except Exception:
+        return None
+
+
 def md_list(p: Path) -> list[str]:
     """arrival_checklist.md 第一个二级标题之前的编号 / 列表项。"""
     if not p.exists():
@@ -241,6 +255,8 @@ ul.items{list-style:none;margin:0;padding:0}
 .say{font-size:13.5px;margin-top:2px}
 details{margin-top:4px;font-size:13px}
 details summary{cursor:pointer;color:var(--green);width:max-content}
+details.mv{grid-column:1/-1;margin-top:2px}
+.shot img.move{display:block;width:100%;max-width:480px;height:auto;aspect-ratio:auto;object-fit:contain;margin:8px 0 4px;border-radius:6px;border:1px solid var(--line);background:#fffdf8}
 dl{display:grid;grid-template-columns:max-content 1fr;gap:3px 10px;margin:6px 0 0}
 dt{color:var(--muted)} dd{margin:0}
 .confirm{display:flex;gap:6px;align-items:center;font-size:13px}
@@ -360,6 +376,12 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
         line = " · ".join(x for x in [s.get("lens"), s.get("kind"),
                                       {"camera": "看镜头", "away": "看别处", "down": "低头", "closed": "闭眼", "back": "背影"}.get(s.get("gaze"), "")] if x)
         dl = "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in shot_detail(s))
+        mv = ""
+        if m == "video" and thumbs:
+            src_mv = move_img(plan_dir / "cards" / f"movem_{s['id']}.png", width=720)
+            if src_mv:
+                mv = (f'<details class="mv"><summary>运镜示意（俯视轨迹 + 起中止三帧）</summary>'
+                      f'<img class="move" src="{src_mv}" alt="{esc(s["id"])} 运镜示意：俯视轨迹、起中止三帧与时间条" loading="lazy"></details>')
         cid = f"shot-{s['id']}"
         return (f'<li class="it shot" data-medium="{m}"><input type="checkbox" id="{cid}" data-id="{cid}">'
                 f'<label for="{cid}">{pic}</label><div>'
@@ -367,7 +389,7 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
                 f'<span class="chips">{"".join(chips)}</span>'
                 f'<div class="d">{esc(line)}</div>'
                 + (f'<div class="say">{esc(s.get("action"))}</div>' if s.get("action") else "")
-                + f'<details><summary>细节</summary><dl>{dl}</dl></details></div></li>')
+                + f'<details><summary>细节</summary><dl>{dl}</dl></details></div>{mv}</li>')
 
     ver = re.search(r"v\d+(?:\.\d+)?", meta.get("version", ""))
     H = []
