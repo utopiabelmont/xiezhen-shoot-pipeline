@@ -1,0 +1,690 @@
+{
+ "place": "箱根ガラスの森美術館",
+ "geocode": "",
+ "lat": 35.26618,
+ "lon": 139.01767,
+ "radius_m": 1500,
+ "pois": [
+  {
+   "name": "すすきの草原",
+   "name_en": "Sengokubara pampas grass",
+   "cat": "观景点",
+   "lat": 35.2603653,
+   "lon": 139.0088361,
+   "dist_m": 1030,
+   "bearing": 231,
+   "osm": "node/1436512588"
+  },
+  {
+   "name": "鐘",
+   "name_en": "Bell of Vows",
+   "cat": "景点",
+   "lat": 35.265656,
+   "lon": 139.0172525,
+   "dist_m": 70,
+   "bearing": 213,
+   "osm": "node/1440505203"
+  },
+  {
+   "name": "すすき草原",
+   "name_en": "Susuki Grass Field",
+   "cat": "景点",
+   "lat": 35.2610719,
+   "lon": 139.0058461,
+   "dist_m": 1215,
+   "bearing": 242,
+   "osm": "way/131014913"
+  },
+  {
+   "name": "箱根湿生花園",
+   "name_en": "Botanical Gardens of Wetlands",
+   "cat": "庭园",
+   "lat": 35.2659024,
+   "lon": 139.0077048,
+   "dist_m": 905,
+   "bearing": 268,
+   "osm": "way/534023812"
+  },
+  {
+   "name": "出戸公園",
+   "name_en": "",
+   "cat": "公园",
+   "lat": 35.2737457,
+   "lon": 139.0072468,
+   "dist_m": 1266,
+   "bearing": 312,
+   "osm": "way/957153548"
+  },
+  {
+   "name": "箱根ガラスの森美術館",
+   "name_en": "Hakone Venetian Glass Museum",
+   "cat": "美术馆/博物馆",
+   "lat": 35.2662778,
+   "lon": 139.0176248,
+   "dist_m": 12,
+   "bearing": 339,
+   "osm": "way/130886674"
+  },
+  {
+   "name": "ヴェネチアン・グラス美術館",
+   "name_en": "Venetian Glass Museum",
+   "cat": "美术馆/博物馆",
+   "lat": 35.266328,
+   "lon": 139.0177151,
+   "dist_m": 17,
+   "bearing": 14,
+   "osm": "way/1494104454"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "美术馆/博物馆",
+   "lat": 35.2702605,
+   "lon": 139.0098665,
+   "dist_m": 841,
+   "bearing": 303,
+   "osm": "node/6138393562"
+  },
+  {
+   "name": "箱根武士の里美術館",
+   "name_en": "",
+   "cat": "美术馆/博物馆",
+   "lat": 35.2677508,
+   "lon": 139.00597,
+   "dist_m": 1076,
+   "bearing": 279,
+   "osm": "node/1420831445"
+  },
+  {
+   "name": "ポーラ美術館",
+   "name_en": "Pola Museum of Art",
+   "cat": "美术馆/博物馆",
+   "lat": 35.2567042,
+   "lon": 139.0212045,
+   "dist_m": 1101,
+   "bearing": 163,
+   "osm": "way/388180518"
+  },
+  {
+   "name": "現代ガラス美術館",
+   "name_en": "Venetian Modern Glass Museum",
+   "cat": "画廊",
+   "lat": 35.265874,
+   "lon": 139.0177035,
+   "dist_m": 34,
+   "bearing": 175,
+   "osm": "way/1494104457"
+  },
+  {
+   "name": "カフェ・テラッツァ",
+   "name_en": "Cafe Terrazza Ukai",
+   "cat": "咖啡馆",
+   "lat": 35.2663299,
+   "lon": 139.0172392,
+   "dist_m": 43,
+   "bearing": 293,
+   "osm": "way/130886688"
+  },
+  {
+   "name": "箱根ハイランドホテル ラウンジ",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.267342,
+   "lon": 139.0156383,
+   "dist_m": 225,
+   "bearing": 305,
+   "osm": "node/3930083791"
+  },
+  {
+   "name": "箱根ラリック美術館 Hakone Emoa Terrace",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.2703344,
+   "lon": 139.0099805,
+   "dist_m": 837,
+   "bearing": 303,
+   "osm": "node/3929840382"
+  },
+  {
+   "name": "Cafe LUDERA",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.2708931,
+   "lon": 139.0103545,
+   "dist_m": 846,
+   "bearing": 308,
+   "osm": "way/954467104"
+  },
+  {
+   "name": "仙石 花詩",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.2694419,
+   "lon": 139.0088179,
+   "dist_m": 882,
+   "bearing": 294,
+   "osm": "node/3930102485"
+  },
+  {
+   "name": "A*maze",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.2713639,
+   "lon": 139.0102646,
+   "dist_m": 886,
+   "bearing": 311,
+   "osm": "node/6138393567"
+  },
+  {
+   "name": "０４６０カフェ",
+   "name_en": "０４６ 0 Cafe",
+   "cat": "咖啡馆",
+   "lat": 35.2719225,
+   "lon": 139.010548,
+   "dist_m": 909,
+   "bearing": 315,
+   "osm": "node/4601376989"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.2661803,
+   "lon": 139.0063017,
+   "dist_m": 1032,
+   "bearing": 270,
+   "osm": "node/6438701249"
+  },
+  {
+   "name": "GRAIN",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.2671337,
+   "lon": 139.0062477,
+   "dist_m": 1042,
+   "bearing": 276,
+   "osm": "node/1442566084"
+  },
+  {
+   "name": "ポーラ美術館　カフェチューン",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.2567676,
+   "lon": 139.0210818,
+   "dist_m": 1091,
+   "bearing": 164,
+   "osm": "node/13509493360"
+  },
+  {
+   "name": "ポーラ美術館 レストラン・アレイ",
+   "name_en": "Pola Museum Restaurant",
+   "cat": "咖啡馆",
+   "lat": 35.2566296,
+   "lon": 139.0214589,
+   "dist_m": 1116,
+   "bearing": 162,
+   "osm": "node/3945207993"
+  },
+  {
+   "name": "アメイズコーヒー",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.274564,
+   "lon": 139.0090168,
+   "dist_m": 1219,
+   "bearing": 320,
+   "osm": "way/954300788"
+  },
+  {
+   "name": "ラッキィズ・カフェ",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.2755753,
+   "lon": 139.0071721,
+   "dist_m": 1414,
+   "bearing": 318,
+   "osm": "node/3930076354"
+  },
+  {
+   "name": "アチェロ",
+   "name_en": "Àcero",
+   "cat": "历史建筑",
+   "lat": 35.2659563,
+   "lon": 139.0171982,
+   "dist_m": 50,
+   "bearing": 240,
+   "osm": "way/1494104451"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "历史建筑",
+   "lat": 35.269385,
+   "lon": 139.0083224,
+   "dist_m": 920,
+   "bearing": 293,
+   "osm": "node/6438700791"
+  },
+  {
+   "name": "仙郷楼",
+   "name_en": "Senkyoro",
+   "cat": "酒店",
+   "lat": 35.2638761,
+   "lon": 139.0149438,
+   "dist_m": 356,
+   "bearing": 224,
+   "osm": "node/8834674120"
+  },
+  {
+   "name": "旅館 みたけ",
+   "name_en": "Mitake",
+   "cat": "酒店",
+   "lat": 35.264668,
+   "lon": 139.0140261,
+   "dist_m": 371,
+   "bearing": 243,
+   "osm": "node/1440505192"
+  },
+  {
+   "name": "実践女子学園 仙石原実習所",
+   "name_en": "",
+   "cat": "酒店",
+   "lat": 35.2650413,
+   "lon": 139.0136306,
+   "dist_m": 388,
+   "bearing": 251,
+   "osm": "node/1442567708"
+  },
+  {
+   "name": "仙郷楼",
+   "name_en": "",
+   "cat": "酒店",
+   "lat": 35.2641564,
+   "lon": 139.0141184,
+   "dist_m": 393,
+   "bearing": 235,
+   "osm": "node/1440505152"
+  },
+  {
+   "name": "EN RESORT Re Cove Hakone",
+   "name_en": "",
+   "cat": "酒店",
+   "lat": 35.264357,
+   "lon": 139.0121984,
+   "dist_m": 537,
+   "bearing": 248,
+   "osm": "node/1442567569"
+  },
+  {
+   "name": "なかむら",
+   "name_en": "",
+   "cat": "酒店",
+   "lat": 35.2621018,
+   "lon": 139.0145005,
+   "dist_m": 537,
+   "bearing": 212,
+   "osm": "node/2252423914"
+  },
+  {
+   "name": "界 仙石原",
+   "name_en": "",
+   "cat": "酒店",
+   "lat": 35.2624055,
+   "lon": 139.0122425,
+   "dist_m": 647,
+   "bearing": 230,
+   "osm": "node/12145193293"
+  },
+  {
+   "name": "Mount View Hakone マウントビュー箱根",
+   "name_en": "",
+   "cat": "酒店",
+   "lat": 35.2698136,
+   "lon": 139.0116588,
+   "dist_m": 679,
+   "bearing": 307,
+   "osm": "node/8834028684"
+  },
+  {
+   "name": "ススキの原 一の湯",
+   "name_en": "",
+   "cat": "酒店",
+   "lat": 35.2635651,
+   "lon": 139.0096358,
+   "dist_m": 785,
+   "bearing": 248,
+   "osm": "node/12622879906"
+  },
+  {
+   "name": "東急ハーヴェストクラブ箱根甲子園",
+   "name_en": "Tokyu Harvest club Hakone Koshien",
+   "cat": "酒店",
+   "lat": 35.2687004,
+   "lon": 139.0083012,
+   "dist_m": 896,
+   "bearing": 288,
+   "osm": "node/6438701248"
+  },
+  {
+   "name": "富士箱根ゲストハウス",
+   "name_en": "Fuji-Hakone Guest House",
+   "cat": "旅舍",
+   "lat": 35.2654732,
+   "lon": 139.0143722,
+   "dist_m": 310,
+   "bearing": 255,
+   "osm": "node/401819408"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "旅舍",
+   "lat": 35.2633855,
+   "lon": 139.0198884,
+   "dist_m": 370,
+   "bearing": 147,
+   "osm": "node/6332895497"
+  }
+ ],
+ "commons_photos": [
+  {
+   "title": "Hakone Venetian Glass Museum 005.jpg",
+   "dist_m": 20,
+   "lat": 35.266078,
+   "lon": 139.017493,
+   "bearing": 235,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20005.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20005.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 004.jpg",
+   "dist_m": 21,
+   "lat": 35.266078,
+   "lon": 139.017479,
+   "bearing": 237,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20004.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20004.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 007.jpg",
+   "dist_m": 26,
+   "lat": 35.266148,
+   "lon": 139.017388,
+   "bearing": 262,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20007.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20007.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 006.jpg",
+   "dist_m": 27,
+   "lat": 35.266107,
+   "lon": 139.017391,
+   "bearing": 252,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20006.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20006.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 009.jpg",
+   "dist_m": 28,
+   "lat": 35.266212,
+   "lon": 139.017369,
+   "bearing": 277,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20009.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20009.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum.jpg",
+   "dist_m": 29,
+   "lat": 35.266433,
+   "lon": 139.017605,
+   "bearing": 348,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 003.jpg",
+   "dist_m": 32,
+   "lat": 35.266409,
+   "lon": 139.017452,
+   "bearing": 322,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20003.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20003.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 002.jpg",
+   "dist_m": 32,
+   "lat": 35.266409,
+   "lon": 139.017452,
+   "bearing": 322,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20002.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20002.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 008.jpg",
+   "dist_m": 40,
+   "lat": 35.266021,
+   "lon": 139.017273,
+   "bearing": 244,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20008.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20008.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 001.jpg",
+   "dist_m": 48,
+   "lat": 35.266606,
+   "lon": 139.01771,
+   "bearing": 4,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20001.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20001.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 012.jpg",
+   "dist_m": 51,
+   "lat": 35.266085,
+   "lon": 139.017123,
+   "bearing": 258,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20012.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20012.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 010.jpg",
+   "dist_m": 64,
+   "lat": 35.265677,
+   "lon": 139.017332,
+   "bearing": 209,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20010.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20010.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum 011.jpg",
+   "dist_m": 65,
+   "lat": 35.265745,
+   "lon": 139.017198,
+   "bearing": 222,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20011.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20011.jpg&width=800"
+  },
+  {
+   "title": "Tinted leaves - panoramio.jpg",
+   "dist_m": 69,
+   "lat": 35.266569,
+   "lon": 139.018261,
+   "bearing": 51,
+   "url": "https://commons.wikimedia.org/wiki/File%3ATinted%20leaves%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Tinted%20leaves%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum, Hakone, Kanagawa Prefecture, November 2017 (2).jpg",
+   "dist_m": 238,
+   "lat": 35.267486,
+   "lon": 139.015588,
+   "bearing": 308,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%2C%20Hakone%2C%20Kanagawa%20Prefecture%2C%20November%202017%20%282%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%2C%20Hakone%2C%20Kanagawa%20Prefecture%2C%20November%202017%20%282%29.jpg&width=800"
+  },
+  {
+   "title": "Venetian Glass in rain (44605402835).jpg",
+   "dist_m": 238,
+   "lat": 35.267486,
+   "lon": 139.015588,
+   "bearing": 308,
+   "url": "https://commons.wikimedia.org/wiki/File%3AVenetian%20Glass%20in%20rain%20%2844605402835%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Venetian%20Glass%20in%20rain%20%2844605402835%29.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum (45468299462).jpg",
+   "dist_m": 238,
+   "lat": 35.267486,
+   "lon": 139.015588,
+   "bearing": 308,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%20%2845468299462%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%20%2845468299462%29.jpg&width=800"
+  },
+  {
+   "title": "Night rose (45468297582).jpg",
+   "dist_m": 238,
+   "lat": 35.267486,
+   "lon": 139.015588,
+   "bearing": 308,
+   "url": "https://commons.wikimedia.org/wiki/File%3ANight%20rose%20%2845468297582%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Night%20rose%20%2845468297582%29.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum, Hakone, Kanagawa Prefecture, November 2017 (1).jpg",
+   "dist_m": 238,
+   "lat": 35.267486,
+   "lon": 139.015588,
+   "bearing": 308,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%2C%20Hakone%2C%20Kanagawa%20Prefecture%2C%20November%202017%20%281%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%2C%20Hakone%2C%20Kanagawa%20Prefecture%2C%20November%202017%20%281%29.jpg&width=800"
+  },
+  {
+   "title": "Hakone Venetian Glass Museum, Hakone, Kanagawa Prefecture, November 2017 (3).jpg",
+   "dist_m": 238,
+   "lat": 35.267486,
+   "lon": 139.015588,
+   "bearing": 308,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20Venetian%20Glass%20Museum%2C%20Hakone%2C%20Kanagawa%20Prefecture%2C%20November%202017%20%283%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20Venetian%20Glass%20Museum%2C%20Hakone%2C%20Kanagawa%20Prefecture%2C%20November%202017%20%283%29.jpg&width=800"
+  },
+  {
+   "title": "Musee du Petit Prince de Saint-Exupery a Hakone, Kanagawa-pref. - panoramio.jpg",
+   "dist_m": 395,
+   "lat": 35.2665,
+   "lon": 139.013333333,
+   "bearing": 275,
+   "url": "https://commons.wikimedia.org/wiki/File%3AMusee%20du%20Petit%20Prince%20de%20Saint-Exupery%20a%20Hakone%2C%20Kanagawa-pref.%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Musee%20du%20Petit%20Prince%20de%20Saint-Exupery%20a%20Hakone%2C%20Kanagawa-pref.%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "Hakone 箱根 - panoramio.jpg",
+   "dist_m": 406,
+   "lat": 35.264131,
+   "lon": 139.013975,
+   "bearing": 236,
+   "url": "https://commons.wikimedia.org/wiki/File%3AHakone%20%E7%AE%B1%E6%A0%B9%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Hakone%20%E7%AE%B1%E6%A0%B9%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "The Lamplighter Square 2.jpg",
+   "dist_m": 410,
+   "lat": 35.266667,
+   "lon": 139.013194,
+   "bearing": 278,
+   "url": "https://commons.wikimedia.org/wiki/File%3AThe%20Lamplighter%20Square%202.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/The%20Lamplighter%20Square%202.jpg&width=800"
+  },
+  {
+   "title": "King's Road of the museum.jpg",
+   "dist_m": 410,
+   "lat": 35.266667,
+   "lon": 139.013194,
+   "bearing": 278,
+   "url": "https://commons.wikimedia.org/wiki/File%3AKing%27s%20Road%20of%20the%20museum.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/King%27s%20Road%20of%20the%20museum.jpg&width=800"
+  },
+  {
+   "title": "The Lamplighter Square.jpg",
+   "dist_m": 410,
+   "lat": 35.266667,
+   "lon": 139.013194,
+   "bearing": 278,
+   "url": "https://commons.wikimedia.org/wiki/File%3AThe%20Lamplighter%20Square.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/The%20Lamplighter%20Square.jpg&width=800"
+  },
+  {
+   "title": "Entrance to the Museum of The Little Prince.jpg",
+   "dist_m": 410,
+   "lat": 35.266667,
+   "lon": 139.013194,
+   "bearing": 278,
+   "url": "https://commons.wikimedia.org/wiki/File%3AEntrance%20to%20the%20Museum%20of%20The%20Little%20Prince.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Entrance%20to%20the%20Museum%20of%20The%20Little%20Prince.jpg&width=800"
+  },
+  {
+   "title": "Little Prince Park.jpg",
+   "dist_m": 410,
+   "lat": 35.266667,
+   "lon": 139.013194,
+   "bearing": 278,
+   "url": "https://commons.wikimedia.org/wiki/File%3ALittle%20Prince%20Park.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Little%20Prince%20Park.jpg&width=800"
+  },
+  {
+   "title": "The Lamplighter Square 1.jpg",
+   "dist_m": 410,
+   "lat": 35.266667,
+   "lon": 139.013194,
+   "bearing": 278,
+   "url": "https://commons.wikimedia.org/wiki/File%3AThe%20Lamplighter%20Square%201.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/The%20Lamplighter%20Square%201.jpg&width=800"
+  },
+  {
+   "title": "Geographer's Road.jpg",
+   "dist_m": 410,
+   "lat": 35.266667,
+   "lon": 139.013194,
+   "bearing": 278,
+   "url": "https://commons.wikimedia.org/wiki/File%3AGeographer%27s%20Road.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Geographer%27s%20Road.jpg&width=800"
+  },
+  {
+   "title": "ローソン第3新東京市南店 (15797727773) (2).jpg",
+   "dist_m": 557,
+   "lat": 35.268427,
+   "lon": 139.012191,
+   "bearing": 297,
+   "url": "https://commons.wikimedia.org/wiki/File%3A%E3%83%AD%E3%83%BC%E3%82%BD%E3%83%B3%E7%AC%AC3%E6%96%B0%E6%9D%B1%E4%BA%AC%E5%B8%82%E5%8D%97%E5%BA%97%20%2815797727773%29%20%282%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/%E3%83%AD%E3%83%BC%E3%82%BD%E3%83%B3%E7%AC%AC3%E6%96%B0%E6%9D%B1%E4%BA%AC%E5%B8%82%E5%8D%97%E5%BA%97%20%2815797727773%29%20%282%29.jpg&width=800"
+  }
+ ],
+ "research_queries": {
+  "日文": [
+   "箱根ガラスの森美術館 撮影スポット",
+   "箱根ガラスの森美術館 写真映え",
+   "箱根ガラスの森美術館 見どころ 庭園",
+   "箱根ガラスの森美術館 紅葉 見頃 OR ススキ 見頃",
+   "箱根ガラスの森美術館 ポートレート 撮影 許可"
+  ],
+  "中文": [
+   "箱根ガラスの森美術館 拍照 机位",
+   "箱根ガラスの森美術館 出片 攻略",
+   "箱根ガラスの森美術館 人像 写真 小红书"
+  ],
+  "英文": [
+   "箱根ガラスの森美術館 photo spots",
+   "箱根ガラスの森美術館 best time to visit photography",
+   "箱根ガラスの森美術館 instagram spots"
+  ],
+  "官方与规则": [
+   "箱根ガラスの森美術館 公式サイト（見どころ／庭園／撮影に関する注意）",
+   "箱根ガラスの森美術館 三脚 禁止 OR 撮影 禁止"
+  ],
+  "地图": [
+   "https://www.google.com/maps/search/?api=1&query=35.26618,139.01767",
+   "https://www.openstreetmap.org/#map=17/35.26618/139.01767"
+  ]
+ },
+ "generated": "2026-09-27T09:50:27",
+ "fixture": false
+}

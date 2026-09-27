@@ -1,0 +1,20 @@
+# 运行时产物
+out/
+done/
+plans/*
+!plans/.gitkeep
+inbox/*
+!inbox/.gitkeep
+refs/*
+!refs/.gitkeep
+job.ps1
+*_log.txt
+*_done.txt
+
+# 本机环境
+.venv/
+bin/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

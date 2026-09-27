@@ -1,0 +1,7 @@
+astral>=3.2
+matplotlib>=3.8
+pvlib>=0.11
+pandas>=2.0
+timezonefinder>=6.5
+tzdata>=2024.1
+Pillow>=10.0
