@@ -31,7 +31,7 @@ description: "真实景点+真实日期的人像外拍规划：出片点与 SNS 
 7. **prompt**　用 `nuyoah-xiezhen-prompt`「系列母版 + 同系列变体」：全组固定风格词链、成像词链、人物与服装（`templates/prompt_chains.md`），每张只改取景与机位、动作与视线、环境与光线；光线引用 `sun.md`，按「来源—落点—结果」写；服装与道具分开写；无参考图时写「本张重新生成一位「…」类型的成年原创女性」。输出 `plans/<plan>/prompts.md`：每张 `## <id>-<标题>` 后接一个 ```text 代码块（`jobs` 阶段靠此解析）。短片与实况写「关键帧」：成像词链换成对应介质的观感（S-Log3 还原后的柔和影调 / iPhone 实况观感），运动部位写轻微动态模糊，风格、人物、服装词链不变。
 8. **出图**　`pipeline.py jobs <plan>` → `inbox/<plan>.jsonl`（追加分镜后用 `--missing` 只排还没出图的）；`pipeline.py shots <plan>`（只跑本企划的 jsonl，不用 `run_shots.cmd` 以免重跑 inbox 里的旧批次）。每条只提交一次，失败只记录，不改词不重试。尺寸 3:4 → 1152x1536，4:5 → 1216x1520，横幅 1536x1152；后端改成 1086x1448 属正常；单张 30–120 秒。
 9. **检查**　逐张按 nuyoah-xiezhen-prompt 第六步检查，另核对光向与 `sun.md`、背景方位与底图一致。状态只写 test / failed，用户确认后才 final；重做回到原始分镜重新编译，不用上一轮生成图做输入。把 `out/<plan>/log.jsonl` 复制为 `plans/<plan>/generation_log.jsonl`。
-10. **小抄**　`pipeline.py cards <plan> [--images out/<plan>]`（图片按文件名前两位匹配分镜 id），逐页检查：文字溢出、标签重叠、太阳箭头方向、页脚「AI 拍摄示意，非现场实拍」。产物 `cards/card_<id>.png`、`cards/outfit_0*.png` 与 PDF；PDF 顺序固定为 行程页 → 穿搭页 → 路线页 → 分镜按路线顺序（无路线时静态在前、动态在后），连拍与短片的「相机设置」块会自动换成连拍或 S-Log3 短片的内容。**PDF 文件名固定为 `<出行日期>_<地点>_拍摄脚本.pdf`**（例 `2026-09-28_浅草寺_拍摄脚本.pdf`，改版加 `_v2`），由 `pipeline.py` 按 `shotlist.json` 的 `meta.date` 与 `meta.place`（括号前的部分）自动命名；同一步还生成 `<出行日期>_<地点>_拍摄核对表.html`（现场勾选用：器材、服装、行程、到场核对、按路线分组的分镜、收尾；也可 `pipeline.py checklist <plan>` 单独做），和 PDF 一起交付；交付给用户、同步到本机、放进 examples 的文件都用这个名字，不用「拍摄脚本.pdf」这类无日期无地点的名字。
+10. **拍摄脚本与核对表**　`pipeline.py cards <plan> [--images out/<plan>]`（图片按文件名前两位匹配分镜 id），逐页检查：文字溢出、标签重叠、太阳箭头方向、页脚「AI 拍摄示意，非现场实拍」。产物 `cards/card_<id>.png`、`cards/outfit_0*.png` 与 PDF；PDF 顺序固定为 行程页 → 穿搭页 → 路线页 → 分镜按路线顺序（无路线时静态在前、动态在后），连拍与短片的「相机设置」块会自动换成连拍或 S-Log3 短片的内容。**PDF 文件名固定为 `<出行日期>_<地点>_拍摄脚本.pdf`**（例 `2026-09-28_浅草寺_拍摄脚本.pdf`，改版加 `_v2`），由 `pipeline.py` 按 `shotlist.json` 的 `meta.date` 与 `meta.place`（括号前的部分）自动命名；同一步还生成 `<出行日期>_<地点>_拍摄核对表.html`（现场勾选用：器材、服装、行程、到场核对、按路线分组的分镜、收尾；也可 `pipeline.py checklist <plan>` 单独做），和 PDF 一起交付；交付给用户、同步到本机、放进 examples 的文件都用这个名字，不用「拍摄脚本.pdf」这类无日期无地点的名字。
 11. **当天资料**　`timeline.md`（交通班次注明来源与查询日期、每张时段、分岔点、最后入场、回程后续 3 班）、`model_sheet.md`（服装/道具/妆发/每张一句话）、`arrival_checklist.md`（到场 10 分钟核对项）、有短片时 `clips.md`（剪辑顺序与转场遮挡物，模板 `templates/clips_template.md`；时间线每条 video 加 1.5 分钟）。
 
 改版：复制为 `<plan>-v2`，只重做变动的分镜，复用图片记 `img_from`，新增分镜单独出图，最后统一重跑 `cards`，`generation_log.jsonl` 合并两轮。
@@ -54,4 +54,4 @@ description: "真实景点+真实日期的人像外拍规划：出片点与 SNS 
 
 ## 交付
 
-对话中给：调研摘要（spot 列表与来源链接、SNS 结论）、光线摘要（关键时刻与实际直射截止）、分镜表与 lint 结果、每张完整 prompt、图片路径、质量状态与 `generation_log.jsonl`、穿搭方案（`outfit.md`）、小抄 PDF（`<日期>_<地点>_拍摄脚本.pdf`，穿搭页在前、动态在后）、时间线/模特页/到场清单/剪辑单/行程与路线页，以及需要现场核实的事项。写作不用设问式标题、「不是A，是B」式对举与破折号金句。
+对话中给：调研摘要（spot 列表与来源链接、SNS 结论）、光线摘要（关键时刻与实际直射截止）、分镜表与 lint 结果、每张完整 prompt、图片路径、质量状态与 `generation_log.jsonl`、穿搭方案（`outfit.md`）、拍摄脚本 PDF（`<日期>_<地点>_拍摄脚本.pdf`，行程、穿搭、路线页在前，分镜按路线顺序）与核对表 HTML（`<日期>_<地点>_拍摄核对表.html`）、时间线/模特页/到场清单/剪辑单/行程与路线页，以及需要现场核实的事项。写作不用设问式标题、「不是A，是B」式对举与破折号金句。
