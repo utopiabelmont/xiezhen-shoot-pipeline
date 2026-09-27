@@ -26,6 +26,10 @@
 
 ![浅草寺四张小抄](docs/img/cards_gallery_asakusa.jpg)
 
+第三个示例 [`examples/hakone-0928-v3/`](examples/hakone-0928-v3/) 是 1.1.0 的分镜基本法（`docs/SHOT_DESIGN.md` + `pipeline.py lint`）落地后重跑的箱根：19 张主线 + 1 张 Pola 雨天备选，按开场 → 环境 → 互动 → 肖像 → 细节 → 收尾排叙事，景别 远景 2 / 全身 6 / 七分 2 / 半身 4 / 近景 3 / 特写 3，焦段 24–105 三档、姿态四种、看镜头 8/19，lint 硬性与提示项全部通过。20 张示意图一轮生成无失败（单张 28–151 秒）。
+
+![箱根 v3 示意图一览](docs/img/hakone_v3_contact.jpg)
+
 底图：左为 OSM 几何直接渲染，右为 Codex `edit` 模式按固定指令重绘的版本，形状位置不变，所以能在上面按经纬度精确叠加站位、相机与太阳方向。
 
 ![底图前后对比](docs/img/basemap_before_after.jpg)
