@@ -66,10 +66,12 @@ flowchart LR
 
 ## 快速开始
 
+新电脑从零安装（Windows 双击 `setup.cmd`、codex-imagegen、装 skill、自测）按 [`INSTALL.md`](INSTALL.md) 走，约 10 分钟。已装好的机器：
+
 ```bash
 git clone https://github.com/utopiabelmont/xiezhen-shoot-pipeline.git
 cd xiezhen-shoot-pipeline
-pip install -r requirements.txt        # Windows 没有系统 Python：双击 setup.cmd，见 docs/WINDOWS_SETUP.md
+pip install -r requirements.txt        # Windows：双击 setup.cmd
 python check_env.py
 
 # 自动阶段
@@ -116,8 +118,9 @@ templates/             分镜模板与 JSON Schema、prompt 词链、SNS 调研�
 scripts/               Windows：setup.ps1（uv + venv）、job.example.ps1（一次性任务模板，UTF-8 BOM）
 setup.cmd run_job.cmd run_shots.cmd   Windows 双击入口
 skill/xiezhen-shoot-planner/          Claude 用的流程 skill
+INSTALL.md             新电脑安装说明
 docs/                  WORKFLOW（SOP）、SHOT_DESIGN（分镜基本法）、WINDOWS_SETUP（部署与已知坑）、CARD_SPEC（小抄版式）、CAMERA_NOTES（α7 V 外观与闪光灯策略）、CHANGELOG
-examples/hakone-0928-v2/   完整示例企划
+examples/                  三个完整示例企划：hakone-0928-v2（13 张）、asakusa-0928（12 张，双底图）、hakone-0928-v3（20 张，分镜基本法）
 plans/ inbox/ out/ refs/   运行时目录（out/ 与 plans/ 不入库；要保留的企划复制到 examples/）
 ```
 

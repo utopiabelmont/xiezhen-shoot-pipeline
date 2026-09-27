@@ -2,6 +2,7 @@
 
 ## 1.1.1 — 2026-09-27
 
+- 新增 `INSTALL.md`：新电脑安装（Windows / macOS / Linux、codex-imagegen、skill 安装、自测、更新、常见问题）；README 快速开始与目录同步。
 - 新增示例 `examples/hakone-0928-v3`：按分镜基本法重做的箱根 20 张（19 主线 + 1 备选），lint 无提示，作为当前规则下的标准参考。
 - README 增加 v3 示意图一览。
 
