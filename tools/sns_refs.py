@@ -123,7 +123,7 @@ def render_map(plan, R, stops_order, out):
         tw = d.textlength(r["id"][1:], font=font(14, True))
         d.text((rx0 + 26 - tw / 2, y + 6), r["id"][1:], font=font(14, True), fill=(255, 255, 255))
         d.text((rx0 + 52, y), r["title"], font=font(17, True), fill=INK)
-        sub = f"{r['platform']} · {r['posted']} · {r['stop']} · 对应分镜 {'、'.join(r.get('shots', []))} · 可复现 {r['reproducible']['level']}"
+        sub = f"{r['platform']} · {r['posted']} · {r['stop']} · {('对应分镜 ' + '、'.join(r['shots'])) if r.get('shots') else '仅作穿搭参考'} · 可复现 {r['reproducible']['level']}"
         d.text((rx0 + 52, y + 24), sub, font=font(14), fill=MUTED)
         y += 60
     y = panel(d, (rx0, 804, rx1, H - 50), "看图方法", font(24, True))
@@ -236,7 +236,7 @@ def write_md(plan, R):
     for r in R["refs"]:
         L += [f"## {r['id']} {r['title']}", "",
               f"- 原帖：{r['url']}（{r['platform']}，{r['posted']}）",
-              f"- 位置：{r['spot']}；停留点 {r['stop']}；对应分镜 {'、'.join(r.get('shots', []))}" + ("（位置推测，需现场核对）" if r.get("location_confidence") == "低" else ""),
+              f"- 位置：{r['spot']}；停留点 {r['stop']}；对应分镜 {'、'.join(r.get('shots', [])) or '无（仅作穿搭参考）'}" + ("（位置推测，需现场核对）" if r.get("location_confidence") == "低" else ""),
               f"- 机位：人物的{compass(r['cam_bearing'])}侧 {r['cam_bearing']}°，{r['cam_dist']:g} m，机高 {r['cam_h']}，{r['lens_est']}，{r['kind']}",
               f"- 时段光线：{r['time_light']}（{r['weather']}）",
               f"- 姿势视线：{POSE.get(r['pose'], r['pose'])}，{GAZE.get(r['gaze'], r['gaze'])}；{r.get('pose_note', '')}",
