@@ -528,6 +528,14 @@ def qr_image(url, size):
     return q.make_image(fill_color=(40, 60, 45), back_color=(255, 255, 255)).convert("RGB").resize((size, size), Image.NEAREST)
 
 
+def sns_sketch(ref):
+    """按文字描述重画的原帖构图线稿（plans/<plan>/sns_sketch/<Sxx>*.png）；原创插画，公开版也可用。"""
+    if SNS_DIR is None:
+        return None
+    hits = sorted((SNS_DIR.parent / "sns_sketch").glob(f"{ref['id']}*.png"))
+    return hits[0] if hits else None
+
+
 def pending_card(size, ref):
     """原帖截图还没补时的占位：二维码 + 编号 + 该存成的文件名，取代抽象的人形剪影。"""
     fw, fh = size
@@ -573,10 +581,18 @@ def draw_sns_slot(img, box, ref):
     iy0, iy1 = y0 + 26, y1 - text_h - 4
     bw, bh = x1 - x0, iy1 - iy0
     src = sns_image(ref)
+    sk = sns_sketch(ref)
     if src:
         ph = Image.open(src).convert("RGB")
         ph.thumbnail((bw, bh))
         tag = "原帖截图 · 仅个人参考"
+    elif sk:
+        ph = Image.open(sk).convert("RGB")
+        ph.thumbnail((bw, bh))
+        q = qr_image(ref["url"], max(56, min(84, ph.width // 4)))
+        if q:                                       # 右下角放原帖二维码，现场扫码看原图
+            ph.paste(q, (ph.width - q.width - 6, ph.height - q.height - 26))
+        tag = "原帖构图线稿（按文字描述，扫码看原图）"
     else:
         ph = pending_card((bw, bh), ref)
         tag = "原图待补 · 扫码打开原帖"

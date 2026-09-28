@@ -540,6 +540,8 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
             lv = r["reproducible"]["level"]
             dr = DIRS[int((r["cam_bearing"] % 360) / 22.5 + 0.5) % 16]
             src = None if (public or not thumbs) else thumb(plan_dir / "sns_private", r["id"], width=360)
+            if not src and thumbs:                      # 没有原帖截图时用按文字重画的构图线稿（原创，公开版也放）
+                src = thumb(plan_dir / "sns_sketch", r["id"], width=360)
             pic = f'<img class="snsimg" src="{src}" alt="{esc(r["id"])} 原帖截图（仅个人参考）" loading="lazy">' if src else ""
             li.append(f'<li>{pic}<a href="{esc(r["url"])}" target="_blank" rel="noopener">{esc(r["id"])} {esc(r["title"])}</a>'
                       f' <span class="chip lv-{ {"高": "hi", "中": "mid", "低": "lo"}.get(lv, "lo") }">可复现 {esc(lv)}</span>'
