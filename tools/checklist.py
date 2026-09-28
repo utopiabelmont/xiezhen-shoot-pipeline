@@ -393,6 +393,16 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
             if ids:
                 groups.append({"name": MEDIUM[m], "ids": ids})
 
+    def src_html(sr):
+        """v5 起每条分镜带 src：这张照着哪条 SNS 素材拍，点链接看原帖。"""
+        if sr is None:
+            return ""
+        if not sr.get("ref"):
+            return '<div class="pose">补充分镜（无 SNS 素材）</div>'
+        pose = f'　同款姿势 {esc(sr.get("pose_id", ""))} {esc(sr["pose_name"])}' if sr.get("pose_name") else ""
+        return (f'<div class="pose">来源 <a href="{esc(sr["url"])}" target="_blank" rel="noopener">{esc(sr["ref"])} {esc(sr.get("title", ""))}</a>'
+                f'（{esc(sr.get("platform", ""))} · {esc(sr.get("kind", ""))}）{pose}<br>照搬：{esc(sr.get("what", ""))}</div>')
+
     def shot_li(s):
         m = s.get("medium", "still")
         chips = []
@@ -425,6 +435,7 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
                 + (('<div class="pose">参考姿势：' + "".join(
                     f'<a href="{esc(PPOST.get(pz["src"], {}).get("url", "#"))}" target="_blank" rel="noopener">{esc(pz["id"])} {esc(pz["name"])}</a>'
                     for pz in PBY.get(s["id"], [])) + '</div>') if PBY.get(s["id"]) else "")
+                + src_html(s.get("src"))
                 + f'<details><summary>细节</summary><dl>{dl}</dl></details></div>{mv}</li>')
 
     ver = re.search(r"v\d+(?:\.\d+)?", meta.get("version", ""))
@@ -573,7 +584,7 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
         H.append(f'<div class="stop"{attrs}><h3><span class="seq">{gi + 1:02d}</span>{esc(g["name"])}'
                  f'<span class="t num">{esc(tt)}{esc(walk)}</span><span class="prog num" data-prog="#g{gi} input"></span></h3>'
                  + (f'<div class="note">{esc(g["note"])}</div>' if g.get("note") else "")
-                 + refs_html(g["name"])
+                 + ("" if any(byid[i].get("src") is not None for i in g["ids"]) else refs_html(g["name"]))
                  + f'<ul class="items" id="g{gi}">' + "".join(shot_li(byid[i]) for i in g["ids"]) + "</ul></div>")
     H.append("</section>")
 

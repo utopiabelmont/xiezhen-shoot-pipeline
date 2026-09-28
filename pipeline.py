@@ -201,7 +201,11 @@ def cmd_cards(a):
     plan = json.loads((d / "shotlist.json").read_text(encoding="utf-8"))
     if rc == 0 and plan.get("meta", {}).get("route_stops"):
         run([PY, TOOLS / "route.py", "--plan", d, "--out", d / "cards", "--speed", str(plan["meta"].get("route_speed_mps", 1.0))])
-    if rc == 0 and (d / "sns_refs.json").exists():
+    per_shot_src = any("src" in x for x in plan.get("shots", []))   # 分镜各自带来源（v5 起）时，不再单出参考机位汇总页
+    if per_shot_src:
+        for old in (d / "cards").glob("sns_[0-9]*.png"):
+            old.unlink()
+    if rc == 0 and (d / "sns_refs.json").exists() and not per_shot_src:
         run([PY, TOOLS / "sns_refs.py", "--plan", d, "--out", d / "cards"])    # SNS 参考机位页（在路线之后跑，按游览顺序）
     if rc == 0 and (d / "pose_refs.json").exists():
         run([PY, TOOLS / "poses.py", "--plan", d, "--out", d / "cards"] + (["--public"] if getattr(a, "public", False) else []))   # 姿势参考页

@@ -377,12 +377,15 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     d.text((W - 40 - d.textlength(sub, font=f_s), 52), sub, font=f_s, fill=MUTED)
     # 照片：有 SNS 参考时左为 AI 示意、中为原帖，下方为对照说明；
     # AI 示意是横图时改为上下排：横图占满左两栏，下方左为原帖、右为对照说明
-    refs = [SNS_REFS[i] for i in SNS_BY_SHOT.get(shot["id"], []) if i in SNS_REFS]
+    src = shot.get("src")                           # v5 起：分镜从一条 SNS 素材出发，卡片只放一张 AI 示意 + 来源栏
+    refs = [] if src is not None else [SNS_REFS[i] for i in SNS_BY_SHOT.get(shot["id"], []) if i in SNS_REFS]
     refs.sort(key=lambda r: {"高": 0, "中": 1, "低": 2}.get(r["reproducible"]["level"], 3))
     refs = refs[:2]
     ph = Image.open(photo_path).convert("RGB") if (photo_path and photo_path.exists()) else None
     wide = bool(refs) and ph is not None and ph.width > ph.height
     px0, py0, px1, py1 = 40, 110, 940, H - 60
+    if src is not None:
+        px1 = 700
     if refs:
         px1, py1 = (950, 110 + 500) if wide else (595, 850)
     photo_bottom = py1
@@ -404,6 +407,13 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     else:
         d.rectangle((px0, py0, px1, py1), fill=(230, 226, 214))
         d.text((px0 + 30, py0 + 30), "（示意图待生成）", font=f_b, fill=MUTED)
+    if src is not None:
+        tag = ("AI 示意 · 按原帖构图的文字描述生成" if src.get("ref") else "AI 示意 · 补充分镜")
+        tx = bx if ph is not None else px0
+        d.rectangle((tx, py0, tx + d.textlength(tag, font=font(13, True)) + 12, py0 + 22), fill=GREEN)
+        d.text((tx + 6, py0 + 3), tag, font=font(13, True), fill=(255, 255, 255))
+        draw_src_column(img, (716, 110, 950, H - 60), src, shot)
+        d = ImageDraw.Draw(img)
     if refs:
         tag = "本组 AI 示意"
         d.rectangle((px0, py0, px0 + d.textlength(tag, font=font(13, True)) + 12, py0 + 22), fill=GREEN)
@@ -457,6 +467,8 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     y = panel(d, (rx0, 702, split - 6, 912), "姿势与引导", f_h)
     pz = POSES_BY_SHOT.get(shot["id"], [])
     ptxt = ("\n参考姿势：" + "、".join(f"{p['id']} {p['name']}" for p in pz)) if pz else ""
+    if src and src.get("pose_name"):
+        ptxt = f"\n同款姿势：{src['pose_name']}"
     fit_block(d, (rx0 + 12, y), shot["subject"] + "\n" + shot["action"] + ptxt, split - rx0 - 30, 904)
     y = panel(d, (split + 6, 702, rx1, 912), "光线与备选", f_h)
     fit_block(d, (split + 18, y), shot["light"] + "\n备选：" + shot["alt"], rx1 - split - 32, 904)
@@ -608,6 +620,90 @@ def draw_sns_slot(img, box, ref):
         d.text((x0, ty), ln, font=f13, fill=INK)
         ty += 17
     d.text((x0, ty + 1), url if d.textlength(url, font=font(11)) <= x1 - x0 else url[:44] + "…", font=font(11), fill=MUTED)
+
+
+KIND_COL = {"机位帖": (46, 110, 70), "姿势帖": (176, 98, 40), "平台汇总": (70, 96, 150)}
+
+
+ROLE_CN = {"opening": "开场，交代地点", "context": "过渡，交代环境与动线", "detail": "细节，给整组换节奏",
+           "interaction": "互动，人和场景有动作关系", "portrait": "人像", "closing": "收尾"}
+MEDIUM_CN = {"live": "手机实况，不占相机时间", "video": "短片素材", "burst": "连拍"}
+
+
+def draw_src_column(img, box, src, shot=None):
+    """v5 分镜卡的来源栏：素材类型、平台与日期、帖子标题、二维码、照搬了什么、同款姿势、可复现度、链接。"""
+    d = ImageDraw.Draw(img)
+    x0, y0, x1, y1 = box
+    w = x1 - x0
+    d.rounded_rectangle(box, radius=10, outline=LINE, width=2, fill=(250, 248, 242))
+    ix0, iw = x0 + 14, w - 28
+    y = y0 + 12
+    if not src.get("ref"):
+        d.text((ix0, y), "补充分镜", font=font(22, True), fill=GREEN); y += 36
+        d.rounded_rectangle((ix0, y, ix0 + d.textlength("无 SNS 素材", font=font(13, True)) + 16, y + 22), radius=8, fill=MUTED)
+        d.text((ix0 + 8, y + 3), "无 SNS 素材", font=font(13, True), fill=(255, 255, 255)); y += 34
+        y = fit_block(d, (ix0, y), "SNS 调研里没有对应的帖子，按场地与叙事需要补拍。", iw, y1 - 12, sizes=(14,)) + 12
+        shot = shot or {}
+        for lab, txt in (("这张的作用", ROLE_CN.get(shot.get("role"), "")), ("形式", MEDIUM_CN.get(shot.get("medium"), "相机静帧")),
+                         ("景别", shot.get("kind", ""))):
+            if txt:
+                d.text((ix0, y), lab, font=font(14, True), fill=GREEN); y += 20
+                y = fit_block(d, (ix0, y), txt, iw, y1 - 12, sizes=(14,)) + 8
+        return
+    d.text((ix0, y), "SNS 来源", font=font(22, True), fill=GREEN)
+    ref = src["ref"]
+    d.text((x1 - 14 - d.textlength(ref, font=font(20, True)), y + 2), ref, font=font(20, True), fill=GOLD)
+    y += 36
+    kind = src.get("kind", "")
+    kx = ix0
+    for lab, col in ((kind, KIND_COL.get(kind, MUTED)),
+                     (f"可复现 {src['level']}" if src.get("level") else "", LEVEL_COL.get(src.get("level"), MUTED))):
+        if not lab:
+            continue
+        lw = d.textlength(lab, font=font(13, True)) + 16
+        d.rounded_rectangle((kx, y, kx + lw, y + 22), radius=8, fill=col)
+        d.text((kx + 8, y + 3), lab, font=font(13, True), fill=(255, 255, 255))
+        kx += lw + 6
+    y += 30
+    meta = f"{src.get('platform', '')} · {src.get('posted', '')}" + (f" · ♥ {src['likes']}" if src.get("likes") else "")
+    d.text((ix0, y), meta, font=font(14), fill=MUTED); y += 22
+    for ln in fit_lines(d, src.get("title", ""), font(16, True), iw, 3):
+        d.text((ix0, y), ln, font=font(16, True), fill=INK); y += 22
+    y += 6
+    qs = min(iw, 196)
+    q = qr_image(src["url"], qs)
+    if q:
+        qx = x0 + (w - qs) // 2
+        img.paste(q, (qx, y))
+        d = ImageDraw.Draw(img)
+        cap = "扫码打开搜索结果" if kind == "平台汇总" else "扫码打开原帖"
+        y += qs + 2
+        d.text((x0 + (w - d.textlength(cap, font=font(13))) // 2, y), cap, font=font(13), fill=MUTED)
+        y += 24
+    parts = [("照搬", src.get("what", ""))]
+    if src.get("pose_name"):
+        parts.append((f"同款姿势 {src.get('pose_id', '')} {src['pose_name']}", src.get("pose_how", "")))
+    also = [a for a in src.get("also", []) if not (src.get("pose_id") and src["pose_id"] in a)]
+    if also:
+        parts.append(("也参考", "、".join(also)))
+    if src.get("why"):
+        parts.append(("现场差异", src["why"]))
+    url = src["url"].replace("https://www.", "").replace("https://", "")
+    if "keyword=" in url:                               # 搜索页链接太长，显示解码后的关键词
+        from urllib.parse import unquote
+        url = f"{src.get('platform', '')}搜索：" + unquote(url.split("keyword=")[1].split("&")[0])
+    link_lines = fit_lines(d, url, font(11), iw, 3)
+    bottom = y1 - 10 - 15 * len(link_lines)
+    for lab, txt in parts:
+        if y > bottom - 40:
+            break
+        d.text((ix0, y), lab, font=font(14, True), fill=GREEN); y += 20
+        y = fit_block(d, (ix0, y), txt, iw, bottom - 4, sizes=(14, 13, 12)) + 8
+    ly = bottom
+    for ln in link_lines:
+        d.text((ix0, ly), ln, font=font(11), fill=MUTED); ly += 15
+
+
 MEDIUM_BADGE = {"burst": "连拍抓动态", "video": "短片", "live": "手机实况"}
 MEDIUM_COLOR = {"burst": (176, 98, 40), "video": (70, 96, 150), "live": (110, 110, 105)}
 SETTINGS_TITLE = {"burst": "相机设置（连拍）", "video": "相机设置（S-Log3 短片）", "live": "iPhone 设置（实况）"}
