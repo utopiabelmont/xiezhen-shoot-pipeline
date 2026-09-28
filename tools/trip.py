@@ -146,15 +146,19 @@ def main():
         mid = ((p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2)
         lab = f"{MODE.get(lg.get('mode',''), lg.get('mode',''))} {lg.get('minutes','?')} min · {lg['km']} km"
         tw = d.textlength(lab, font=f_t)
-        d.rectangle((mid[0] - tw / 2 - 4, mid[1] - 10, mid[0] + tw / 2 + 4, mid[1] + 10), fill=(255, 255, 255))
-        d.text((mid[0] - tw / 2, mid[1] - 9), lab, font=f_t, fill=ACCENT)
+        lx = mid[0] - tw / 2
+        if math.hypot(p1[0] - p0[0], p1[1] - p0[1]) < tw + 60:   # 短段：标签放到连线左侧，避开右侧地名
+            lx = min(p0[0], p1[0]) - 24 - tw
+        lx = max(lx, mx0 + 8)
+        d.rectangle((lx - 4, mid[1] - 10, lx + tw + 4, mid[1] + 10), fill=(255, 255, 255))
+        d.text((lx, mid[1] - 9), lab, font=f_t, fill=ACCENT)
     drawn = {}
     for i, (s, p) in enumerate(zip(stops, P)):
         key = (round(s["latlon"][0], 4), round(s["latlon"][1], 4))
         if key in drawn:                                  # 同一地点（起点=终点）合并成一个圆点，标 1·4
             j = drawn[key]; q = P[j]
             lab = f"{j+1}·{i+1}"; tw = d.textlength(lab, font=font(14, True))
-            d.ellipse((q[0] - 18, q[1] - 14, q[0] + 18, q[1] + 14), fill=INK, outline=(255, 255, 255), width=3)
+            d.rounded_rectangle((q[0] - tw / 2 - 9, q[1] - 14, q[0] + tw / 2 + 9, q[1] + 14), radius=14, fill=INK, outline=(255, 255, 255), width=3)
             d.text((q[0] - tw / 2, q[1] - 9), lab, font=font(14, True), fill=(255, 255, 255))
             continue
         drawn[key] = i

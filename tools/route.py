@@ -28,7 +28,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
-from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, GOLD, font, panel, text_block, latlon_to_px  # noqa: E402
+from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, GOLD, font, panel, text_block, wrap, latlon_to_px  # noqa: E402
 
 DWELL = {"still": 8, "burst": 4, "video": 4, "live": 1}
 STOP_EXTRA = 2
@@ -281,10 +281,12 @@ def main():
         y = max(y + 22, y2 + 2)
         if r.get("note"):
             y = text_block(d, (rx0 + 44, y), r["note"], font(13), rx1 - rx0 - 60, fill=MUTED, spacing=1) + 2
-        if y > H - 150:
+        if y > H - 190:
             d.text((rx0 + 12, y), "…（其余见 route.md）", font=f_t, fill=MUTED); break
-    y = max(y + 8, H - 130)
-    text_block(d, (rx0 + 12, y), "依据：" + (meta.get("route_source") or "按分镜时段自动排序") + f"\n步行 {a.speed} m/s；停留按介质估算（静态 8 / 连拍 4 / 短片 4 / 实况 1 分钟，每站加 2 分钟）；橙线为步道上的最短路，细线为概略。", font(13), rx1 - rx0 - 24, fill=MUTED, spacing=2)
+    basis = "依据：" + (meta.get("route_source") or "按分镜时段自动排序") + f"\n步行 {a.speed} m/s；停留按介质估算（静态 8 / 连拍 4 / 短片 4 / 实况 1 分钟，每站加 2 分钟）；橙线为步道上的最短路，细线为概略。"
+    nb = len(wrap(d, basis, font(13), rx1 - rx0 - 24))
+    y = max(y + 8, H - 80 - nb * 15)                      # 依据贴底，但不越过面板下沿
+    text_block(d, (rx0 + 12, y), basis, font(13), rx1 - rx0 - 24, fill=MUTED, spacing=2)
     d.text((40, H - 42), "路线页由 tools/route.py 按底图步道计算；现场封闭或人流变化时按到场清单调整。", font=f_t, fill=MUTED)
     img.save(out / "route_01.png", quality=92)
     print(f"路线：{len(rows)} 站，步行 {result['total_walk_m']} m，{result['start']} → {result['end']}；→ {plan/'route.json'}, {out/'route_01.png'}")

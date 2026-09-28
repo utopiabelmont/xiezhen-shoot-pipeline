@@ -80,11 +80,37 @@
     },
     "route_stops": {
      "type": "array",
-     "items": {"type": "object", "required": ["name", "shots"], "properties": {"name": {"type": "string"}, "shots": {"type": "array", "items": {"type": "string"}}, "note": {"type": "string"}}},
+     "items": {
+      "type": "object",
+      "required": [
+       "name",
+       "shots"
+      ],
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "shots": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "note": {
+        "type": "string"
+       }
+      }
+     },
      "description": "园内游览顺序：每站列分镜 id（拍摄顺序）；tools/route.py 据此沿步道算路线（docs/ROUTE_NOTES.md）"
     },
-    "route_source": {"type": "string", "description": "路线依据：官网順路 / 攻略 / 预报"},
-    "route_speed_mps": {"type": "number", "description": "步行速度 m/s，默认 1.0，雨天 0.85"},
+    "route_source": {
+     "type": "string",
+     "description": "路线依据：官网順路 / 攻略 / 预报"
+    },
+    "route_speed_mps": {
+     "type": "number",
+     "description": "步行速度 m/s，默认 1.0，雨天 0.85"
+    },
     "transport": {
      "type": "string"
     }
@@ -291,38 +317,210 @@
      },
      "medium": {
       "type": "string",
-      "enum": ["still", "burst", "video", "live"],
+      "enum": [
+       "still",
+       "burst",
+       "video",
+       "live"
+      ],
       "description": "介质：still 静态照片（缺省）、burst 连拍抓动态（出照片）、video 相机短片、live 手机实况；见 docs/VIDEO_NOTES.md"
      },
      "burst": {
       "type": "object",
-      "properties": {"fps": {"type": "number"}, "precap_s": {"type": "number"}, "action": {"type": "string"}},
+      "properties": {
+       "fps": {
+        "type": "number"
+       },
+       "precap_s": {
+        "type": "number"
+       },
+       "action": {
+        "type": "string"
+       }
+      },
       "description": "连拍：帧率、预拍秒数、动作与选片说明"
      },
      "clip": {
       "type": "object",
-      "required": ["mode", "move", "start", "end"],
+      "required": [
+       "mode",
+       "move",
+       "start",
+       "end"
+      ],
       "properties": {
-       "mode": {"type": "string", "enum": ["24p", "sq60", "sq120"]},
-       "move": {"type": "string", "description": "运镜名（docs/VIDEO_NOTES.md 第 5 节）"},
-       "dur_s": {"type": "number", "description": "实录秒数，实时 ≤ 5"},
-       "start": {"type": "string"},
-       "end": {"type": "string"},
-       "nd": {"type": "string"},
-       "exposure": {"type": "string", "description": "本条曝光基准，例：脸放斑马 52%"},
-       "move_type": {"type": "string", "enum": ["tilt_down_reveal", "wipe_reveal", "track_side", "track_behind", "track_front", "push_in", "orbit_quarter", "static_turn", "static", "pull_back_tilt_up", "static_walk_out"], "description": "运镜示意页用的类型；不写时按 move 文字判断"},
-       "cam_h": {"type": "number", "description": "机位高度（米），不写时从 camera 文字判断"},
-       "walk_m": {"type": "number", "description": "跟拍时人物走的距离（米），默认 0.8 m/s × 运动秒数"},
-       "tilt_start": {"type": "number", "description": "下摇起始仰角（度），默认 35"},
-       "tilt_end": {"type": "number", "description": "后拉上摇结束仰角（度），默认 22"},
-       "orbit_side": {"type": "string", "enum": ["left", "right"], "description": "环绕从人物哪一侧起"},
-       "cam_dist_start": {"type": "number"},
-       "cam_dist_end": {"type": "number"}
+       "mode": {
+        "type": "string",
+        "enum": [
+         "24p",
+         "sq60",
+         "sq120"
+        ]
+       },
+       "move": {
+        "type": "string",
+        "description": "运镜名（docs/VIDEO_NOTES.md 第 5 节）"
+       },
+       "dur_s": {
+        "type": "number",
+        "description": "实录秒数，实时 ≤ 5"
+       },
+       "start": {
+        "type": "string"
+       },
+       "end": {
+        "type": "string"
+       },
+       "nd": {
+        "type": "string"
+       },
+       "exposure": {
+        "type": "string",
+        "description": "本条曝光基准，例：脸放斑马 52%"
+       },
+       "move_type": {
+        "type": "string",
+        "enum": [
+         "tilt_down_reveal",
+         "wipe_reveal",
+         "track_side",
+         "track_behind",
+         "track_front",
+         "push_in",
+         "orbit_quarter",
+         "static_turn",
+         "static",
+         "pull_back_tilt_up",
+         "static_walk_out"
+        ],
+        "description": "运镜示意页用的类型；不写时按 move 文字判断"
+       },
+       "cam_h": {
+        "type": "number",
+        "description": "机位高度（米），不写时从 camera 文字判断"
+       },
+       "walk_m": {
+        "type": "number",
+        "description": "跟拍时人物走的距离（米），默认 0.8 m/s × 运动秒数"
+       },
+       "tilt_start": {
+        "type": "number",
+        "description": "下摇起始仰角（度），默认 35"
+       },
+       "tilt_end": {
+        "type": "number",
+        "description": "后拉上摇结束仰角（度），默认 22"
+       },
+       "orbit_side": {
+        "type": "string",
+        "enum": [
+         "left",
+         "right"
+        ],
+        "description": "环绕从人物哪一侧起"
+       },
+       "cam_dist_start": {
+        "type": "number"
+       },
+       "cam_dist_end": {
+        "type": "number"
+       }
       }
      },
      "live": {
       "type": "object",
-      "properties": {"device": {"type": "string"}, "lens": {"type": "string"}, "exposure": {"type": "string"}, "action": {"type": "string"}}
+      "properties": {
+       "device": {
+        "type": "string"
+       },
+       "lens": {
+        "type": "string"
+       },
+       "exposure": {
+        "type": "string"
+       },
+       "action": {
+        "type": "string"
+       }
+      }
+     },
+     "src": {
+      "type": "object",
+      "description": "这张分镜照着哪条 SNS 素材设计（v5 起分镜卡右侧的来源栏与核对表的来源行都从这里来）。没有对应素材的补充分镜写 {\"ref\": \"\", \"kind\": \"无 SNS 素材\", \"what\": \"补充分镜：…\"}。规则见 docs/SNS_NOTES.md。",
+      "required": [
+       "ref",
+       "kind",
+       "what"
+      ],
+      "properties": {
+       "ref": {
+        "type": "string",
+        "description": "sns_refs.json 里的编号：机位帖 Sxx、姿势帖 Xx、平台汇总 Qx；补充分镜为空字符串"
+       },
+       "kind": {
+        "type": "string",
+        "enum": [
+         "机位帖",
+         "姿势帖",
+         "平台汇总",
+         "无 SNS 素材"
+        ]
+       },
+       "platform": {
+        "type": "string",
+        "description": "小红书 / Instagram / 抖音 / TikTok"
+       },
+       "title": {
+        "type": "string",
+        "description": "原帖标题（平台汇总写检索词与汇总篇数）"
+       },
+       "url": {
+        "type": "string",
+        "description": "原帖或搜索页链接，卡片上生成二维码"
+       },
+       "posted": {
+        "type": "string",
+        "description": "发帖日期；平台汇总写浏览日期"
+       },
+       "level": {
+        "type": "string",
+        "enum": [
+         "高",
+         "中",
+         "低"
+        ],
+        "description": "机位帖的可复现度"
+       },
+       "why": {
+        "type": "string",
+        "description": "可复现度的理由与今天现场的差异（季节、天气、人流）"
+       },
+       "likes": {
+        "type": "integer"
+       },
+       "what": {
+        "type": "string",
+        "description": "照搬了原帖的什么：机位、焦段、构图、姿势中的哪些"
+       },
+       "pose_id": {
+        "type": "string",
+        "description": "姿势帖里的姿势编号 Pxx"
+       },
+       "pose_name": {
+        "type": "string"
+       },
+       "pose_how": {
+        "type": "string",
+        "description": "姿势要领，一句话"
+       },
+       "also": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "同一张还参考的其它素材，如「X1 P05 撑伞侧身看镜头」"
+       }
+      }
      }
     }
    }

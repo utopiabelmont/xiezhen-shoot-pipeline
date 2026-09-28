@@ -256,6 +256,20 @@ ul.items{list-style:none;margin:0;padding:0}
 details{margin-top:4px;font-size:13px}
 details summary{cursor:pointer;color:var(--green);width:max-content}
 details.mv{grid-column:1/-1;margin-top:2px}
+details.refs{margin:2px 0 6px;font-size:13px}
+details.refs summary{cursor:pointer;color:var(--green)}
+details.refs ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
+details.refs li{border-left:3px solid var(--line);padding-left:8px}
+details.refs a{color:var(--green);font-weight:600}
+details.refs .use{margin-top:2px}
+.pose{font-size:13px;margin-top:3px}
+.pose a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px dotted var(--green);margin-right:6px}
+.poses{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.poses li{background:var(--panel,#fff);border:1px solid var(--line);border-radius:8px;padding:6px;font-size:12.5px;line-height:1.45}
+.poses img{display:block;width:100%;height:auto;border-radius:6px;margin-bottom:4px}
+.poses b{color:var(--green)}
+details.refs .snsimg{display:block;width:100%;max-width:260px;height:auto;border-radius:6px;margin:2px 0 6px;border:1px solid var(--line)}
+.chip.lv-hi{color:var(--green)} .chip.lv-mid{color:var(--burst)} .chip.lv-lo{color:var(--muted)}
 img.overview{display:block;width:100%;max-width:560px;height:auto;margin:8px 0;border-radius:6px;border:1px solid var(--line)}
 details.ov summary{cursor:pointer;color:var(--green)}
 details.ov .d{font-size:12.5px;color:var(--muted);margin:4px 0 0}
@@ -332,7 +346,7 @@ def item(cid: str, head: str, desc: str = "") -> str:
             + (f'<div class="d">{esc(desc)}</div>' if desc else "") + "</label></li>")
 
 
-def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
+def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str, str, str]:
     SL = load(plan_dir / "shotlist.json")
     meta, shots = SL["meta"], SL["shots"]
     byid = {s["id"]: s for s in shots}
@@ -341,6 +355,22 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
     T = load(plan_dir / "trip.json")
     S = load(plan_dir / "sun.json", {}) or {}
     O = load(plan_dir / "outfit.json")
+    PR = load(plan_dir / "pose_refs.json", {}) or {}
+    PPOST = {x["id"]: x for x in PR.get("posts", [])}
+    PBY = {}
+    for pz in PR.get("poses", []):
+        for sid in pz.get("shots", []):
+            PBY.setdefault(sid, []).append(pz)
+
+    def pose_img(pid):
+        if not thumbs:
+            return None
+        if not public:
+            src = thumb(plan_dir / "sns_private", pid, width=300)
+            if src:
+                return src
+        return thumb(plan_dir / "poses", pid, width=300)
+
     place = re.split(r"[（(]", meta.get("place", P.get("place", "")))[0].strip()
     date = meta.get("date", P.get("date", ""))
     key = f"xiezhen-check:{plan_dir.name}"
@@ -362,6 +392,16 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
             ids = [s["id"] for s in shots if s.get("medium", "still") == m]
             if ids:
                 groups.append({"name": MEDIUM[m], "ids": ids})
+
+    def src_html(sr):
+        """v5 起每条分镜带 src：这张照着哪条 SNS 素材拍，点链接看原帖。"""
+        if sr is None:
+            return ""
+        if not sr.get("ref"):
+            return '<div class="pose">补充分镜（无 SNS 素材）</div>'
+        pose = f'　同款姿势 {esc(sr.get("pose_id", ""))} {esc(sr["pose_name"])}' if sr.get("pose_name") else ""
+        return (f'<div class="pose">来源 <a href="{esc(sr["url"])}" target="_blank" rel="noopener">{esc(sr["ref"])} {esc(sr.get("title", ""))}</a>'
+                f'（{esc(sr.get("platform", ""))} · {esc(sr.get("kind", ""))}）{pose}<br>照搬：{esc(sr.get("what", ""))}</div>')
 
     def shot_li(s):
         m = s.get("medium", "still")
@@ -392,6 +432,10 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
                 f'<span class="chips">{"".join(chips)}</span>'
                 f'<div class="d">{esc(line)}</div>'
                 + (f'<div class="say">{esc(s.get("action"))}</div>' if s.get("action") else "")
+                + (('<div class="pose">参考姿势：' + "".join(
+                    f'<a href="{esc(PPOST.get(pz["src"], {}).get("url", "#"))}" target="_blank" rel="noopener">{esc(pz["id"])} {esc(pz["name"])}</a>'
+                    for pz in PBY.get(s["id"], [])) + '</div>') if PBY.get(s["id"]) else "")
+                + src_html(s.get("src"))
                 + f'<details><summary>细节</summary><dl>{dl}</dl></details></div>{mv}</li>')
 
     ver = re.search(r"v\d+(?:\.\d+)?", meta.get("version", ""))
@@ -485,6 +529,52 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
                  '<p class="d">橙线为相机轨迹（圆点为每秒位置），绿线为人物移动；三帧为起 / 中 / 止的竖幅画面。每条的完整说明在下面对应短片的「运镜示意」里。</p>'
                  '</details></section>')
 
+    # SNS 参考机位（按停留点挂到分镜分组里）
+    SR = load(plan_dir / "sns_refs.json", {}) or {}
+    refs_by_stop = {}
+    for r in SR.get("refs", []):
+        refs_by_stop.setdefault(r.get("stop", ""), []).append(r)
+    DIRS = ["北", "北北东", "东北", "东北东", "东", "东南东", "东南", "南南东", "南", "南南西", "西南", "西南西", "西", "西北西", "西北", "北北西"]
+
+    def use_html(r):
+        ub = r.get("use_by_shot") or {}
+        if not ub:
+            return f'<div class="use">本组：{esc(r["use"])}</div>'
+        return "".join(f'<div class="use">本组{"" if sid in t else " " + esc(sid)}：{esc(t)}</div>' for sid, t in ub.items())
+
+    def refs_html(stop):
+        rs = refs_by_stop.get(stop, [])
+        if not rs:
+            return ""
+        li = []
+        for r in rs:
+            lv = r["reproducible"]["level"]
+            dr = DIRS[int((r["cam_bearing"] % 360) / 22.5 + 0.5) % 16]
+            src = None if (public or not thumbs) else thumb(plan_dir / "sns_private", r["id"], width=360)
+            if not src and thumbs:                      # 没有原帖截图时用按文字重画的构图线稿（原创，公开版也放）
+                src = thumb(plan_dir / "sns_sketch", r["id"], width=360)
+            pic = f'<img class="snsimg" src="{src}" alt="{esc(r["id"])} 原帖截图（仅个人参考）" loading="lazy">' if src else ""
+            li.append(f'<li>{pic}<a href="{esc(r["url"])}" target="_blank" rel="noopener">{esc(r["id"])} {esc(r["title"])}</a>'
+                      f' <span class="chip lv-{ {"高": "hi", "中": "mid", "低": "lo"}.get(lv, "lo") }">可复现 {esc(lv)}</span>'
+                      f'<div class="d">{esc(r["platform"])} · {esc(r["posted"])} · 相机在人物{dr}侧 {r["cam_dist"]:g} m · {esc(r["lens_est"])} · {esc(r["kind"])}'
+                      + ("（位置推测）" if r.get("location_confidence") == "低" else "") + '</div>'
+                      + use_html(r) + '</li>')
+        return (f'<details class="refs"><summary>SNS 参考机位（{len(rs)}）</summary><ul>{"".join(li)}</ul>'
+                '<p class="d">点标题在新页面打开原帖；机位为按照片推算，现场以实际为准。</p></details>')
+
+    # 姿势参考（小红书）
+    if PR.get("poses"):
+        li = []
+        for pz in PR["poses"]:
+            src = pose_img(pz["id"])
+            post = PPOST.get(pz.get("src"), {})
+            li.append(f'<li>' + (f'<img src="{src}" alt="{esc(pz["id"])} {esc(pz["name"])} 姿势示意" loading="lazy">' if src else "")
+                      + f'<b>{esc(pz["id"])} {esc(pz["name"])}</b>　用于 {esc(" · ".join(pz.get("shots", [])))}<br>{esc(pz["how"])}<br>'
+                      + f'<a href="{esc(post.get("url", "#"))}" target="_blank" rel="noopener">{esc(post.get("title", pz.get("src", "")))}</a></li>')
+        tips = "".join(f'<p class="d">{esc(t["text"])}</p>' for t in PR.get("tips", []))
+        H.append('<section><h2>姿势参考（小红书）</h2><details><summary>'
+                 f'{len(PR["poses"])} 个姿势，点开看线稿与要领；原帖点链接</summary><ul class="poses">{"".join(li)}</ul>{tips}</details></section>')
+
     # 分镜
     H.append(f'<section><h2>分镜{"（按游览路线）" if R else ""}</h2>')
     for gi, g in enumerate(groups):
@@ -494,6 +584,7 @@ def build(plan_dir: Path, images: Path, thumbs=True) -> tuple[str, str, str]:
         H.append(f'<div class="stop"{attrs}><h3><span class="seq">{gi + 1:02d}</span>{esc(g["name"])}'
                  f'<span class="t num">{esc(tt)}{esc(walk)}</span><span class="prog num" data-prog="#g{gi} input"></span></h3>'
                  + (f'<div class="note">{esc(g["note"])}</div>' if g.get("note") else "")
+                 + ("" if any(byid[i].get("src") is not None for i in g["ids"]) else refs_html(g["name"]))
                  + f'<ul class="items" id="g{gi}">' + "".join(shot_li(byid[i]) for i in g["ids"]) + "</ul></div>")
     H.append("</section>")
 
@@ -517,10 +608,11 @@ def main():
     ap.add_argument("--images")
     ap.add_argument("--no-thumbs", action="store_true")
     ap.add_argument("--fragment", help="另存一份无外壳版本到此路径")
+    ap.add_argument("--public", action="store_true", help="公开版：不嵌 sns_private 原帖截图（发布页、examples 用）")
     a = ap.parse_args()
     plan = Path(a.plan)
     images = Path(a.images) if a.images else ROOT / "out" / plan.name
-    title, body, key = build(plan, images, thumbs=not a.no_thumbs)
+    title, body, key = build(plan, images, thumbs=not a.no_thumbs, public=a.public)
     meta = load(plan / "shotlist.json")["meta"]
     date = meta.get("date", "")
     inner = (f"<title>{esc(title)}</title>\n<style>{CSS}</style>\n"
