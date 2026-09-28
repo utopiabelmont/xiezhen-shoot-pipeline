@@ -17,6 +17,7 @@ pipeline.py　外拍规划流水线的统一入口。每个阶段一个子命令
   python pipeline.py shots   <plan>                                       → out/<plan>/<id>.png + log.jsonl（run_shots.py）
   python pipeline.py cards   <plan> [--images out/<plan>]                 → cards/card_<id>.png + <日期>_<地点>_拍摄脚本.pdf
   python pipeline.py checklist <plan> [--no-thumbs]                      → <日期>_<地点>_拍摄核对表.html（现场勾选用；cards 阶段也会自动做）
+  python pipeline.py sns-import <plan> [--list]                          → 把 sns_inbox/ 里自己保存的原帖图片按编号收进 sns_private/
   python pipeline.py status  <plan>                                       → 各阶段产物清单
   python pipeline.py register [--root PATH] [--show]                      → 把仓库路径登记到 ~/.xiezhen-pipeline/config.json（skill 据此找到本机仓库）
 
@@ -417,6 +418,10 @@ def cmd_lint(a):
     return 1 if hard else 0
 
 
+def cmd_sns_import(a):
+    return run([PY, TOOLS / "sns_import.py", "--plan", PLANS / a.plan] + (["--list"] if a.list else []))
+
+
 def cmd_status(a):
     d = PLANS / a.plan
     items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("palette.json", "palette（场地色）"), ("outfit.json", "穿搭（Claude）"), ("sun.md", "sun"), ("route.json", "路线（route）"), ("trip.json", "行程（Claude）"),
@@ -491,6 +496,7 @@ def main():
     s = sub.add_parser("outfit"); s.add_argument("plan"); s.set_defaults(fn=cmd_outfit)
     s = sub.add_parser("route"); s.add_argument("plan"); s.add_argument("--speed", type=float, default=1.0); s.add_argument("--basemap", default="main"); s.set_defaults(fn=cmd_route)
     s = sub.add_parser("trip"); s.add_argument("plan"); s.set_defaults(fn=cmd_trip)
+    s = sub.add_parser("sns-import"); s.add_argument("plan"); s.add_argument("--list", action="store_true"); s.set_defaults(fn=cmd_sns_import)
     s = sub.add_parser("status"); s.add_argument("plan"); s.set_defaults(fn=cmd_status)
     s = sub.add_parser("register"); s.add_argument("--root"); s.add_argument("--show", action="store_true"); s.set_defaults(fn=cmd_register)
 

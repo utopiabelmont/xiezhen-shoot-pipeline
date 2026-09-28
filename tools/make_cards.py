@@ -517,6 +517,40 @@ def sketch(size, fr):
     return im
 
 
+def qr_image(url, size):
+    """原帖链接的二维码（手机扫码直接打开）；没装 qrcode 库时返回 None。"""
+    try:
+        import qrcode
+    except ImportError:
+        return None
+    q = qrcode.QRCode(border=2, box_size=10, error_correction=qrcode.constants.ERROR_CORRECT_M)
+    q.add_data(url); q.make(fit=True)
+    return q.make_image(fill_color=(40, 60, 45), back_color=(255, 255, 255)).convert("RGB").resize((size, size), Image.NEAREST)
+
+
+def pending_card(size, ref):
+    """原帖截图还没补时的占位：二维码 + 编号 + 该存成的文件名，取代抽象的人形剪影。"""
+    fw, fh = size
+    im = Image.new("RGB", (fw, fh), (238, 235, 226))
+    d = ImageDraw.Draw(im)
+    d.rectangle((0, 0, fw - 1, fh - 1), outline=LINE, width=2)
+    d.text((14, 14), "原图待补", font=font(22, True), fill=GREEN)
+    d.text((14, 44), f"{ref['id']} · {ref['platform']} · {ref.get('posted', '')}", font=font(14), fill=MUTED)
+    qs = min(fw - 60, fh - 190, 240)
+    q = qr_image(ref["url"], qs) if qs > 60 else None
+    y = 76
+    if q:
+        im.paste(q, ((fw - qs) // 2, y)); y += qs + 12
+    lines = ["1. 手机扫码，在 App 里打开原帖", "2. 长按图片保存（或截图）",
+             f"3. 放进 sns_inbox/ 或存成 sns_private/{ref['id']}.jpg", "4. 重跑 cards，这里换成原图"]
+    for ln in lines:
+        for t in fit_lines(d, ln, font(13), fw - 28, 2):
+            if y > fh - 18:
+                break
+            d.text((14, y), t, font=font(13), fill=INK); y += 18
+    return im
+
+
 def draw_sns_slot(img, box, ref):
     """SNS 栏的一格：编号与来源、原帖截图（或构图剪影）、机位一句话、链接。"""
     d = ImageDraw.Draw(img)
@@ -544,8 +578,8 @@ def draw_sns_slot(img, box, ref):
         ph.thumbnail((bw, bh))
         tag = "原帖截图 · 仅个人参考"
     else:
-        ph = sketch((min(bw, int(bh * 0.75)), bh), ref.get("frame", {}))
-        tag = "构图示意（原图见链接）"
+        ph = pending_card((bw, bh), ref)
+        tag = "原图待补 · 扫码打开原帖"
     px = x0 + (bw - ph.width) // 2
     img.paste(ph, (px, iy0))
     d = ImageDraw.Draw(img)
