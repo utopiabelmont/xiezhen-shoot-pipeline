@@ -161,20 +161,29 @@ def cmd_jobs(a):
         raise SystemExit("分镜未通过基本法硬性检查；修正后再生成任务，或加 --force 跳过")
     d = PLANS / a.plan
     shots = {s["id"]: s for s in json.loads((d / "shotlist.json").read_text(encoding="utf-8"))["shots"]}
-    md = (d / "prompts.md").read_text(encoding="utf-8")
+    moves = getattr(a, "moves", False)                 # --moves：短片运镜页的起 / 中 / 止三帧（move_prompts.md）
+    src_md = d / ("move_prompts.md" if moves else "prompts.md")
+    if not src_md.exists():
+        raise SystemExit(f"缺少 {src_md.name}")
+    md = src_md.read_text(encoding="utf-8")
     # 每张：## <id>-<title> 标题后跟 ```text ... ``` 代码块
     blocks = re.findall(r"^##\s+(\S+)[^\n]*\n(?:.*?\n)*?```text\n(.*?)```", md, flags=re.M | re.S)
     if not blocks:
         raise SystemExit("prompts.md 里没有找到 `## <id>-<title>` + ```text 块")
     (ROOT / "inbox").mkdir(exist_ok=True)
-    out = ROOT / "inbox" / f"{a.plan}.jsonl"
-    done = {p.name[:2] for p in (ROOT / "out" / a.plan).glob("*.png")} if getattr(a, "missing", False) else set()
+    stem = f"{a.plan}-moves" if moves else a.plan
+    out = ROOT / "inbox" / f"{stem}.jsonl"
+    key = (lambda n: n.split("-")[0]) if moves else (lambda n: n[:2])
+    done = {key(p.name) for p in (ROOT / "out" / stem).glob("*.png")} if getattr(a, "missing", False) else set()
     n = 0
     with open(out, "w", encoding="utf-8") as f:
         for head, prompt in blocks:
+            head = re.sub(r'[\\/:*?"<>|]', "-", head)       # id 会成为文件名
             sid = head.split("-")[0]
             if sid in done:
                 continue
+            if moves:
+                sid = sid[:2]
             shot = shots.get(sid, {})
             job = {"id": head, "prompt": " ".join(prompt.split()), "size": shot.get("size", "1152x1536"), "quality": "high"}
             if shot.get("images"):
@@ -183,8 +192,18 @@ def cmd_jobs(a):
     print(f"{out}：{n} 条")
 
 
+def cmd_renumber(a):
+    """分镜编号按游览路线重排（先跑 route）。"""
+    d = PLANS / a.plan
+    if not (d / "route.json").exists():
+        rc = cmd_route(argparse.Namespace(plan=a.plan, speed=json.loads((d / "shotlist.json").read_text(encoding="utf-8"))["meta"].get("route_speed_mps", 1.0), basemap="main"))
+        if rc:
+            return rc
+    return run([PY, TOOLS / "renumber.py", "--plan", d] + (["--rename-images"] if a.rename_images else []) + (["--keep-times"] if a.keep_times else []))
+
+
 def cmd_shots(a):
-    jobs = ROOT / "inbox" / f"{a.plan}.jsonl"
+    jobs = ROOT / "inbox" / (f"{a.plan}-moves.jsonl" if getattr(a, "moves", False) else f"{a.plan}.jsonl")
     if not jobs.exists():
         raise SystemExit(f"缺少 {jobs}，先运行 jobs 阶段")
     return run([PY, ROOT / "run_shots.py", "--jobs", jobs] + (["--dry-run"] if a.dry_run else []))
@@ -203,11 +222,11 @@ def cmd_cards(a):
         run([PY, TOOLS / "route.py", "--plan", d, "--out", d / "cards", "--speed", str(plan["meta"].get("route_speed_mps", 1.0))])
     per_shot_src = any("src" in x for x in plan.get("shots", []))   # 分镜各自带来源（v5 起）时，不再单出参考机位汇总页
     if per_shot_src:
-        for old in (d / "cards").glob("sns_[0-9]*.png"):
+        for old in [*(d / "cards").glob("sns_[0-9]*.png"), *(d / "cards").glob("poses_*.png")]:
             old.unlink()
     if rc == 0 and (d / "sns_refs.json").exists() and not per_shot_src:
         run([PY, TOOLS / "sns_refs.py", "--plan", d, "--out", d / "cards"])    # SNS 参考机位页（在路线之后跑，按游览顺序）
-    if rc == 0 and (d / "pose_refs.json").exists():
+    if rc == 0 and (d / "pose_refs.json").exists() and not per_shot_src:   # 分镜自带来源时姿势已分到各张
         run([PY, TOOLS / "poses.py", "--plan", d, "--out", d / "cards"] + (["--public"] if getattr(a, "public", False) else []))   # 姿势参考页
     if rc == 0 and any(x.get("medium") == "video" for x in plan.get("shots", [])):
         run([PY, TOOLS / "moves.py", "--plan", d, "--out", d / "cards"])      # 短片运镜示意页与短片一览（在路线之后跑，一览按游览顺序）
@@ -249,6 +268,10 @@ def cmd_checklist(a):
         cmd += ["--images", a.images]
     if getattr(a, "no_thumbs", False):
         cmd.append("--no-thumbs")
+    if getattr(a, "public", False):
+        cmd.append("--public")
+    if getattr(a, "fragment", None):
+        cmd += ["--fragment", a.fragment]
     return run(cmd)
 
 
@@ -491,11 +514,15 @@ def main():
     s = sub.add_parser("basemap"); s.add_argument("plan"); s.add_argument("--name", default="main"); s.add_argument("--meters", type=float, default=200)
     s.add_argument("--size", type=int, default=1024); s.add_argument("--center"); s.add_argument("--extra"); s.add_argument("--fixture"); s.set_defaults(fn=cmd_basemap)
     s = sub.add_parser("stylize"); s.add_argument("plan"); s.add_argument("--name", default="main"); s.add_argument("--prompt-extra", default=""); s.set_defaults(fn=cmd_stylize)
-    s = sub.add_parser("jobs"); s.add_argument("plan"); s.add_argument("--force", action="store_true"); s.add_argument("--missing", action="store_true"); s.set_defaults(fn=cmd_jobs)
-    s = sub.add_parser("shots"); s.add_argument("plan"); s.add_argument("--dry-run", action="store_true"); s.set_defaults(fn=cmd_shots)
+    s = sub.add_parser("jobs"); s.add_argument("plan"); s.add_argument("--force", action="store_true"); s.add_argument("--missing", action="store_true")
+    s.add_argument("--moves", action="store_true", help="改读 move_prompts.md，生成短片起 / 中 / 止三帧任务 inbox/<plan>-moves.jsonl"); s.set_defaults(fn=cmd_jobs)
+    s = sub.add_parser("renumber"); s.add_argument("plan"); s.add_argument("--rename-images", action="store_true"); s.add_argument("--keep-times", action="store_true"); s.set_defaults(fn=cmd_renumber)
+    s = sub.add_parser("shots"); s.add_argument("plan"); s.add_argument("--dry-run", action="store_true")
+    s.add_argument("--moves", action="store_true", help="跑 inbox/<plan>-moves.jsonl（短片三帧）"); s.set_defaults(fn=cmd_shots)
     s = sub.add_parser("cards"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--public", action="store_true", help="公开版：不放 sns_private 原帖截图（放进 examples / 推到 GitHub 前用）"); s.set_defaults(fn=cmd_cards)
     s = sub.add_parser("lint"); s.add_argument("plan"); s.set_defaults(fn=cmd_lint)
-    s = sub.add_parser("checklist"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--no-thumbs", action="store_true"); s.set_defaults(fn=cmd_checklist)
+    s = sub.add_parser("checklist"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--no-thumbs", action="store_true")
+    s.add_argument("--public", action="store_true", help="公开版：不嵌 sns_private 原帖截图"); s.add_argument("--fragment", help="另存一份无外壳版本（发布页用）"); s.set_defaults(fn=cmd_checklist)
     s = sub.add_parser("palette"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--n", type=int, default=12); s.add_argument("--offline", action="store_true"); s.set_defaults(fn=cmd_palette)
     s = sub.add_parser("outfit"); s.add_argument("plan"); s.set_defaults(fn=cmd_outfit)
     s = sub.add_parser("route"); s.add_argument("plan"); s.add_argument("--speed", type=float, default=1.0); s.add_argument("--basemap", default="main"); s.set_defaults(fn=cmd_route)

@@ -789,7 +789,9 @@ def main():
         return
     plan = Path(a.plan)
     global FRAME_DIR
-    FRAME_DIR = plan / "move_frames"
+    FRAME_DIR = plan / "move_frames"                  # 挑好的三帧放这里；没有就直接用 jobs --moves / shots --moves 的输出目录
+    if not FRAME_DIR.exists():
+        FRAME_DIR = plan.resolve().parent.parent / "out" / f"{plan.name}-moves"
     out = Path(a.out or plan / "cards"); out.mkdir(parents=True, exist_ok=True)
     SL = json.loads((plan / "shotlist.json").read_text(encoding="utf-8"))
     outfit = {}
