@@ -1,5 +1,10 @@
 # 变更记录
 
+## 1.6.1 — 2026-09-28
+
+- 运镜库动图：`tools/moves_library_prompts.py` 写 11 种运镜 × 4 帧的逐帧 prompt（同一原创人物、服装与虚构庭园），Codex 纯文字出图；`tools/move_gif.py --library` 合成每种运镜一张 GIF 和一张总览 GIF（左俯视图相机与人物同步移动，右竖幅画面交叉淡化），README 的运镜库换成动图。
+- `move_gif.py --plan`：企划有 `move_frames/` 时，`cards` 阶段另出每条短片的 `cards/move_<id>.gif`。
+
 ## 1.6.0 — 2026-09-28
 
 - SNS 素材驱动的分镜（`docs/SNS_NOTES.md`）：调研时把出过片的机位帖、姿势帖与平台汇总逐条写进 `sns_refs.json`（编号 S / X+P / Q），机位、构图、人物位置比例、前景背景、姿势、穿搭都写成文字；分镜从素材出发设计同款，每张写 `src`（schema 已加），素材覆盖不到的再补。

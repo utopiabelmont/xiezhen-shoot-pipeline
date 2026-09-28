@@ -32,11 +32,24 @@
 
 ![补充分镜](docs/img/card_v5_supplement.jpg)
 
-单条运镜页与运镜库（每种运镜的俯视轨迹和起 / 中 / 止三帧）。核对表里有「短片运镜一览」和每条短片的「运镜示意」展开项：
+单条运镜页（俯视轨迹、侧视俯仰、操作要点、起 / 中 / 止三帧）。核对表里有「短片运镜一览」和每条短片的「运镜示意」展开项：
 
 ![运镜页](docs/img/move_page.jpg)
 
-![运镜库](docs/img/moves_library.jpg)
+运镜库：11 种运镜，每种 4 帧由 Codex 按文字逐帧画出（同一位原创人物、同一套服装、同一处虚构的庭园美术馆，只换取景），`tools/move_gif.py` 合成动图。左边俯视图上橙点是相机、绿点是人物，随画面同步移动；右边是竖幅 9:16 画面，关键帧之间交叉淡化。逐帧 prompt 在 `tools/moves_library_prompts.py`，原帧在 `docs/img/moves/frames/`。
+
+![运镜库动图](docs/img/moves/moves_library.gif)
+
+<details><summary>逐条放大看</summary>
+
+<table>
+<tr><td align="center"><b>下摇揭示</b><br><img src="docs/img/moves/01_tilt_down_reveal.gif" width="300" alt="下摇揭示"></td><td align="center"><b>遮挡揭示</b><br><img src="docs/img/moves/02_wipe_reveal.gif" width="300" alt="遮挡揭示"></td><td align="center"><b>侧跟</b><br><img src="docs/img/moves/03_track_side.gif" width="300" alt="侧跟"></td></tr>
+<tr><td align="center"><b>后跟</b><br><img src="docs/img/moves/04_track_behind.gif" width="300" alt="后跟"></td><td align="center"><b>前跟（相机倒退）</b><br><img src="docs/img/moves/05_track_front.gif" width="300" alt="前跟（相机倒退）"></td><td align="center"><b>固定微推</b><br><img src="docs/img/moves/06_push_in.gif" width="300" alt="固定微推"></td></tr>
+<tr><td align="center"><b>1/4 环绕</b><br><img src="docs/img/moves/07_orbit_quarter.gif" width="300" alt="1/4 环绕"></td><td align="center"><b>固定 · 转身回眸</b><br><img src="docs/img/moves/08_static_turn.gif" width="300" alt="固定 · 转身回眸"></td><td align="center"><b>固定机位升格</b><br><img src="docs/img/moves/09_static.gif" width="300" alt="固定机位升格"></td></tr>
+<tr><td align="center"><b>后拉上摇</b><br><img src="docs/img/moves/10_pull_back_tilt_up.gif" width="300" alt="后拉上摇"></td><td align="center"><b>固定 · 人走远</b><br><img src="docs/img/moves/11_static_walk_out.gif" width="300" alt="固定 · 人走远"></td></tr>
+</table>
+
+</details>
 
 ![行程页](docs/img/trip_page.jpg)
 
@@ -228,6 +241,8 @@ tools/
   trip.py              一日多景点行程页（含当天天气）
   checklist.py         现场核对表（单文件 HTML，可勾选）
   moves.py             短片运镜示意页与运镜库总览图（有 move_frames/ 时用 Codex 三帧）
+  move_gif.py          运镜动图：俯视图上相机与人物同步移动 + 逐帧画面交叉淡化（运镜库或企划的短片）
+  moves_library_prompts.py  运镜库 11 种运镜 × 4 帧的逐帧 prompt
   renumber.py          分镜编号按游览路线重排，同步附属文件
   sns_import.py        把自己保存的原帖图片按编号归档到 sns_private/
   sns_refs.py poses.py 旧版 SNS 汇总页与姿势参考页（分镜没有 src 时才出）

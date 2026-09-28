@@ -230,6 +230,8 @@ def cmd_cards(a):
         run([PY, TOOLS / "poses.py", "--plan", d, "--out", d / "cards"] + (["--public"] if getattr(a, "public", False) else []))   # 姿势参考页
     if rc == 0 and any(x.get("medium") == "video" for x in plan.get("shots", [])):
         run([PY, TOOLS / "moves.py", "--plan", d, "--out", d / "cards"])      # 短片运镜示意页与短片一览（在路线之后跑，一览按游览顺序）
+        if (d / "move_frames").exists():
+            run([PY, TOOLS / "move_gif.py", "--plan", d, "--out", d / "cards"])   # 有 Codex 三帧时另出每条短片的运镜动图 move_<id>.gif
     if rc == 0:
         try:
             from PIL import Image
