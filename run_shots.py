@@ -74,7 +74,7 @@ def run_batch(jobs_file: Path, cli: str, dry: bool):
         rec = {"id": jid, "batch": jobs_file.stem, "out": out_png.relative_to(ROOT).as_posix(),
                "images": job.get("images") or [], "size": job.get("size", DEFAULT_SIZE),
                "quality": job.get("quality", DEFAULT_QUALITY),
-               "generated_image_inputs": "none", "status": "", "seconds": 0.0, "note": ""}
+               "generated_image_inputs": job.get("images") or "none", "status": "", "seconds": 0.0, "note": ""}
         try:
             cmd, mode = build_cmd(cli, job, out_png, prompt_file)
         except Exception as e:

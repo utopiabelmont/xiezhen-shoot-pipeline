@@ -36,7 +36,12 @@
 
 ![运镜页](docs/img/move_page.jpg)
 
-运镜库：11 种运镜，每种 4 帧由 Codex 按文字逐帧画出（同一位原创人物、同一套服装、同一处虚构的庭园美术馆，只换取景），`tools/move_gif.py` 合成动图。左边俯视图上橙点是相机、绿点是人物，随画面同步移动；右边是竖幅 9:16 画面，关键帧之间交叉淡化。逐帧 prompt 在 `tools/moves_library_prompts.py`，原帧在 `docs/img/moves/frames/`。
+运镜库：11 种运镜，同一位原创人物、同一套服装、同一处虚构的庭园美术馆，`tools/move_gif.py` 合成动图。左边俯视图上橙点是相机、绿点是人物，随画面同步移动；右边是竖幅 9:16 画面。为了让同一条运镜里的背景和人物随轨迹连续变化，画面分两种做法：
+
+- 只动镜头、人物不动的 4 种（下摇揭示、遮挡揭示、固定微推、后拉上摇）：Codex 先画一张包含整段轨迹的大母版，再按运镜路径在母版上连续移动 9:16 取景框，每一帧都取自同一张图，背景和人物不会前后对不上。
+- 人物在动、或相机跟着人物走的 7 种：以起幅为参考图做 edit，每帧只改描述里的那部分。侧跟与后跟逐帧接力（第 2 帧以第 1 帧为参考，第 3 帧以第 2 帧为参考……），背景的平移、拱门的靠近一路累积；固定机位的几种都以同一张起幅为参考，构图不变。
+
+逐帧 prompt 与取景路径在 `tools/moves_library_prompts.py`（`MASTERS` / `RECIPES` / `EDITS` / `CHAIN`），原帧与生成记录在 `docs/img/moves/frames/`。
 
 ![运镜库动图](docs/img/moves/moves_library.gif)
 
@@ -241,8 +246,8 @@ tools/
   trip.py              一日多景点行程页（含当天天气）
   checklist.py         现场核对表（单文件 HTML，可勾选）
   moves.py             短片运镜示意页与运镜库总览图（有 move_frames/ 时用 Codex 三帧）
-  move_gif.py          运镜动图：俯视图上相机与人物同步移动 + 逐帧画面交叉淡化（运镜库或企划的短片）
-  moves_library_prompts.py  运镜库 11 种运镜 × 4 帧的逐帧 prompt
+  move_gif.py          运镜动图：俯视图上相机与人物同步移动 + 母版连续取景或逐帧交叉淡化（运镜库或企划的短片）
+  moves_library_prompts.py  运镜库的母版 prompt、取景路径与逐帧 edit prompt（接力批与并行批）
   renumber.py          分镜编号按游览路线重排，同步附属文件
   sns_import.py        把自己保存的原帖图片按编号归档到 sns_private/
   sns_refs.py poses.py 旧版 SNS 汇总页与姿势参考页（分镜没有 src 时才出）

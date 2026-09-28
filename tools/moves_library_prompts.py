@@ -1,7 +1,11 @@
-"""moves_library_prompts.py　运镜库示意的逐帧 prompt：11 种运镜，每种 4 帧（a 起幅 → d 落幅），写到 inbox/moves-library.jsonl。
+"""moves_library_prompts.py　运镜库示意的 prompt：11 种运镜，每种一条起 → 止的连续画面，写到 inbox/moves-library-v2-*.jsonl。
 
-同一位原创人物、同一套服装、同一处虚构的欧式庭园美术馆，只换每帧的取景，出图后用 tools/move_gif.py --library 合成动图。
-纯文字 prompt，不输入任何图片。
+同一条运镜里的画面必须是同一个人、同一处场景，只随运镜变化，所以不再逐帧独立生成（v1 的做法，帧与帧对不上）：
+- 裁切型（下摇揭示、遮挡揭示、固定微推、后拉上摇）：相机移动、人物不动。先用文字生成一张大图（母版），
+  tools/move_gif.py 在母版上按 RECIPES 的取景窗口连续平移、缩放，得到连续的镜头运动。
+- 参考图型（侧跟、后跟、前跟、1/4 环绕、转身回眸、升格、人走远）：人物或视角要变。起幅 a 用文字生成，
+  b、c、d 三帧以起幅为参考图（edit），只写相机位置或人物动作的变化，人物与场景保持同一个。
+起幅与母版都是纯文字生成；参考图只用本组自己生成的起幅，不用任何外部图片。
 """
 import json
 from pathlib import Path
@@ -95,30 +99,114 @@ ORDER = ["tilt_down_reveal", "wipe_reveal", "track_side", "track_behind", "track
          "orbit_quarter", "static_turn", "static", "pull_back_tilt_up", "static_walk_out"]
 LETTER = "abcd"
 
+# ---------- 裁切型：母版 + 取景窗口 ----------
+MASTERS = {
+    "tilt_down_reveal": ("1152x1536", "back", "她背对镜头站在石板路上，望向拱廊",
+        "3:4 竖幅远景，24mm 广角，相机在胸口高度略仰；画面上方约一半是庭园上方的深绿树冠枝叶与灰白天空，叶尖挂着水珠；"
+        "树冠下缘之下是远处建筑的深灰瓦屋顶与一排石砌拱廊；画面下三分之一是浅灰石板路，"
+        "一位女性的背影全身站在石板路上、位于画面水平中间，脚在画面自下而上约 8% 处，人物高度约占画面高度的 18%"),
+    "wipe_reveal": ("1536x1152", "front", "她侧身站在拱形窗前，转头看向镜头，嘴角轻轻上扬",
+        "4:3 横幅，35mm 视角，胸口高度；画面左侧约 40% 被一根贴近镜头的石砌柱子占满，严重虚化成灰褐色的大色块；"
+        "画面右侧是一扇石砌拱形窗和窗外的庭园，人物七分身侧身站在窗前，人物中心在画面水平约 68% 处，头顶在自上而下约 15% 处"),
+    "push_in": ("1152x1536", "front", "她站在窗边，低头看窗台上一只空的透明玻璃小花瓶（瓶里没有花），指尖轻碰瓶口，神情安静",
+        "3:4 竖幅，85mm 中长焦，眼平，距离约 2.5 米，七分身；人物脸在画面水平中间、自上而下约 30% 处，"
+        "她的手与花瓶在画面自上而下约 55% 处；背景是拱形窗与窗外虚化的庭园"),
+    "pull_back_tilt_up": ("1152x1536", "back", "她背对镜头站定在拱廊正中的通道上",
+        "3:4 竖幅远景，24mm 广角，相机在人物正后方约 8 米略仰；画面上半是石砌拱廊的圆弧石拱与屋顶，拱顶在画面自上而下约 8% 处；"
+        "人物背影全身在画面下部水平中间，脚在画面自下而上约 6% 处，人物高度约占画面高度的 22%"),
+}
+# 取景窗口关键点：(运镜进度 u, 窗口中心 x, 窗口中心 y, 窗口高度占母版高度)，窗口宽高比 9:16
+RECIPES = {
+    "tilt_down_reveal": [(0.0, 0.5, 0.31, 0.62), (1.0, 0.5, 0.69, 0.62)],
+    "wipe_reveal": [(0.0, 0.21, 0.5, 1.0), (1.0, 0.68, 0.5, 1.0)],
+    "push_in": [(0.0, 0.5, 0.5, 1.0), (1.0, 0.5, 0.40, 0.58)],
+    "pull_back_tilt_up": [(0.0, 0.5, 0.76, 0.46), (1.0, 0.5, 0.5, 1.0)],
+}
+
+# ---------- 参考图型：起幅（沿用 v1 的 a 帧）+ 三帧变化 ----------
+KEEP = ("以参考图为这条短片的起幅。保持同一位人物（脸、发型、妆容、服装、斜挎包）与同一处场景（建筑、拱廊、石板路、灌木、天空、"
+        "光线与色调）完全一致，画幅与画质不变，只按下面的描述改变")
+EDITS = {
+    "track_side": ("相机与人物平行移动，人物在画面里的位置与大小始终不变，背景整体向画面左侧滑过去", [
+        "相机与人物一起向右移动约 1.5 米：人物在画面里的位置、大小、侧身朝向与参考图相同，换另一只脚在前；背景整体向画面左侧平移约画面宽度的四分之一：参考图里画面左缘的那根石柱已经移出画面，原来在她身后的石柱与拱形窗移到了画面左侧，她身后换成下一段拱廊；右侧的水池、雕塑与灌木一起向左移，画面右缘露出新的一段草坪与树",
+        "再一起向右移动约 1.5 米：人物位置与大小不变，裙摆随步子摆动；背景再向左平移约画面宽度的四分之一：参考图左侧的拱形窗移出画面，她身后是下一根石柱，右缘出现新的石瓶与灌木",
+        "再向右约 1.5 米后人物停步：人物位置与大小不变，双脚并拢站定，侧脸微笑；背景再向左平移约画面宽度的四分之一，拱廊接近尽头，右侧露出更多水面与远处树林",
+    ]),
+    "track_behind": ("相机在人物身后同步跟走，人物背影的大小与位置始终不变", [
+        "相机跟着人物一起向前走了约 2 米：人物背影大小与位置不变；远处尽头的拱门比参考图更近、变大约 1.4 倍，两侧拱廊的石柱向画面两边外移",
+        "再一起向前约 2 米：人物背影不变，一只手扶着包带；尽头的拱门变大到占画面上半约一半宽，门内透出暖光，两侧石柱更多移出画面",
+        "人物走到拱门前停下，一只手扶住门框；拱门占画面上半的大部分，背影大小不变",
+    ]),
+    "track_front": ("相机在人物正前方倒退，人物大小与位置始终不变", [
+        "相机与人物同步后退约 2 米：人物大小与位置不变，换另一只脚迈步，眼睛看镜头一侧；身后的石板路与两侧拱廊向远处退去，远处建筑变小",
+        "再同步后退约 2 米：人物放慢脚步，抬手把碎发拨到耳后；背景继续向远处退去",
+        "人物停步，抬头看向画面上方，头顶拱廊的石拱进入画面上缘；人物大小不变",
+    ]),
+    "orbit_quarter": ("相机以人物为圆心、保持同一距离绕行，人物站位与动作不变", [
+        "相机从人物正侧面绕到斜前方约 30 度：画面里她由正侧面变成四分之三侧面，仍低头看手里的叶子；背景随之横移，原来她身后的池水移向画面左侧，拱廊开始进入画面右侧",
+        "相机绕到斜前方约 60 度：她接近正面，眼睛开始抬起；背景主要是拱廊",
+        "相机绕到她正前方：她正面半身，抬眼看镜头，嘴角轻轻上扬；背景是建筑的拱形窗",
+    ]),
+    "static_turn": ("相机完全不动，构图与背景和参考图一模一样", [
+        "人物的头开始向右转，露出一点侧脸轮廓，肩膀不动",
+        "人物转过头，完整侧脸，肩膀仍背对镜头",
+        "人物回眸看镜头，头发被带起一点，嘴角上扬",
+    ]),
+    "static": ("相机完全不动，构图与背景和参考图一模一样", [
+        "手已缩回，只剩指尖在画面右缘；同一串透明玻璃珠串整串向左摆到最高点，水珠飞出细小弧线",
+        "画面里没有手；同一串玻璃珠串从左侧摆回，略偏向右侧",
+        "画面里没有手；同一串玻璃珠串竖直静止，最下面一颗挂着一滴水珠",
+    ]),
+    "static_walk_out": ("相机完全不动，构图与背景和参考图一模一样", [
+        "同一位人物沿石板路向远处走去，背影大小只有参考图的一半",
+        "人物背影很小，走到石板路尽头的树林边",
+        "人物已经走出画面，只剩空的石板路延伸到树林，其余一切不变",
+    ]),
+}
+START_DIR = "out/moves-library-a"           # v1 的起幅 a 帧所在目录（本机）
+# 移动机位的几条逐帧接力：b 以 a 为参考，c 以 b 为参考，d 以 c 为参考，背景变化才会一路累积、不回弹。
+# 这几条单独成批（一条运镜一个 jsonl，按顺序跑），输出在 out/moves-library-v2-<NN>/。
+CHAIN = {"track_side", "track_behind"}
+KEEP_CHAIN = ("以参考图为上一帧，接着往下拍。保持同一位人物（脸、发型、妆容、服装、斜挎包）与同一处场景（建筑、拱廊、石板路、灌木、天空、"
+              "光线与色调）完全一致，画幅与画质不变；相对参考图，只按下面的描述改变")
+
 
 def build():
     jobs = []
     for i, mt in enumerate(ORDER):
-        for k, (frame, who, act) in enumerate(FRAMES[mt]):
-            parts = [STYLE, CROP, f"短片第 {k + 1} 帧（共 4 帧）：{frame}"]
-            if who == "front":
-                parts += [PERSON, act, OUTFIT]
-            elif who == "back":
-                parts += [PERSON_BACK, act, OUTFIT]
-            elif who == "hand":
-                parts += ["画面里只有这位成年女性的一只手与燕麦色针织袖口，指甲干净无色，没有人脸"]
-            else:
-                parts.append(NOBODY)
-            neg = NEG + ("，画面里不要出现任何人物或手" if who == "none" else "")
-            parts += [SCENE, LIGHT, MEDIA, neg]
-            jobs.append({"id": f"{i + 1:02d}{LETTER[k]}-{mt}", "prompt": "；".join(p for p in parts if p),
-                         "size": "1152x1536", "quality": "high"})
+        if mt in MASTERS:
+            size, who, act, frame = MASTERS[mt]
+            parts = [STYLE.replace("3:4 竖幅，", ""), frame, PERSON_BACK if who == "back" else PERSON, act, OUTFIT,
+                     SCENE, LIGHT, MEDIA, NEG]
+            jobs.append({"id": f"{i + 1:02d}m-{mt}", "prompt": "；".join(parts), "size": size, "quality": "high"})
+        else:
+            rule, steps = EDITS[mt]
+            nn = f"{i + 1:02d}"
+            ref = f"{START_DIR}/{nn}a-{mt}.png"
+            for k, step in enumerate(steps):
+                keep = KEEP_CHAIN if mt in CHAIN else KEEP
+                prompt = f"{keep}：{rule}。第 {k + 2} 帧（共 4 帧）：{step}；{MEDIA}；{NEG}"
+                j = {"id": f"{nn}{LETTER[k + 1]}-{mt}", "prompt": prompt, "size": "1152x1536",
+                     "quality": "high", "images": [ref], "mode": "edit"}
+                if mt in CHAIN:
+                    j["batch"] = f"moves-library-v2-{nn}"
+                    ref = f"out/moves-library-v2-{nn}/{j['id']}.png"     # 下一帧以这一帧为参考
+                jobs.append(j)
     return jobs
 
 
 if __name__ == "__main__":
     jobs = build()
-    out = ROOT / "inbox" / "moves-library.jsonl"
-    out.parent.mkdir(exist_ok=True)
-    out.write_text("".join(json.dumps(j, ensure_ascii=False) + "\n" for j in jobs), encoding="utf-8")
-    print(out, len(jobs))
+    (ROOT / "inbox").mkdir(exist_ok=True)
+    chains = {}
+    rest = []
+    for j in jobs:
+        (chains.setdefault(j.pop("batch"), []) if "batch" in j else rest).append(j)
+    for b in "abcde":
+        chunk = rest["abcde".index(b)::5]
+        (ROOT / "inbox" / f"moves-library-v2-{b}.jsonl").write_text(
+            "".join(json.dumps(j, ensure_ascii=False) + "\n" for j in chunk), encoding="utf-8")
+    for name, chunk in chains.items():                    # 接力批：同一批内必须按顺序跑
+        (ROOT / "inbox" / f"{name}.jsonl").write_text(
+            "".join(json.dumps(j, ensure_ascii=False) + "\n" for j in chunk), encoding="utf-8")
+    print(len(jobs), "条：并行批 inbox/moves-library-v2-{a..e}.jsonl；接力批", "、".join(f"inbox/{n}.jsonl" for n in chains))

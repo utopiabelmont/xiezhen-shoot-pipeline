@@ -1,5 +1,14 @@
 # 变更记录
 
+## 1.6.2 — 2026-09-28
+
+- 运镜库重做：1.6.1 的 4 帧是各自独立出图，同一条运镜里背景和人物前后对不上。现在分两种做法：
+  - 下摇揭示、遮挡揭示、固定微推、后拉上摇：Codex 画一张覆盖整段轨迹的母版（`MASTERS`），`move_gif.py` 按 `RECIPES` 的路径在母版上连续移动 9:16 取景框，18 步缓动。
+  - 其余 7 种：以起幅为参考图 edit（`EDITS`）。侧跟、后跟逐帧接力（`CHAIN`，下一帧以上一帧为参考），单独成批按顺序跑，输出在 `out/moves-library-v2-<NN>/`；固定机位的几种都以同一张起幅为参考。
+- `move_gif.py --library`：有 `NNm-<type>.png` 母版且在 `RECIPES` 里的运镜走连续取景，否则逐帧交叉淡化；总览 GIF 各格按同一时间轴对齐。
+- `run_shots.py` 的 log 记下 `generated_image_inputs`（参考图列表）。
+- `docs/img/moves/frames/` 换成 v2 的原帧（含 4 张母版）与合并后的 `generation_log.jsonl`。
+
 ## 1.6.1 — 2026-09-28
 
 - 运镜库动图：`tools/moves_library_prompts.py` 写 11 种运镜 × 4 帧的逐帧 prompt（同一原创人物、服装与虚构庭园），Codex 纯文字出图；`tools/move_gif.py --library` 合成每种运镜一张 GIF 和一张总览 GIF（左俯视图相机与人物同步移动，右竖幅画面交叉淡化），README 的运镜库换成动图。
