@@ -225,8 +225,8 @@ def cmd_cards(a):
             rest = [i for i in rest if medium.get(i, "still") == "still"] + [i for i in rest if medium.get(i, "still") != "still"]
             pngs = (sorted((d / "cards").glob("trip_*.png")) + sorted((d / "cards").glob("outfit_*.png"))
                     + sorted((d / "cards").glob("route_*.png")) + sorted((d / "cards").glob("sns_[0-9]*.png"))
-                    + sorted((d / "cards").glob("poses_[0-9]*.png")) + sorted((d / "cards").glob("poses_src.png")) + sorted((d / "cards").glob("moves_overview_[0-9]*.png"))
-                    + [q for i in order + rest for q in [cards[i], moves.get(i)] if q])   # 行程 → 穿搭 → 路线 → 参考机位 → 姿势参考 → 短片一览 → 分镜（按路线顺序，短片卡后接运镜页；无路线则静态在前）
+                    + sorted((d / "cards").glob("poses_[0-9]*.png")) + sorted((d / "cards").glob("poses_src.png"))
+                    + [q for i in order + rest for q in [cards[i], moves.get(i)] if q])   # 行程 → 穿搭 → 路线 → 参考机位 → 姿势参考 → 分镜（按路线顺序，短片卡后接运镜页；无路线则静态在前）；短片一览只进核对表
             if pngs:
                 meta = plan.get("meta", {})
                 name = pdf_name(meta)

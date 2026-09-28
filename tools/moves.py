@@ -526,12 +526,43 @@ def draw_frame(P, t, fw, fh, cols):
     return im
 
 
-def draw_frames(img, x, y, P, fw, fh, gap, cols, captions=True):
+FRAME_DIR: Path | None = None                     # plans/<plan>/move_frames：Codex 按文字画的起 / 中 / 止三帧
+
+
+def frame_images(sid):
+    """<sid>a / b / c 三张都在才用；缺一张就退回线稿三帧。"""
+    if not sid or FRAME_DIR is None or not FRAME_DIR.exists():
+        return None
+    hits = [sorted(FRAME_DIR.glob(f"{sid}{k}-*.png")) for k in "abc"]
+    return [h[0] for h in hits] if all(hits) else None
+
+
+def photo_frame(path, fw, fh):
+    """把 3:4 生图居中裁成 9:16，再叠三分线与 90% 安全框。"""
+    im = Image.open(path).convert("RGB")
+    r = fw / fh
+    if im.width / im.height > r:
+        cw = int(im.height * r); im = im.crop(((im.width - cw) // 2, 0, (im.width - cw) // 2 + cw, im.height))
+    im = im.resize((fw, fh), Image.LANCZOS)
+    d = ImageDraw.Draw(im, "RGBA")
+    for k in (1, 2):
+        d.line([(fw * k / 3, 0), (fw * k / 3, fh)], fill=(255, 255, 255, 110), width=1)
+        d.line([(0, fh * k / 3), (fw, fh * k / 3)], fill=(255, 255, 255, 110), width=1)
+    mx, my = fw * 0.05, fh * 0.05
+    for i in range(0, int(fw - 2 * mx), 8):
+        d.line([(mx + i, my), (mx + i + 4, my)], fill=(255, 255, 255, 150)); d.line([(mx + i, fh - my), (mx + i + 4, fh - my)], fill=(255, 255, 255, 150))
+    for i in range(0, int(fh - 2 * my), 8):
+        d.line([(mx, my + i), (mx, my + i + 4)], fill=(255, 255, 255, 150)); d.line([(fw - mx, my + i), (fw - mx, my + i + 4)], fill=(255, 255, 255, 150))
+    return im
+
+
+def draw_frames(img, x, y, P, fw, fh, gap, cols, captions=True, sid=None):
     d = ImageDraw.Draw(img)
     labs = [("起", 0.0), ("中", 0.5), ("止", 1.0)]
+    photos = frame_images(sid)
     for i, (lab, t) in enumerate(labs):
         fx = x + i * (fw + gap)
-        img.paste(draw_frame(P, t, fw, fh, cols), (fx, y))
+        img.paste(photo_frame(photos[i], fw, fh) if photos else draw_frame(P, t, fw, fh, cols), (fx, y))
         d.rectangle((fx, y, fx + fw, y + fh), outline=INK, width=2)
         d.rectangle((fx, y, fx + 26, y + 22), fill=VIDEO)
         d.text((fx + 6, y + 2), lab, font=font(14, True), fill=(255, 255, 255))
@@ -593,19 +624,22 @@ def render_page(shot, meta, outfit, out_path):
     sub = f"{shot.get('title', '')}　{shot.get('lens', '')}　{ {'24p': '24p 实时', 'sq60': 'S&Q 60→24', 'sq120': 'S&Q 120→24（裁 1.52×）'}.get(P['mode'], P['mode']) }"
     d.text((W - 40 - d.textlength(sub, font=font(18)), 52), sub, font=font(18), fill=MUTED)
 
-    y = panel(d, (40, 110, 760, 640), "俯视轨迹（以人物为中心，1 格 = 1 m）", font(24, True))
-    draw_top(img, (52, y, 748, 628), P, shot)
-    y = panel(d, (780, 110, W - 40, 400), "侧视：机位高度与俯仰", font(24, True))
-    draw_side(img, (792, y, W - 52, 390), P)
-    y = panel(d, (780, 414, W - 40, 640), "操作要点", font(24, True))
+    photos = frame_images(shot["id"])
+    top1 = 520 if photos else 640                    # 有 Codex 三帧时压低上半部，把画面变化放大
+    y = panel(d, (40, 110, 760, top1), "俯视轨迹（以人物为中心，1 格 = 1 m）", font(24, True))
+    draw_top(img, (52, y, 748, top1 - 12), P, shot)
+    side1 = 320 if photos else 400
+    y = panel(d, (780, 110, W - 40, side1), "侧视：机位高度与俯仰", font(24, True))
+    draw_side(img, (792, y, W - 52, side1 - 10), P)
+    y = panel(d, (780, side1 + 14, W - 40, top1), "操作要点", font(24, True))
     fmt = {"d": f"{P['d']:g}", "d2": f"{P['d2']:g}", "hold": f"{P['hold']:g}", "move": f"{P['move_s']:g}",
            "tilt0": f"{P['tilt0']:g}", "tilt1": f"{P['tilt1']:g}", "side": "右" if P["side"] == "right" else "左"}
     for k, line in enumerate(HOWTO[P["type"]]):
         d.text((796, y), f"{k + 1}", font=font(16, True), fill=CAM)
         y = text_block(d, (820, y), line.format(**fmt), font(16), W - 40 - 820 - 16, spacing=3) + 4
-    y = panel(d, (40, 652, W - 40, 1030), "画面变化（竖幅 9:16，三分线 + 90% 安全框）", font(24, True))
-    fw, fh, gap = 150, 267, 34
-    draw_frames(img, 60, y, P, fw, fh, gap, outfit_cols(outfit))
+    y = panel(d, (40, top1 + 12, W - 40, 1030), "画面变化（竖幅 9:16，三分线 + 90% 安全框）", font(24, True))
+    fw, fh, gap = (230, 409, 30) if photos else (150, 267, 34)
+    draw_frames(img, 60, y, P, fw, fh, gap, outfit_cols(outfit), sid=shot["id"])
     rx = 60 + 3 * fw + 2 * gap + 50
     d.text((rx, y), "时间条", font=font(18, True), fill=GREEN)
     draw_timeline(d, rx, y + 30, W - 70 - rx, P)
@@ -616,8 +650,9 @@ def render_page(shot, meta, outfit, out_path):
             continue
         d.text((rx, yy), lab, font=font(16, True), fill=GREEN)
         yy = text_block(d, (rx + 56, yy), val, font(16), W - 70 - rx - 56, spacing=3) + 6
-    d.text((40, H - 32), "运镜示意：距离与机高按分镜估算，三帧按焦段、距离和俯仰角推算人物在画面里的大小与位置，现场以取景器为准。",
-           font=font(15), fill=MUTED)
+    foot = ("运镜示意：距离与机高按分镜估算；起 / 中 / 止三帧为 AI 按文字描述生成的示意画面，现场以取景器为准。" if photos else
+            "运镜示意：距离与机高按分镜估算，三帧按焦段、距离和俯仰角推算人物在画面里的大小与位置，现场以取景器为准。")
+    d.text((40, H - 32), foot, font=font(15), fill=MUTED)
     img.save(out_path, quality=92)
     return out_path
 
@@ -632,7 +667,7 @@ def render_compact(shot, outfit, out_path):
     d.text((20, 56), f"{shot.get('lens', '')} · {P['mode']} · 实录 {P['dur']:g} s · 1 格 = 1 m", font=font(18), fill=MUTED)
     draw_top(img, (16, 90, Wc - 16, 470), P, shot)
     fw, fh, gap = 196, 348, 26
-    draw_frames(img, 20, 490, P, fw, fh, gap, outfit_cols(outfit))
+    draw_frames(img, 20, 490, P, fw, fh, gap, outfit_cols(outfit), sid=shot["id"])
     draw_timeline(d, 20, 900, Wc - 40, P)
     img.save(out_path, quality=90)
     return out_path
@@ -753,6 +788,8 @@ def main():
         print("运镜库：", render_library(a.library))
         return
     plan = Path(a.plan)
+    global FRAME_DIR
+    FRAME_DIR = plan / "move_frames"
     out = Path(a.out or plan / "cards"); out.mkdir(parents=True, exist_ok=True)
     SL = json.loads((plan / "shotlist.json").read_text(encoding="utf-8"))
     outfit = {}
