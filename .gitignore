@@ -20,3 +20,4 @@ __pycache__/
 Thumbs.db
 plans/*/sns_inbox/
 films/
+tts/
