@@ -171,6 +171,10 @@
       "type": "string",
       "description": "只从器材里选，例：85mm F4"
      },
+     "device": {
+      "type": "string",
+      "description": "用哪台设备拍（来自 meta.gear 的设备清单），不写视为主机身，例：理光 GR IV / DJI Osmo Pocket 3"
+     },
      "shutter": {
       "type": "string"
      },

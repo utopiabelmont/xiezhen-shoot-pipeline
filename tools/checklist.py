@@ -109,13 +109,21 @@ def md_section(p: Path, head: str) -> list[str]:
 
 def gear_items(plan: dict, shots: list[dict], meta: dict) -> list[tuple[str, str]]:
     media = {s.get("medium", "still") for s in shots}
-    lenses = sorted({s.get("lens", "").split()[0] for s in shots if s.get("lens") and s.get("medium", "still") != "live"},
+    lenses = sorted({s.get("lens", "").split()[0] for s in shots
+                     if s.get("lens") and s.get("medium", "still") != "live" and not (s.get("device") or "").strip()},
                     key=lambda x: int(re.sub(r"\D", "", x) or 0))
     look = next((s.get("look") for s in shots if s.get("look")), "")
     rain = "雨" in (meta.get("forecast") or "") or "雨" in json.dumps(meta.get("weather", ""), ensure_ascii=False)
     items = []
     body = plan.get("body") or ""
     items.append((f"{body} {plan.get('gear', '')}".strip() or "机身与镜头", "用到的焦段：" + "、".join(lenses) if lenses else ""))
+    devs = {}
+    for s in shots:
+        d = (s.get("device") or "").strip()
+        if d:
+            devs.setdefault(d, []).append(s.get("id", ""))
+    for d, ids in devs.items():
+        items.append((f"{d}（充电、存储卡）", "用在：" + "、".join(i for i in ids if i)))
     items.append(("电池 2 块以上、存储卡清空", "短片与连拍耗电和卡容量都比静态多" if media & {"video", "burst"} else ""))
     if look:
         items.append((f"外观与白平衡：{look}", "全组固定，现场不改"))

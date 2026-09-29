@@ -714,7 +714,16 @@ CLIP_MODE = {"24p": "動画位 4K 24p（实时，≤5 s）", "sq60": "S&Q 60→2
 
 
 def settings_rows(shot, medium):
-    """右上「相机设置」块按 medium 换内容；每行 (标签, 文本)，面板高度只够 6 行，文本要短。"""
+    """右上「相机设置」块按 medium 换内容；每行 (标签, 文本)，面板高度只够 6 行，文本要短。
+    分镜写了 device（多台设备时这张用哪台）时，第一行改成「设备焦段」。"""
+    rows = _settings_rows(shot, medium)
+    dev = shot.get("device", "").strip()
+    if dev and medium != "live" and rows and rows[0][0] == "焦段光圈":
+        rows[0] = ("设备焦段", f"{dev} · {rows[0][1]}")
+    return rows
+
+
+def _settings_rows(shot, medium):
     if medium == "video":
         c = shot.get("clip", {})
         return [("焦段光圈", shot["lens"]),

@@ -16,11 +16,13 @@
 
 | 类型 | 编号 | 用在哪 | 必记字段 |
 |---|---|---|---|
-| 机位帖 | S01… | 复刻机位、焦段、构图（多半连姿势） | `platform` `url` `posted` `title` `stop`（对应路线停留点）`cam_bearing` `cam_dist` `cam_h` `lens_est` `kind`（景别）`frame`（人物中心横向位置 `x`、头顶 `top`、脚 `feet`，都按画面高宽的比例）`fg_bg` `pose_note` `outfit` `weather` `visual.composition / light / tone` `reproducible.level / why` |
+| 机位帖 | S01… | 复刻机位、焦段、构图（多半连姿势） | `platform` `url` `posted` `title` `stop`（对应路线停留点）`cam_bearing` `cam_dist` `cam_h` `lens_est` `kind`（景别）`frame`（人物中心横向位置 `x`、头顶 `top`、脚 `feet`，都按画面高宽的比例）`fg_bg` `pose_note` `outfit` `weather` `visual.composition / light / tone` `reproducible.level / why`，原帖写明或能判断时加 `device`（拍摄设备） |
 | 姿势帖 | X1… 与其中的姿势 P01… | 一篇帖子里有多个姿势时拆成 P 编号，每个姿势分到一个合适的场景 | 帖子：`platform` `url` `posted` `likes` `title`；姿势：`name` `how`（一句话要领）`camera`（景别、方向、焦段）`scene`（适合放在哪） |
 | 平台汇总 | Q1… | 小红书「问点点」这类对几十篇笔记的汇总，给出回廊、展厅这类地点的常见姿势 | 检索词、汇总篇数、搜索页链接、要点原文的摘要 |
 
 写 `frame` 与 `visual.composition` 时按画面上的实际比例写，例如「人物中心在画面左侧约 42%，头顶在自上而下约 25%，下缘截在膝盖以下；右侧从近到远依次是石栏顶面、运河、玻璃雕塑、水晶框架」。这段文字后面会原样进 prompt，写得越具体，示意图与原帖越接近。
+
+按设备搜：检索词在「<地点> 拍照 / 机位 / 出片」之外，按用户设备清单（`meta.gear`）里的每台设备各搜一轮，例如「<地点> GR4」「<地点> pocket3」「<地点> 索尼A7M5」「<地点> iPhone 人像」。用户有同款设备的机位帖优先复刻，因为焦段、画幅和成像观感能对上；设备不同时在 `reproducible.why` 写换算，例如「原帖 GR 28mm 定焦，用 24-105 的 28mm 端，站位不变」。分镜里照这条帖子设计的那张，`device` 写同一台。
 
 季节或活动不同、今天复现不了的帖子（例如冬季圣诞树）保留在 `sns_refs.json` 里、`shots` 留空，只作穿搭参考。
 

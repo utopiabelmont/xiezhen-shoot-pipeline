@@ -154,7 +154,7 @@ python pipeline.py status  hakone-1003
 
 > 10 月 3 日去箱根玻璃之森和 Pola 美术馆，13 点到，帮我做拍摄脚本。
 
-器材不说就用默认（Sony α7 V + 24-105mm F4 + HVL-F60RM2，iPhone 14 Pro 拍实况）。Claude 会按阶段号跑脚本、做网页与 SNS 调研、抽色定穿搭、照着 SNS 素材写分镜、排路线并按路线编号、编 prompt、出图、检查、合成 PDF，并给出时间线、模特页、到场清单和剪辑单。人工阶段的判断标准都写在 skill 与 `docs/` 里，生成图只标 test / failed，用户确认后才 final。
+器材不说就用默认（Sony α7 V + 24-105mm F4 + HVL-F60RM2，iPhone 14 Pro 拍实况，DJI Osmo Pocket 3 拍稳定器短片，Ricoh GR IV 随手抓拍）；有几台设备都告诉它，SNS 调研会按每台设备各搜一轮，优先复刻同款设备拍的机位帖，分镜标明每张用哪台。Claude 会按阶段号跑脚本、做网页与 SNS 调研、抽色定穿搭、照着 SNS 素材写分镜、排路线并按路线编号、编 prompt、出图、检查、合成 PDF，并给出时间线、模特页、到场清单和剪辑单。人工阶段的判断标准都写在 skill 与 `docs/` 里，生成图只标 test / failed，用户确认后才 final。
 
 仓库路径不写死在 skill 里：Claude 按 对话指定 → 已连接文件夹里含 `pipeline.py` 的目录 → `~/.xiezhen-pipeline/config.json`（`pipeline.py register` 写入）的顺序找。
 
