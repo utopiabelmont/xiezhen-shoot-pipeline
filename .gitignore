@@ -12,6 +12,9 @@ job.ps1
 *_done.txt
 
 # 本机环境
+.agents/
+.claude/
+.xiezhen-skill-backups/
 .venv/
 bin/
 __pycache__/

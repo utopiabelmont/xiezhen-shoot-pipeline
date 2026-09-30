@@ -453,8 +453,8 @@ def cmd_sns_import(a):
 
 def cmd_status(a):
     d = PLANS / a.plan
-    items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("palette.json", "palette（场地色）"), ("outfit.json", "穿搭（Claude）"), ("sun.md", "sun"), ("route.json", "路线（route）"), ("trip.json", "行程（Claude）"),
-             ("basemaps/main_osm.png", "basemap"), ("basemaps/main_styled.png", "stylize"), ("shotlist.json", "分镜（人工/Claude）"),
+    items = [("plan.json", "init"), ("spots.md", "spots"), ("spots_social.md", "SNS 调研（人工）"), ("palette.json", "palette（场地色）"), ("outfit.json", "穿搭（Codex/Claude）"), ("sun.md", "sun"), ("route.json", "路线（route）"), ("trip.json", "行程（Codex/Claude）"),
+             ("basemaps/main_osm.png", "basemap"), ("basemaps/main_styled.png", "stylize"), ("shotlist.json", "分镜（Codex/Claude/人工）"),
              ("prompts.md", "prompt（nuyoah-xiezhen-prompt）"), ("timeline.md", "时间线"), ("model_sheet.md", "模特一页纸"),
              ("arrival_checklist.md", "到场清单"), ("cards", "cards")]
     tmpl = {"spots_social.md": "sns_research.md", "timeline.md": "timeline_template.md",

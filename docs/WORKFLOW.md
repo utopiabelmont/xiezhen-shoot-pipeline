@@ -1,7 +1,9 @@
 # 工作流 SOP
 
 一次企划 = `plans/<plan>/` 一个目录。`<plan>` 用「地点缩写-月日」，改版加 `-v2`。
-下面每个阶段写清：执行者、命令、输入、输出、验收。阶段 0–5、8、10 是脚本；2、6、7、9、11 是 Claude（或人）按模板做。
+下面每个阶段写清：执行者、命令、输入、输出、验收。阶段 0–5、8、10 是脚本；2、6、7、9、11 是 Codex / Claude（或人）按模板做。
+
+Codex 直接在当前终端运行脚本；安装与能力边界见 `INSTALL.md` 第 4 节。无 SNS 浏览器访问时按下面第 2 节记录缺口；无出图工具时跳过 stylize / shots，保留 OSM 底图并生成无示意图的脚本。离线 fixture 只用于自测，不当作真实出行数据。
 
 ## 0 立项
 
@@ -14,12 +16,12 @@
 
 - 执行：`python pipeline.py spots <plan> [--radius 1500]`
 - 输出：`spots.md`（POI 表、Commons 照片分布、网页调研关键词）、`spots.json`
-- 接着由 Claude 按 `spots.md` 末尾的关键词做网页调研：官方见どころ页、日文/中文摄影攻略、拍摄规则、票价、开放时间。记录到 `spots.md` 末尾或 `spots_social.md`。
+- 接着由 Codex / Claude 按 `spots.md` 末尾的关键词做网页调研：官方见どころ页、日文/中文摄影攻略、拍摄规则、票价、开放时间。记录到 `spots.md` 末尾或 `spots_social.md`。
 - 验收：至少 6 个候选机位，每个有园内位置、背景方位、季节/人流线索。
 
 ## 2 社交平台调研
 
-- 执行：Claude in Chrome，用户已登录的账号，人工级浏览（不批量抓取、不下载图片）。
+- 执行：当前代理的浏览器工具（Codex 或 Claude，工具可用时），用户已登录的账号，人工级浏览（不批量抓取、不下载图片）。
 - 平台与检索词：小红书「<中文名>」「<中文名> 机位」；Instagram `#<日文名>`；抖音「<中文名> 拍照机位」；TikTok「<日文名>」+ 官方账号。
 - 各平台在 Chrome（用户已登录）里的可行路径（2026-09-27 实测）：
   - 小红书：直接打开 `search_result?keyword=` 常常空白；要在 `/explore` 首页的搜索框里输入关键词回车，结果页右侧的「点点」AI 会汇总 30 篇左右笔记的机位与时段，先读它，再点 1–3 篇高赞帖看正文（视频帖正文很短）。用 JS 直接跳转 `/explore/<id>` 会触发 300031 风控，拦一次就停。
@@ -31,9 +33,11 @@
 - 素材表：出过片的机位帖、姿势帖与平台汇总逐条记进 `sns_refs.json`（编号 S / X+P / Q，字段见 `docs/SNS_NOTES.md`）。看图写字：机位、构图、人物在画面里的位置与大小、前景背景、姿势、穿搭、天气光线都写成文字；不下载、不截图原帖图片，也不把原帖图片交给生图模型。用户想在私用版里看原图时自己用手机保存，放进 `sns_inbox/` 后跑 `pipeline.py sns-import <plan>`。
 - 验收：末尾「对分镜的影响」写清：与主流机位重合的、本组差异化机位、新增备选（雨天/室内/园外）、需现场核实的。
 
+无法访问登录平台时，在 `spots_social.md` 记录平台、日期、原因与未验证项；只采用实际可读的公开页面或用户的文字资料。未看过原帖就不记录其构图、点赞数或设备为事实；没有 SNS 素材的分镜用 `src.kind="无 SNS 素材"`，`meta.sns` 写明缺口，继续其余阶段。
+
 ## 2b 穿搭
 
-- 执行：`python pipeline.py palette <plan> [--n 12]`（从阶段 1 的 Commons 照片抽 6 个场地主色 → `palette.json` / `palette.png`；也可 `--images <目录>` 用自己的现场照）。然后 Claude 按 `docs/OUTFIT_GUIDE.md` 与 `templates/outfit_template.md` 写 `outfit.json`（路线、色、主方案、替换方案、道具妆发、逐张提醒、SNS 观察），导出 `outfit.md`。
+- 执行：`python pipeline.py palette <plan> [--n 12]`（从阶段 1 的 Commons 照片抽 6 个场地主色 → `palette.json` / `palette.png`；也可 `--images <目录>` 用自己的现场照）。然后 Codex / Claude 按 `docs/OUTFIT_GUIDE.md` 与 `templates/outfit_template.md` 写 `outfit.json`（路线、色、主方案、替换方案、道具妆发、逐张提醒、SNS 观察），导出 `outfit.md`。
 - 输入：`palette.json`、`spots_social.md` 的穿搭栏、`sun.md` 的天气与季节、分镜动作需求（走/坐/蹲/背影/撑伞）、场地规则。
 - 输出：`outfit.json`、`outfit.md`；阶段 10 会把它渲染成 PDF 第一页；`meta.outfit`、prompt 的 OUTFIT 词链、`model_sheet.md` 都从它来。
 - 验收：`lint` 的两条：主色 ≤ 3（点缀 `accent: true` 不计）；主色与场地前四个主色 ΔE ≥ 12（有意融入标 `blend_ok: true`）。
@@ -62,7 +66,7 @@
 
 ## 6 分镜
 
-- 执行：Claude 按 `templates/shotlist_template.md` 与 `templates/shotlist_schema.json` 写 `shotlist.json`，再导出 `shotlist.md`。
+- 执行：Codex / Claude 按 `templates/shotlist_template.md` 与 `templates/shotlist_schema.json` 写 `shotlist.json`，再导出 `shotlist.md`。
 - 硬性要求：≥ 9 条；景别覆盖特写、近景、半身、全身、环境远景中至少 4 种；焦段只从器材里选；每条写太阳方位、光型、人物朝向、机位距离；每条给晴天/阴天/雨天备选；同组内动作、视线、机位不重复。
 - 俯视图字段：`subject_latlon`、`cam_bearing`、`cam_dist`、`face_bearing`、`bg_bearing`、`bg_label`；园外点加 `basemap`，室内点加 `indoor: true`；`alt_time` 指晴天版时刻；`meta.sun` 从 `sun.json` 取整点与半点。
 - SNS 驱动：分镜从 `sns_refs.json` 的素材出发，每条机位帖、每个姿势各设计一张同款（机位、焦段、构图、姿势照原帖），每张写 `src`（来源、照搬了什么、同款姿势）；素材覆盖不到的开场、过渡、细节、连拍、短片、实况再补，`src.kind` 写「无 SNS 素材」。`meta.sns` 一句话记录素材的使用情况。细则见 `docs/SNS_NOTES.md`。
@@ -81,7 +85,7 @@
 ## 7 prompt
 
 - 先写 `scene_bible.md`：场地的真实样子（建筑材质颜色、桥与栏杆形制、标志物的高度形状与位置、当季植被）和容易被画错的东西，场景词链与负面词从它来。
-- 执行：`nuyoah-xiezhen-prompt`「系列母版 + 同系列变体」：全组固定风格词链、成像词链、人物与服装（`templates/prompt_chains.md`），每张只改取景与机位、动作与视线、环境与光线。有 `src` 的分镜，取景段直接用 `sns_refs.json` 里对原帖构图的文字描述（人物位置比例、前景背景的先后），姿势段用 `src.pose_how`；只用文字，不加参考图。
+- 执行：已安装的 `nuyoah-xiezhen-prompt`，未安装时直接用 `templates/prompt_chains.md` 的「系列母版 + 同系列变体」：全组固定风格词链、成像词链、人物与服装（`templates/prompt_chains.md`），每张只改取景与机位、动作与视线、环境与光线。有 `src` 的分镜，取景段直接用 `sns_refs.json` 里对原帖构图的文字描述（人物位置比例、前景背景的先后），姿势段用 `src.pose_how`；只用文字，不加参考图。
 - 光线模块直接引用 `sun.md` 的方位、高度、光质与影长，按「来源—落点—结果」写；无参考图时写「本张重新生成一位「…」类型的成年原创女性」。
 - 输出：`prompts.md`，每张一节：`## <id>-<标题>` 后接一个 ```text 代码块（`pipeline.py jobs` 靠这个格式解析；标题会成为文件名，不要带 `/`）。
 - 短片三帧：每条短片另写 `move_prompts.md`，`## <id>a-起幅` / `## <id>b-中间` / `## <id>c-落幅` 三节，人物、服装、场景、光线沿用该短片的词链，只换每一帧的取景与动作，并写「主体放在画面中间约七成宽度内」（运镜页会裁成 9:16）。
@@ -97,7 +101,7 @@
 
 ## 9 检查
 
-- 执行：Claude 逐张看图，按 nuyoah-xiezhen-prompt 第六步（人物、服装与道具分离、光线来源落点结果、景别焦段是否吻合、畸形与水印），另加：光向是否与 `sun.md` 该时段一致、背景方位是否与底图一致、构图与 `sns_refs.json` 对原帖的描述是否一致（人物位置、朝向、前景背景）。短片三帧看起中止之间的变化是否符合运镜（人物大小、俯仰、朝向）。
+- 执行：Codex / Claude 逐张看图，按本节检查项；已安装 nuyoah-xiezhen-prompt 时另按其第六步（人物、服装与道具分离、光线来源落点结果、景别焦段是否吻合、畸形与水印），另加：光向是否与 `sun.md` 该时段一致、背景方位是否与底图一致、构图与 `sns_refs.json` 对原帖的描述是否一致（人物位置、朝向、前景背景）。短片三帧看起中止之间的变化是否符合运镜（人物大小、俯仰、朝向）。
 - 记录：把 `out/<plan>/log.jsonl` 复制为 `plans/<plan>/generation_log.jsonl`；复用旧版图片的分镜加 `img_from` 与 `reused_from_v1: true`。
 - 规则：状态只写 test / failed，用户确认后才 final；重做时回到原始分镜与参考重新编译，不把上一轮生成图作为输入。
 
@@ -126,4 +130,4 @@
 
 ## Windows 双击执行
 
-没有终端权限时（例如由 Claude 远程操作），把要跑的命令写进根目录 `job.ps1`（模板 `scripts/job.example.ps1`，必须 UTF-8 with BOM），双击 `run_job.cmd`，看 `job_log.txt` 与 `job_done.txt`。详见 `docs/WINDOWS_SETUP.md`。
+没有终端权限时（例如由 Codex / Claude 远程操作），把要跑的命令写进根目录 `job.ps1`（模板 `scripts/job.example.ps1`，必须 UTF-8 with BOM），双击 `run_job.cmd`，看 `job_log.txt` 与 `job_done.txt`。详见 `docs/WINDOWS_SETUP.md`。

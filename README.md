@@ -2,9 +2,9 @@
 
 **给真实景点、真实日期做人像外拍规划的流水线。** 输入景点（一个或一天里的几个）和日期，得到一套可以直接带去现场的东西：含当天天气的一日行程页、穿搭方案、园内游览路线页、每条分镜一页的拍摄脚本 PDF（示意图 + SNS 原帖来源与二维码 + 相机设置 + 俯视站位与光向图 + 姿势引导 + 注意事项），一份手机上逐条勾选的核对表 HTML，外加时间线、模特一页纸、到场核对清单和短片剪辑单。
 
-分镜从社交平台上这个场地真实出过片的机位和姿势出发：Claude 在浏览器里看小红书、Instagram、抖音、TikTok 的原帖，把机位、构图和姿势写成文字，每张分镜照一条帖子设计同款，素材覆盖不到的地方再补；示意图只凭这段文字生成，原帖图片不下载、不截图，也不交给生图模型。分镜编号按游览路线排，现场从 01 拍到最后一张。
+分镜从社交平台上这个场地真实出过片的机位和姿势出发：Codex / Claude 在浏览器里看小红书、Instagram、抖音、TikTok 的原帖，把机位、构图和姿势写成文字，每张分镜照一条帖子设计同款，素材覆盖不到的地方再补；示意图只凭这段文字生成，原帖图片不下载、不截图，也不交给生图模型。分镜编号按游览路线排，现场从 01 拍到最后一张。
 
-底层由几类工具拼起来：OpenStreetMap 出园区几何、步道和周边 POI，astral / pvlib 与 Open-Meteo 算太阳位置、地形遮挡和天气光质，Wikimedia Commons 的场地照片抽主色给穿搭用，Claude 在已登录的 Chrome 里做小红书 / Instagram / 抖音 / TikTok 的机位与穿搭调研并写分镜，[nuyoah-xiezhen-prompt](https://github.com/nuyoah-ai-works/nuyoah-xiezhen-prompt) 把分镜编译成写真 prompt，[codex-imagegen-cli](https://github.com/jdmnk/codex-imagegen-cli) 用 ChatGPT 订阅内的 Codex 额度出示意图和水彩底图。
+底层由几类工具拼起来：OpenStreetMap 出园区几何、步道和周边 POI，astral / pvlib 与 Open-Meteo 算太阳位置、地形遮挡和天气光质，Wikimedia Commons 的场地照片抽主色给穿搭用，Codex / Claude 用可访问的登录浏览器做小红书 / Instagram / 抖音 / TikTok 的机位与穿搭调研并写分镜，可选的 [nuyoah-xiezhen-prompt](https://github.com/nuyoah-ai-works/nuyoah-xiezhen-prompt) 或仓库词链模板把分镜编译成写真 prompt，[codex-imagegen-cli](https://github.com/jdmnk/codex-imagegen-cli) 用 ChatGPT 订阅内的 Codex 额度出示意图和水彩底图。
 
 > A portrait-shoot planning pipeline for a real location on a real date: OSM geometry, sun position with terrain occlusion and weather-based light quality, social-media research, an outfit plan checked against the site's dominant colours, a narrative shot list (stills, bursts, S-Log3 clips, Live Photos) validated by a linter, an in-park walking route computed on OSM footpaths, prompts compiled by nuyoah-xiezhen-prompt, preview images from Codex Image, and one printable cheat-sheet card per shot. Docs are in Chinese; the code and templates are language-neutral.
 
@@ -99,28 +99,30 @@ flowchart LR
 | 阶段 | 做什么 | 谁做 | 规则文档 |
 |---|---|---|---|
 | 0 立项 | `pipeline.py init`：地点、日期、到场、器材 | 脚本 | [WORKFLOW](docs/WORKFLOW.md) |
-| 1 出片点 | `spots`：周边 POI、Commons 照片、调研关键词；再做网页调研 | 脚本 + Claude | |
-| 2 SNS 调研 | 小红书 / Instagram / 抖音 / TikTok 人工级浏览；出过片的机位帖、姿势帖、平台汇总逐条写成文字记进 `sns_refs.json`，不存原帖图片 | Claude in Chrome | [SNS_NOTES](docs/SNS_NOTES.md) |
-| 2b 穿搭 | `palette` 抽场地主色 → `outfit.json`：≤ 3 色、与场地色 ΔE ≥ 12、替换方案、逐张提醒 | 脚本 + Claude | [OUTFIT_GUIDE](docs/OUTFIT_GUIDE.md) |
+| 1 出片点 | `spots`：周边 POI、Commons 照片、调研关键词；再做网页调研 | 脚本 + Codex / Claude | |
+| 2 SNS 调研 | 小红书 / Instagram / 抖音 / TikTok 人工级浏览；出过片的机位帖、姿势帖、平台汇总逐条写成文字记进 `sns_refs.json`，不存原帖图片 | Codex / Claude（可用浏览器时） | [SNS_NOTES](docs/SNS_NOTES.md) |
+| 2b 穿搭 | `palette` 抽场地主色 → `outfit.json`：≤ 3 色、与场地色 ΔE ≥ 12、替换方案、逐张提醒 | 脚本 + Codex / Claude | [OUTFIT_GUIDE](docs/OUTFIT_GUIDE.md) |
 | 3 光线 | `sun`：逐半小时方位高度、DEM 地形遮挡、逐时天气（光质、降水、气温、风）；出发前一天 `sun --weather-only` 只刷新预报 | 脚本 | |
 | 4–5 底图 | `basemap` → `stylize`：OSM 几何 → Codex 水彩重绘 | 脚本 + 本机 Codex | |
-| 6 分镜 | 每条 SNS 素材设计一张同款（`src` 记来源），不够的再补；叙事角色、景别配比、寄り/引き 节奏、姿态视线，加连拍 ≥ 2 / 短片 ≥ 5 / 实况 ≥ 6；`lint` 检查 | Claude + 脚本 | [SNS_NOTES](docs/SNS_NOTES.md)、[SHOT_DESIGN](docs/SHOT_DESIGN.md)、[VIDEO_NOTES](docs/VIDEO_NOTES.md) |
-| 6b 路线 | `meta.route_stops` → `route`：沿步道最短路、停留与时刻；`renumber` 把编号改成游览顺序；多景点 `trip.json` → `trip` | Claude + 脚本 | [ROUTE_NOTES](docs/ROUTE_NOTES.md) |
-| 7 prompt | 先写 `scene_bible.md`（场地真实样子与易错点）；系列母版 + 同系列变体，取景段用对原帖构图的文字描述；短片写关键帧，另写 `move_prompts.md` 起 / 中 / 止三帧 | Claude | [prompt_chains](templates/prompt_chains.md) |
-| 8–9 出图与检查 | `jobs [--missing]` → `shots`，短片三帧 `jobs --moves` → `shots --moves`；逐张按第六步检查，对照原帖描述看构图，状态 test / failed | 脚本 + 本机 Codex + Claude | |
+| 6 分镜 | 每条 SNS 素材设计一张同款（`src` 记来源），不够的再补；叙事角色、景别配比、寄り/引き 节奏、姿态视线，加连拍 ≥ 2 / 短片 ≥ 5 / 实况 ≥ 6；`lint` 检查 | Codex / Claude + 脚本 | [SNS_NOTES](docs/SNS_NOTES.md)、[SHOT_DESIGN](docs/SHOT_DESIGN.md)、[VIDEO_NOTES](docs/VIDEO_NOTES.md) |
+| 6b 路线 | `meta.route_stops` → `route`：沿步道最短路、停留与时刻；`renumber` 把编号改成游览顺序；多景点 `trip.json` → `trip` | Codex / Claude + 脚本 | [ROUTE_NOTES](docs/ROUTE_NOTES.md) |
+| 7 prompt | 先写 `scene_bible.md`（场地真实样子与易错点）；系列母版 + 同系列变体，取景段用对原帖构图的文字描述；短片写关键帧，另写 `move_prompts.md` 起 / 中 / 止三帧 | Codex / Claude | [prompt_chains](templates/prompt_chains.md) |
+| 8–9 出图与检查 | `jobs [--missing]` → `shots`，短片三帧 `jobs --moves` → `shots --moves`；逐张按第六步检查，对照原帖描述看构图，状态 test / failed | 脚本 + codex-imagegen + Codex / Claude | |
 | 10 拍摄脚本 | `cards`：行程 → 穿搭 → 路线 → 分镜（按路线顺序，短片卡后接运镜页），`<日期>_<地点>_拍摄脚本.pdf`；同时生成 `<日期>_<地点>_拍摄核对表.html` | 脚本 | [CARD_SPEC](docs/CARD_SPEC.md) |
-| 11 当天资料 | 时间线、模特页、到场清单、剪辑单 | Claude | [templates/](templates/) |
+| 11 当天资料 | 时间线、模特页、到场清单、剪辑单 | Codex / Claude | [templates/](templates/) |
 
 ## 快速开始
 
-新电脑从零安装（Windows 双击 `setup.cmd`、codex-imagegen、装 skill、自测）按 [`INSTALL.md`](INSTALL.md) 走，约 10 分钟。已装好的机器：
+**纯 Codex 可用，无需安装 Claude。** 完成 Python 环境安装后，Windows 执行 `.venv\Scripts\python.exe scripts/install_skill.py`，macOS / Linux 执行 `.venv/bin/python scripts/install_skill.py`，即可安装 skill 并登记仓库。在 Codex 中用 `$xiezhen-shoot-planner` 开始规划；详细步骤、项目范围安装与能力边界见 [INSTALL.md 第 4 节](INSTALL.md#4-安装-skill纯-codex-推荐)。SNS 使用当前可用的网页 / 浏览器工具，出图使用 codex-imagegen-cli；缺少可选能力时记录缺口并完成其余产物。
+
+新电脑从零安装（Python 环境、可选 codex-imagegen、Codex 或 Claude skill、自测）按 [`INSTALL.md`](INSTALL.md) 走，约 10 分钟。已装好的机器：
 
 ```bash
 git clone https://github.com/utopiabelmont/xiezhen-shoot-pipeline.git
 cd xiezhen-shoot-pipeline
 pip install -r requirements.txt        # Windows：双击 setup.cmd
 python check_env.py
-python pipeline.py register            # 登记仓库路径，Claude 的 skill 据此找到本机仓库
+python pipeline.py register            # 登记仓库路径，Codex / Claude 的 skill 据此找到本机仓库
 
 # 脚本阶段
 python pipeline.py init    hakone-1003 --place "箱根ガラスの森美術館" --date 2026-10-03 --arrive 13:00 --hours 12-18 --elev-m 657
@@ -148,19 +150,21 @@ python pipeline.py status  hakone-1003
 
 不联网自测：`spots` / `sun` 加 `--fixture`；`basemap` 加 `--fixture overpass_geom_pola.json --center 35.25666,139.02120`。想直接看完整产物：打开 `examples/hakone-0928-v5/` 里的 PDF 与核对表 HTML；要重跑页面，把 `examples/hakone-0928-v3` 复制到 `plans/`，跑 `python pipeline.py cards hakone-0928-v3 --images examples/hakone-0928-v3/cards`。
 
-## 和 Claude 一起用
+## 和 Codex / Claude 一起用（支持纯 Codex）
 
-[`skill/xiezhen-shoot-planner/SKILL.md`](skill/xiezhen-shoot-planner/SKILL.md) 是给 Claude（Claude Code / Cowork / claude.ai）用的流程 skill，安装方式见 [`INSTALL.md`](INSTALL.md) 第 4 节，阶段总览见 [`skill/README.md`](skill/README.md)。装好后只要说日期和地点：
+纯 Codex 直接在终端执行 `pipeline.py`，不使用 Claude 的本机桥接。`nuyoah-xiezhen-prompt` 已安装时使用它，未安装时使用仓库 `templates/prompt_chains.md`；浏览器登录能力不可用时不假装已浏览原帖，明确记录 SNS 调研缺口。
+
+[`skill/xiezhen-shoot-planner/SKILL.md`](skill/xiezhen-shoot-planner/SKILL.md) 是给 Codex（桌面版 / CLI）与 Claude（Claude Code / Cowork / claude.ai）用的流程 skill，安装方式见 [`INSTALL.md`](INSTALL.md) 第 4 节，阶段总览见 [`skill/README.md`](skill/README.md)。装好后只要说日期和地点：
 
 > 10 月 3 日去箱根玻璃之森和 Pola 美术馆，13 点到，帮我做拍摄脚本。
 
-器材不说就用默认（Sony α7 V + 24-105mm F4 + HVL-F60RM2，iPhone 14 Pro 拍实况，DJI Osmo Pocket 3 拍稳定器短片，Ricoh GR IV 随手抓拍）；有几台设备都告诉它，SNS 调研会按每台设备各搜一轮，优先复刻同款设备拍的机位帖，分镜标明每张用哪台。Claude 会按阶段号跑脚本、做网页与 SNS 调研、抽色定穿搭、照着 SNS 素材写分镜、排路线并按路线编号、编 prompt、出图、检查、合成 PDF，并给出时间线、模特页、到场清单和剪辑单。人工阶段的判断标准都写在 skill 与 `docs/` 里，生成图只标 test / failed，用户确认后才 final。
+器材不说就用默认（Sony α7 V + 24-105mm F4 + HVL-F60RM2，iPhone 14 Pro 拍实况，DJI Osmo Pocket 3 拍稳定器短片，Ricoh GR IV 随手抓拍）；有几台设备都告诉它，SNS 调研会按每台设备各搜一轮，优先复刻同款设备拍的机位帖，分镜标明每张用哪台。Codex / Claude 会按阶段号跑脚本、做网页与 SNS 调研、抽色定穿搭、照着 SNS 素材写分镜、排路线并按路线编号、编 prompt、出图、检查、合成 PDF，并给出时间线、模特页、到场清单和剪辑单。人工阶段的判断标准都写在 skill 与 `docs/` 里，生成图只标 test / failed，用户确认后才 final。
 
-仓库路径不写死在 skill 里：Claude 按 对话指定 → 已连接文件夹里含 `pipeline.py` 的目录 → `~/.xiezhen-pipeline/config.json`（`pipeline.py register` 写入）的顺序找。
+仓库路径不写死在 skill 里：Codex / Claude 按 对话指定 → 已连接文件夹里含 `pipeline.py` 的目录 → `~/.xiezhen-pipeline/config.json`（`pipeline.py register` 写入）的顺序找。
 
 ## 使用范例
 
-下面是对 Claude 说的话和对应的处理。前两例与 `examples/` 里的企划一一对应，其余是常见的局部用法。
+下面是对 Codex / Claude 说的话和对应的处理。前两例与 `examples/` 里的企划一一对应，其余是常见的局部用法。
 
 **1. 单个景点，完整流程**
 
@@ -226,7 +230,7 @@ python pipeline.py status  hakone-1003
 
 > 仓库放在 E:\tools\xiezhen-pipeline，帮我装好。
 
-按 [`INSTALL.md`](INSTALL.md) 在本机跑 `setup.cmd`（装 uv、建 venv、自检），最后 `pipeline.py register --root E:\tools\xiezhen-pipeline` 登记路径，之后的对话不用再说仓库位置。Codex 登录需要本人在终端完成，Claude 不经手账号密码。
+按 [`INSTALL.md`](INSTALL.md) 在本机跑 `setup.cmd`（装 uv、建 venv、自检），最后 `pipeline.py register --root E:\tools\xiezhen-pipeline` 登记路径，之后的对话不用再说仓库位置。Codex 登录需要本人在终端完成，Codex / Claude 不经手账号密码。
 
 ## 目录
 
@@ -254,9 +258,9 @@ tools/
   make_cards.py        分镜页：SNS 来源栏与二维码、多底图、室内、园外窗口、半点太阳表、按介质切换设置块
   fixtures/            离线样本（Nominatim、Overpass、Commons、Open-Meteo、高程）
 templates/             分镜模板与 JSON Schema、prompt 词链、SNS 调研表、穿搭 / 行程 / 剪辑单 / 时间线 / 到场清单 / 模特页模板、底图风格指令、手工几何示例
-scripts/               Windows：setup.ps1（uv + venv + 自检 + register）、job.example.ps1（一次性任务模板，UTF-8 BOM）
+scripts/               install_skill.py（Codex / Claude 跨平台安装）；Windows：setup.ps1（uv + venv + 自检 + register）、job.example.ps1（一次性任务模板，UTF-8 BOM）
 setup.cmd run_job.cmd run_shots.cmd   Windows 双击入口
-skill/                 Claude 用的流程 skill 与阶段总览
+skill/                 Codex / Claude 共用的流程 skill 与阶段总览
 INSTALL.md             新电脑安装说明（Windows / macOS / Linux、codex-imagegen、skill、更新、常见问题）
 docs/                  WORKFLOW（SOP）、SNS_NOTES（SNS 素材驱动的分镜）、SHOT_DESIGN（分镜基本法）、OUTFIT_GUIDE（穿搭）、VIDEO_NOTES（连拍/短片/实况）、ROUTE_NOTES（行程与园内路线）、CAMERA_NOTES（α7 V 外观、闪光灯、短片预设）、CARD_SPEC（小抄版式）、WINDOWS_SETUP（部署与已知坑）、CHANGELOG
 examples/              hakone-0928-v5（38 张，SNS 驱动，47 页）、hakone-0928-v3（v3.5，43 页）、asakusa-0928（12 张，双底图）、hakone-0928-v2（13 张）
@@ -272,8 +276,8 @@ plans/ inbox/ out/ refs/   运行时目录（不入库；要保留的企划复�
 | 地理编码 | Nominatim | ≤ 1 次/秒，脚本自带 User-Agent |
 | 园区几何、步道、POI | Overpass API（OpenStreetMap，ODbL） | `out geom`，POST 请求；缺失步道用 `--extra` 手工补线 |
 | 场地照片与主色 | Wikimedia Commons geosearch | 看常见机位与季节；`palette.py` 抽 6 个主色 |
-| 社交平台 | 小红书 / Instagram / 抖音 / TikTok | 无公开接口；由 Claude 在已登录的 Chrome 里人工级浏览，把机位、构图、姿势写成文字；页面上只放原帖链接与二维码 |
-| 交通与路线依据 | NAVITIME / 官网时刻表 / 官网設施顺序 / 攻略 | 由 Claude 查询后写进 `trip.json` 与 `meta.route_source`，注明查询日期 |
+| 社交平台 | 小红书 / Instagram / 抖音 / TikTok | 无公开接口；由 Codex / Claude 在已登录的 Chrome 里人工级浏览，把机位、构图、姿势写成文字；页面上只放原帖链接与二维码 |
+| 交通与路线依据 | NAVITIME / 官网时刻表 / 官网設施顺序 / 攻略 | 由 Codex / Claude 查询后写进 `trip.json` 与 `meta.route_source`，注明查询日期 |
 | 出图 | codex-imagegen-cli（Codex 内部图片接口） | 用 Codex 桌面版 / CLI 的 ChatGPT 登录，走订阅额度；模型由服务端决定 |
 | prompt 规则 | nuyoah-xiezhen-prompt | 系列母版、同系列变体、第六步检查 |
 

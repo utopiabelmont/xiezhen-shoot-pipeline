@@ -1,5 +1,13 @@
 # 变更记录
 
+## 1.7.0 — 2026-09-30
+
+- 增加纯 Codex（桌面版 / CLI）安装方式：`scripts/install_skill.py` 默认装到 `~/.agents/skills/` 并登记运行时；支持项目范围、自定义目录、Claude 安装与更新前备份，跨平台且只依赖 Python 标准库。
+- 共用 skill 不再依赖 Claude / Claude in Chrome；Codex 直接运行脚本。修正仓库与解释器定位、云端边界、生图失败不自动重试的说明。
+- nuyoah-xiezhen-prompt 改为可选，缺少时使用仓库词链模板与检查项；无登录浏览器时记录 SNS 调研缺口，无出图工具时使用 OSM 底图交付无示意图的脚本与核对表。
+- 分镜卡加载底图时优先水彩版、缺少时自动使用同名 OSM 版，保持地图几何与站位叠加；保留旧版底图格式。
+- 增加 Codex UI 元数据与隔离安装测试，同步 INSTALL、README、WORKFLOW、SNS_NOTES 与阶段状态的执行者说明。
+
 ## 1.6.3 — 2026-09-29
 
 - 设备清单：默认器材加上 DJI Osmo Pocket 3（稳定器跟拍、环绕短片）与 Ricoh GR IV（28mm 抓拍、细节）；用户有几台设备都写进 `--gear` / `meta.gear`。

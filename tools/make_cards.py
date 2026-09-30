@@ -177,6 +177,27 @@ def arrow(draw, p0, p1, fill, width=4, head=12):
 BASEMAPS = {}   # name -> (Image, meta)，由 main 装载；shot["basemap"] 选用，缺省 "main"
 
 
+def load_basemaps(plan_dir):
+    """Prefer styled maps, falling back to OSM geometry when imagegen is unavailable."""
+    plan_dir = Path(plan_dir)
+    maps = {}
+    legacy = plan_dir / "basemap_styled.png"
+    legacy_meta = plan_dir / "basemap_meta.json"
+    if legacy.exists() and legacy_meta.exists():
+        with Image.open(legacy) as im:
+            maps["main"] = (im.convert("RGB"), json.loads(legacy_meta.read_text(encoding="utf-8")))
+    for meta_path in sorted((plan_dir / "basemaps").glob("*_meta.json")):
+        name = meta_path.name[:-len("_meta.json")]
+        styled = meta_path.with_name(f"{name}_styled.png")
+        osm = meta_path.with_name(f"{name}_osm.png")
+        image_path = styled if styled.exists() else osm
+        if image_path.exists():
+            with Image.open(image_path) as im:
+                maps[name] = (im.convert("RGB"), json.loads(meta_path.read_text(encoding="utf-8")))
+            print("使用底图", name, image_path.name)
+    return maps
+
+
 def basemap_for(shot):
     return BASEMAPS.get(shot.get("basemap", "main"))
 
@@ -794,16 +815,9 @@ def main():
                 POSES_BY_SHOT.setdefault(sid, []).append(p)
     meta = plan["meta"]
     global BASEMAPS
-    bm = Path(a.plan) / "basemap_styled.png"; bmeta = Path(a.plan) / "basemap_meta.json"
-    if bm.exists() and bmeta.exists():
-        BASEMAPS["main"] = (Image.open(bm).convert("RGB"), json.load(open(bmeta)))
-    for st in sorted((Path(a.plan) / "basemaps").glob("*_styled.png")):
-        name = st.name[:-len("_styled.png")]
-        mt = st.with_name(f"{name}_meta.json")
-        if mt.exists():
-            BASEMAPS[name] = (Image.open(st).convert("RGB"), json.load(open(mt)))
+    BASEMAPS = load_basemaps(a.plan)
     for name, (im, _) in BASEMAPS.items():
-        print("使用风格化底图", name, im.size)
+        print("底图尺寸", name, im.size)
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     imgs = {p.name[:2]: p for p in sorted(Path(a.images).glob("*.png"))}
     for s in plan["shots"]:
