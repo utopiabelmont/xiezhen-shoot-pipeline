@@ -119,7 +119,7 @@ def main():
             if c.exists():
                 a.cli = str(c); break
         else:
-            sys.exit(f"找不到 {a.cli}。先执行：uv tool install -e .（在 codex-imagegen-cli 目录），见 docs/WINDOWS_SETUP.md")
+            sys.exit(f"找不到 {a.cli}。按 INSTALL.md 第 3 节安装（固定提交 bf126f9，在 codex-imagegen-cli 目录执行 uv tool install .）")
     while True:
         files = [a.jobs] if a.jobs else sorted(INBOX.glob("*.jsonl"))
         for f in files:

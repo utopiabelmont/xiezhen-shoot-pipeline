@@ -305,7 +305,7 @@ plans/ inbox/ out/ refs/   运行时目录（不入库；要保留的企划复�
 | 场地照片与主色 | Wikimedia Commons geosearch | 看常见机位与季节；`palette.py` 抽 6 个主色 |
 | 社交平台 | 小红书 / Instagram / 抖音 / TikTok | 无公开接口；由 Codex / Claude 在已登录的 Chrome 里人工级浏览，把机位、构图、姿势写成文字；页面上只放原帖链接与二维码 |
 | 交通与路线依据 | NAVITIME / 官网时刻表 / 官网設施顺序 / 攻略 | 由 Codex / Claude 查询后写进 `trip.json` 与 `meta.route_source`，注明查询日期 |
-| 出图 | codex-imagegen-cli（Codex 内部图片接口） | 用 Codex 桌面版 / CLI 的 ChatGPT 登录，走订阅额度；模型由服务端决定 |
+| 出图 | codex-imagegen-cli 0.2.0（第三方工具，调用 Codex 内部图片接口） | 用 Codex 桌面版 / CLI 的 ChatGPT 登录（明文 `auth.json`），走订阅额度；模型由服务端决定；固定版本与凭据保管见 INSTALL 第 3 节 |
 | prompt 规则 | nuyoah-xiezhen-prompt | 系列母版、同系列变体、第六步检查 |
 
 天气光质判定：直射比 ≥ 0.5 且云量 < 60% 为晴天硬光；≥ 0.5 为高云透光；0.2–0.5 薄云；< 0.2 阴天。分镜默认按预报编排，另一种天气作备选。
@@ -313,6 +313,7 @@ plans/ inbox/ out/ refs/   运行时目录（不入库；要保留的企划复�
 ## 已知限制
 
 - Codex 内部图片接口是 alpha：尺寸不保证（1152x1536 会返回 1086x1448），不能指定模型。要固定模型请改用官方 Images API。
+- 这个接口没有公开文档，由第三方工具 codex-imagegen-cli 调用，用的是你自己的 ChatGPT 账号与额度，Codex 更新后可能失效。它需要明文的 `~/.codex/auth.json`，这个文件不要放进同步文件夹或任何仓库。仓库本身不含任何密钥，其余联网接口都是公开接口。
 - Open-Meteo 预报只有 16 天，更早的日期只有天文数据；出发前一天再跑一次 `sun`。
 - OSM 里没有的步道只能用 `--extra` 画概略线，小抄与路线页上会注明「概略」；路线页的停留时间是按介质估算的，不是实测。
 - 行程页的景点连线是直线，不代表道路；班次以出发当天查询为准。

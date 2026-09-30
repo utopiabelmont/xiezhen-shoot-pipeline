@@ -64,17 +64,24 @@ python pipeline.py status selftest
 
 只有阶段 5（底图风格化）和阶段 8（示意图）需要。用的是 ChatGPT 订阅里的 Codex 额度，不走 API 计费。
 
-1. 装 Codex 并登录一次（桌面版或 `codex login` 都行）。`codex login status` 应显示 ChatGPT 登录；凭据在 `~/.codex/auth.json`。
+安装前先了解三点：
+
+- codex-imagegen-cli 是第三方工具（[jdmnk/codex-imagegen-cli](https://github.com/jdmnk/codex-imagegen-cli)，Apache-2.0），不是 OpenAI 官方产品。它用你的 Codex ChatGPT 登录调用 Codex 内部的图片接口；这个接口没有公开文档，Codex 更新后可能失效，出图用量计入你自己的 ChatGPT 账号。
+- 它要求 Codex 把登录凭据存成文件。`~/.codex/auth.json`（Windows 为 `%USERPROFILE%\.codex\auth.json`）里是明文的 access token 与 refresh token，拿到这个文件就能以你的账号使用 ChatGPT。不要把它放进 OneDrive、iCloud 等同步文件夹，不要复制进任何仓库，也不要发给别人或贴进 issue；本仓库的 `.gitignore` 已排除 `auth.json`。怀疑泄露时，在 ChatGPT 的安全设置里退出所有设备，再重新 `codex login`。
+- 下面固定安装 0.2.0（提交 `bf126f9`）。2026-09-30 看过这一版的代码：令牌只发往 `chatgpt.com/backend-api/codex` 与 `auth.openai.com/oauth/token`，刷新后的令牌写回 `auth.json`，除此之外只调用 `codex --version`。不要设置 `CODEX_IMAGEGEN_BASE_URL`、`CODEX_IMAGEGEN_REFRESH_URL` 这两个环境变量，它们会改变令牌的发送地址。升级时先看上游的改动，再换提交号重装。
+
+1. 装 Codex 并登录一次（桌面版或 `codex login` 都行）。`codex login status` 应显示 ChatGPT 登录。
    若提示不是文件式凭据，在 `~/.codex/config.toml` 加一行 `cli_auth_credentials_store = "file"` 后重新登录。
-2. 装 [codex-imagegen-cli](https://github.com/jdmnk/codex-imagegen-cli)：
+2. 装 codex-imagegen-cli，固定到看过的版本，并且不用 editable 安装（`-e`），这样克隆目录里之后的 `git pull` 不会改变已安装的代码：
    ```bash
    git clone https://github.com/jdmnk/codex-imagegen-cli.git
    cd codex-imagegen-cli
-   uv sync
-   uv tool install -e .
+   git checkout bf126f9052723a93ed2dada138df08b66d10d560
+   uv tool install .
    uv tool update-shell
    ```
-   重开终端，`codex-imagegen --version` 应输出 0.2.0 或更高。Windows 下可执行文件在 `%USERPROFILE%\.local\bin\codex-imagegen.exe`，`pipeline.py` 找不到 PATH 时会自动去这个位置找。
+   重开终端，`codex-imagegen --version` 应输出 0.2.0。Windows 下可执行文件在 `%USERPROFILE%\.local\bin\codex-imagegen.exe`，`pipeline.py` 找不到 PATH 时会自动去这个位置找。
+   以前按旧说明用 `uv tool install -e .` 装过的，在克隆目录里先 `uv tool uninstall codex-imagegen-cli`，再执行上面的 `git checkout` 与 `uv tool install .`。
 3. 再跑一次 `python check_env.py`，`codex-imagegen` 与 `Codex 登录文件` 两行都要是 `OK`。
 
 ## 4 安装 skill（纯 Codex 推荐）

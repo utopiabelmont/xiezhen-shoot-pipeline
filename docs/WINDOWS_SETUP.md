@@ -23,18 +23,18 @@
 
 ## 3 出图：codex-imagegen-cli
 
-需要 Codex 的 ChatGPT 登录（桌面版或 CLI 登录过即可，凭据在 `%USERPROFILE%\.codex\auth.json`）。
+需要 Codex 的 ChatGPT 登录（桌面版或 CLI 登录过即可，凭据在 `%USERPROFILE%\.codex\auth.json`）。codex-imagegen-cli 是第三方工具，调用 Codex 未公开的图片接口；`auth.json` 是明文登录凭据，不要放进同步文件夹或任何仓库。说明与注意事项见 [INSTALL.md 第 3 节](../INSTALL.md#3-出图工具可选)。
 
 ```
 codex login status                        # 应显示 ChatGPT 登录
 git clone https://github.com/jdmnk/codex-imagegen-cli.git
 cd codex-imagegen-cli
-uv sync
-uv tool install -e .
+git checkout bf126f9052723a93ed2dada138df08b66d10d560
+uv tool install .
 uv tool update-shell
 ```
 
-重开终端：`codex-imagegen --version`（0.2.0）。没有 git 的机器可下载仓库 zip 解压后同样 `uv tool install -e .`；安装后可执行文件在 `%USERPROFILE%\.local\bin\codex-imagegen.exe`，`pipeline.py` 与 `run_shots.py` 找不到 PATH 时会自动找这个位置。
+重开终端：`codex-imagegen --version`（0.2.0）。固定这个提交并且不用 `-e`，克隆目录之后的 `git pull` 不会改变已安装的代码；以前用 `uv tool install -e .` 装过的，先 `uv tool uninstall codex-imagegen-cli` 再按上面重装。没有 git 的机器下载 `https://github.com/jdmnk/codex-imagegen-cli/archive/bf126f9052723a93ed2dada138df08b66d10d560.zip`，解压后在目录里 `uv tool install .`。安装后可执行文件在 `%USERPROFILE%\.local\bin\codex-imagegen.exe`，`pipeline.py` 与 `run_shots.py` 找不到 PATH 时会自动找这个位置。
 
 若 `codex login status` 提示不是文件式凭据，在 `%USERPROFILE%\.codex\config.toml` 加一行 `cli_auth_credentials_store = "file"` 后重新 `codex login`。
 

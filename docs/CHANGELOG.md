@@ -1,5 +1,12 @@
 # 变更记录
 
+## 1.7.1 — 2026-09-30
+
+- 出图工具：INSTALL 与 WINDOWS_SETUP 把 codex-imagegen-cli 固定到 0.2.0（提交 `bf126f9`），改为非 editable 安装；写明它是第三方工具、调用未公开的 Codex 图片接口、需要明文 `auth.json`，以及凭据的保管方法和不要设置的两个环境变量。README 的数据来源表与已知限制同步。
+- `.gitignore` 增加 `auth.json`、`.env`、`*.log`、`*.err`。
+- LICENSE 版权人改为 GitHub 账号名 utopiabelmont。
+- 仓库历史已改写：早期提交中的短片剧本（`films/`）从全部历史中移除，提交作者名统一为 utopiabelmont，提交信息里的会话链接去掉。2026-09-30 之前的克隆请重新克隆，或 `git fetch` 后 `git reset --hard origin/main`（先保存未提交的改动）。
+
 ## 1.7.0 — 2026-09-30
 
 - 增加纯 Codex（桌面版 / CLI）安装方式：`scripts/install_skill.py` 默认装到 `~/.agents/skills/` 并登记运行时；支持项目范围、自定义目录、Claude 安装与更新前备份，跨平台且只依赖 Python 标准库。

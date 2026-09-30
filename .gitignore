@@ -24,3 +24,10 @@ Thumbs.db
 plans/*/sns_inbox/
 films/
 tts/
+
+# 凭据与日志（防止误提交）
+auth.json
+.env
+.env.*
+*.log
+*.err
