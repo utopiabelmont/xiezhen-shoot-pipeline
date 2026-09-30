@@ -153,7 +153,8 @@ def draw(out_png: Path, place: str, date: dt.date, rows: list[dict], key: dict, 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     from matplotlib import font_manager
-    cjk = [f for f in ["Noto Sans CJK SC", "Noto Sans CJK TC", "Noto Sans CJK JP", "Microsoft YaHei", "Meiryo",
+    from i18n import LANG, tr
+    cjk = [f for f in (["Noto Sans CJK JP", "Yu Gothic", "Meiryo"] if LANG == "ja" else []) + ["Noto Sans CJK SC", "Noto Sans CJK TC", "Noto Sans CJK JP", "Microsoft YaHei", "Meiryo",
                        "Yu Gothic", "PingFang SC", "Hiragino Sans"] if any(f == x.name for x in font_manager.fontManager.ttflist)]
     if cjk:
         plt.rcParams["font.family"] = cjk[0]
@@ -167,13 +168,13 @@ def draw(out_png: Path, place: str, date: dt.date, rows: list[dict], key: dict, 
     ax.set_rticks([0, 15, 30, 45, 60, 75])
     ax.set_rlabel_position(135)
     ax.set_xticks([math.radians(a) for a in range(0, 360, 45)])
-    ax.set_xticklabels(["北", "东北", "东", "东南", "南", "西南", "西", "西北"] if cjk else ["N", "NE", "E", "SE", "S", "SW", "W", "NW"])
+    ax.set_xticklabels([tr(x) for x in ["北", "东北", "东", "东南", "南", "西南", "西", "西北"]] if cjk else ["N", "NE", "E", "SE", "S", "SW", "W", "NW"])
     ax.grid(alpha=.35)
     if horizon:
         azs = sorted(horizon["horizon"])
         th = [math.radians(a) for a in azs] + [math.radians(azs[0])]
         r = [horizon["horizon"][a] for a in azs] + [horizon["horizon"][azs[0]]]
-        ax.fill_between(th, 0, r, color="#7a8f6a", alpha=.35, label="地形遮挡" if cjk else "terrain")
+        ax.fill_between(th, 0, r, color="#7a8f6a", alpha=.35, label=tr("地形遮挡") if cjk else "terrain")
     day = [x for x in rows if x["elevation"] > 0]
     ax.plot([math.radians(x["azimuth"]) for x in day], [x["elevation"] for x in day], color="#d9a441", lw=2)
     for x in day:
@@ -181,17 +182,17 @@ def draw(out_png: Path, place: str, date: dt.date, rows: list[dict], key: dict, 
             ax.scatter(math.radians(x["azimuth"]), x["elevation"], s=28, color="#c2701d", zorder=3)
             ax.annotate(x["time"], (math.radians(x["azimuth"]), x["elevation"]), fontsize=7,
                         xytext=(4, 4), textcoords="offset points")
-    title = f"{place}\n{date}  太阳轨迹（俯视，圆心为正上方）" if cjk else f"{place}\n{date} sun path (top view)"
+    title = f"{tr(place)}\n{date}  {tr('太阳轨迹（俯视，圆心为正上方）')}" if cjk else f"{place}\n{date} sun path (top view)"
     ax.set_title(title, fontsize=9, pad=14)
     if horizon:
         ax.legend(loc="lower left", fontsize=7, bbox_to_anchor=(-0.15, -0.12))
 
     ax2 = fig.add_subplot(1, 2, 2)
     hrs = [int(x["time"][:2]) + int(x["time"][3:]) / 60 for x in rows]
-    ax2.plot(hrs, [x["elevation"] for x in rows], color="#c2701d", lw=2, label="太阳高度角" if cjk else "elevation")
+    ax2.plot(hrs, [x["elevation"] for x in rows], color="#c2701d", lw=2, label=tr("太阳高度角") if cjk else "elevation")
     if horizon:
         ax2.plot(hrs, [horizon_at(horizon, x["azimuth"]) for x in rows], color="#7a8f6a", lw=1.5, ls="--",
-                 label="该方位地形遮挡角" if cjk else "terrain horizon")
+                 label=tr("该方位地形遮挡角") if cjk else "terrain horizon")
     for k_, c in [("golden_am", "#f2d28a"), ("golden_pm", "#f2d28a"), ("blue_pm", "#9fb7d9"), ("blue_am", "#9fb7d9")]:
         if key.get(k_):
             a, b = key[k_]
@@ -199,9 +200,9 @@ def draw(out_png: Path, place: str, date: dt.date, rows: list[dict], key: dict, 
     ax2.axhline(0, color="#999", lw=.8)
     ax2.set_xlim(4, 20)
     ax2.set_ylim(-10, 90)
-    ax2.set_xlabel("当地时间" if cjk else "local time")
-    ax2.set_ylabel("角度 (°)" if cjk else "deg")
-    ax2.set_title("高度角与地形遮挡（黄=黄金时刻，蓝=蓝调）" if cjk else "elevation vs terrain (gold/blue hours)", fontsize=9)
+    ax2.set_xlabel(tr("当地时间") if cjk else "local time")
+    ax2.set_ylabel(tr("角度 (°)") if cjk else "deg")
+    ax2.set_title(tr("高度角与地形遮挡（黄=黄金时刻，蓝=蓝调）") if cjk else "elevation vs terrain (gold/blue hours)", fontsize=9)
     ax2.grid(alpha=.3)
     ax2.legend(fontsize=7)
     fig.tight_layout()

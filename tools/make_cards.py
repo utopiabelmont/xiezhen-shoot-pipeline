@@ -11,11 +11,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import math
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+
+try:                                    # 作为 tools.make_cards 导入（测试）或直接运行脚本
+    from .i18n import LANG, install_pil_hooks, mark_fragments, raw, tr, wrap_words
+except ImportError:
+    from i18n import LANG, install_pil_hooks, mark_fragments, raw, tr, wrap_words
+
+install_pil_hooks()   # XIEZHEN_LANG=en / ja 时，所有文字先查 locales/<语言>.json 再测量与绘制
 
 W, H = 1600, 1067
 BG = (247, 244, 236)
@@ -27,7 +35,9 @@ LINE = (215, 210, 198)
 GOLD = (196, 146, 52)
 BLUE = (112, 150, 190)
 
-FONT_CANDIDATES = [
+FONT_CANDIDATES = ([
+    "C:/Windows/Fonts/YuGothB.ttc", "C:/Windows/Fonts/YuGothM.ttc",
+] if LANG == "ja" else []) + [
     "C:/Windows/Fonts/msyhbd.ttc", "C:/Windows/Fonts/msyh.ttc", "C:/Windows/Fonts/meiryo.ttc",
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc", "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
     "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc", "/System/Library/Fonts/PingFang.ttc",
@@ -73,7 +83,15 @@ def _wordish(c):
 
 def wrap(draw, text, f, width):
     """按宽度折行；行首不放闭合标点，行尾不留开括号（避头尾），英文单词、数字与时间不从中间断开，
-    末行不留单个孤字。"""
+    末行不留单个孤字。整句先按 XIEZHEN_LANG 翻译；英文按单词折行。"""
+    text = tr(text)
+    with raw():
+        if LANG == "en":
+            return mark_fragments(wrap_words(draw, text, f, width))
+        return mark_fragments(_wrap_cjk(draw, text, f, width))
+
+
+def _wrap_cjk(draw, text, f, width):
     lines, cur = [], ""
     for ch in text:
         if ch == "\n":
@@ -142,9 +160,11 @@ def fit_block(draw, xy, text, width, bottom, sizes=(15, 14, 13), fill=INK):
     maxl = max(1, int((bottom - xy[1]) // (sz + sp)))
     if len(lines) > maxl:
         lines = lines[:maxl]
-        while lines[-1] and draw.textlength(lines[-1] + "…", font=f) > width:
-            lines[-1] = lines[-1][:-1]
+        with raw():
+            while lines[-1] and draw.textlength(lines[-1] + "…", font=f) > width:
+                lines[-1] = lines[-1][:-1]
         lines[-1] += "…"
+        mark_fragments(lines)
     y = xy[1]
     for ln in lines:
         draw.text((xy[0], y), ln, font=f, fill=fill)
@@ -152,12 +172,39 @@ def fit_block(draw, xy, text, width, bottom, sizes=(15, 14, 13), fill=INK):
     return y
 
 
+def page_header(d, label, title, sub="", badge=None, badge_fill=None, title_size=44):
+    """页眉：大号类别（编号 / 行程 / 路线 / 穿搭）｜标题 [徽章]　右侧小字。按实际文字宽度排，
+    标题放不下时逐级缩小字号（译文较长时）。"""
+    f_lab, f_s, f_b = font(52, True), font(18), font(24, True)
+    d.text((40, 26), label, font=f_lab, fill=GREEN)
+    lx = 40 + d.textlength(label, font=f_lab) + 18
+    d.line([(lx, 34), (lx, 84)], fill=GREEN, width=3)
+    tx = lx + 18
+    sw = d.textlength(sub, font=f_s) if sub else 0
+    bw = (d.textlength(badge, font=f_b) + 24) if badge else 0
+    room = W - 40 - sw - 24 - tx - (bw + 16 if badge else 0)
+    for sz in range(title_size, 25, -2):
+        f_t = font(sz, True)
+        if d.textlength(title, font=f_t) <= room:
+            break
+    d.text((tx, 30 + (title_size - sz) // 2), title, font=f_t, fill=GREEN)
+    if badge:
+        bx = tx + d.textlength(title, font=f_t) + 16
+        d.rounded_rectangle((bx, 40, bx + bw, 76), radius=8, fill=badge_fill or GOLD)
+        d.text((bx + 12, 45), badge, font=f_b, fill=(255, 255, 255))
+    if sub:
+        d.text((W - 40 - sw, 52), sub, font=f_s, fill=MUTED)
+
+
 def panel(draw, box, title, tf):
     x0, y0, x1, y1 = box
     draw.rounded_rectangle(box, radius=10, fill=PANEL, outline=LINE, width=2)
     draw.rounded_rectangle((x0, y0, x1, y0 + 40), radius=10, fill=GREEN)
     draw.rectangle((x0, y0 + 20, x1, y0 + 40), fill=GREEN)
-    draw.text((x0 + 14, y0 + 7), title, font=tf, fill=(255, 255, 255))
+    sz = tf.size
+    while sz > 14 and draw.textlength(title, font=tf) > x1 - x0 - 28:   # 标题放不下（译文较长）时缩小
+        sz -= 1; tf = font(sz, True)
+    draw.text((x0 + 14, y0 + 7 + (40 - 14 - sz) // 2 if sz < 24 else y0 + 7), title, font=tf, fill=(255, 255, 255))
     return y0 + 52
 
 
@@ -262,7 +309,7 @@ def draw_topview_map(img, box, shot, sun, weather_note, f_small, f_tiny):
     occ = []
     # 顶部天气说明与右上角指北
     maxw = (x1 - 40) - (x0 + 10)
-    note = weather_note
+    note = weather_note = tr(weather_note)
     while note and d.textlength(note + "…", font=f_tiny) > maxw:
         note = note[:-1]
     if note != weather_note:
@@ -386,15 +433,20 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     # 标题
     d.text((40, 26), shot["id"], font=font(52, True), fill=GREEN)
     d.line([(118, 34), (118, 84)], fill=GREEN, width=3)
-    d.text((136, 30), shot["title"], font=f_title, fill=GREEN)
     medium = shot.get("medium", "still")
     badge = MEDIUM_BADGE.get(medium)
+    sub = f"{meta['place'].split('（')[0]}　{meta['date']}　{meta['gear'].split('+')[-1].strip().split('，')[0]}"
+    room = W - 40 - d.textlength(sub, font=f_s) - 24 - 136 - ((d.textlength(badge, font=f_h) + 42) if badge else 0)
+    for sz in (46, 42, 38, 34, 30):                  # 标题放不下（译文较长）时缩小字号
+        f_title = font(sz, True)
+        if d.textlength(shot["title"], font=f_title) <= room:
+            break
+    d.text((136, 30 + (46 - f_title.size) // 2), shot["title"], font=f_title, fill=GREEN)
     if badge:
         bx = 136 + d.textlength(shot["title"], font=f_title) + 18
         bw = d.textlength(badge, font=f_h) + 24
         d.rounded_rectangle((bx, 40, bx + bw, 76), radius=8, fill=MEDIUM_COLOR.get(medium, GOLD))
         d.text((bx + 12, 45), badge, font=f_h, fill=(255, 255, 255))
-    sub = f"{meta['place'].split('（')[0]}　{meta['date']}　{meta['gear'].split('+')[-1].strip().split('，')[0]}"
     d.text((W - 40 - d.textlength(sub, font=f_s), 52), sub, font=f_s, fill=MUTED)
     # 照片：有 SNS 参考时左为 AI 示意、中为原帖，下方为对照说明；
     # AI 示意是横图时改为上下排：横图占满左两栏，下方左为原帖、右为对照说明
@@ -477,9 +529,10 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     rx0, rx1 = 970, W - 40
     y = panel(d, (rx0, 110, rx1, 318), SETTINGS_TITLE.get(medium, "相机设置"), f_h)
     rows = settings_rows(shot, medium)
+    kw = max([86] + [d.textlength(k, font=f_t) + 10 for k, _ in rows])   # 标签列按最长标签加宽（译文）
     for k, v in rows:
         d.text((rx0 + 14, y), k, font=f_t, fill=GREEN)
-        y = text_block(d, (rx0 + 100, y), v, f_t, rx1 - rx0 - 118, spacing=2)
+        y = text_block(d, (rx0 + 14 + kw, y), v, f_t, rx1 - rx0 - 32 - kw, spacing=2)
         y += 1
     y = panel(d, (rx0, 330, rx1, 690), "机位与光线示意（俯视图，北在上）", f_h)
     draw_topview(img, (rx0 + 10, 384, rx1 - 10, 680), shot, sun_for_shot, shot.get("topview_note") or meta_weather_note(meta), f_s, f_t)
@@ -515,9 +568,11 @@ def fit_lines(d, text, f, width, max_lines):
     lines = wrap(d, text, f, width)
     if len(lines) > max_lines:
         lines = lines[:max_lines]
-        while lines[-1] and d.textlength(lines[-1] + "…", font=f) > width:
-            lines[-1] = lines[-1][:-1]
+        with raw():
+            while lines[-1] and d.textlength(lines[-1] + "…", font=f) > width:
+                lines[-1] = lines[-1][:-1]
         lines[-1] += "…"
+        mark_fragments(lines)
     return lines
 
 
@@ -682,6 +737,8 @@ def draw_src_column(img, box, src, shot=None):
         if not lab:
             continue
         lw = d.textlength(lab, font=font(13, True)) + 16
+        if kx > ix0 and kx + lw > x1 - 10:           # 放不下就换行（译文较长）
+            kx = ix0; y += 28
         d.rounded_rectangle((kx, y, kx + lw, y + 22), radius=8, fill=col)
         d.text((kx + 8, y + 3), lab, font=font(13, True), fill=(255, 255, 255))
         kx += lw + 6
@@ -820,7 +877,10 @@ def main():
         print("底图尺寸", name, im.size)
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     imgs = {p.name[:2]: p for p in sorted(Path(a.images).glob("*.png"))}
+    only = [x.strip() for x in os.environ.get("XIEZHEN_ONLY", "").split(",") if x.strip()]   # 只出指定编号（README 配图等）
     for s in plan["shots"]:
+        if only and s["id"] not in only:
+            continue
         sun = sun_at(meta, s.get("alt_time") or s["time"])
         make_card(s, meta, imgs.get(s["id"]), out / f"card_{s['id']}.png", sun)
         print("card", s["id"], "photo:", imgs.get(s["id"]).name if imgs.get(s["id"]) else "无")

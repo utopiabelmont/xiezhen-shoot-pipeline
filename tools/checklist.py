@@ -602,8 +602,8 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
         end.append(f"回程：{T['stops'][-1]['note']}")
     H.append('<section class="side"><h2>收尾<span class="prog num" data-prog="#sec-end input"></span></h2><ul class="items" id="sec-end">'
              + "".join(item(f"end-{i}", e) for i, e in enumerate(end)) + "</ul></section>")
-    H.append(f'<p class="foot">由 xiezhen-shoot-pipeline 生成（{dt.datetime.now():%Y-%m-%d %H:%M}）。勾选只保存在这台设备的浏览器里。'
-             "示意图为 AI 拍摄示意，非现场实拍。</p></div>")
+    H.append(f'<p class="foot"><span>由 xiezhen-shoot-pipeline 生成</span> <span class="num">{dt.datetime.now():%Y-%m-%d %H:%M}</span>'
+             "<span>。勾选只保存在这台设备的浏览器里。示意图为 AI 拍摄示意，非现场实拍。</span></p></div>")
 
     title = f"{place} 拍摄核对表"
     body = "\n".join(H)
@@ -617,6 +617,7 @@ def main():
     ap.add_argument("--no-thumbs", action="store_true")
     ap.add_argument("--fragment", help="另存一份无外壳版本到此路径")
     ap.add_argument("--public", action="store_true", help="公开版：不嵌 sns_private 原帖截图（发布页、examples 用）")
+    ap.add_argument("--out", help="另存到此路径（不删企划目录里的旧核对表）；XIEZHEN_LANG=en / ja 时输出译文版")
     a = ap.parse_args()
     plan = Path(a.plan)
     images = Path(a.images) if a.images else ROOT / "out" / plan.name
@@ -628,12 +629,18 @@ def main():
     js = JS.replace("document.body.getAttribute('data-key')", "document.getElementById('app').getAttribute('data-key')") \
            .replace("document.body.getAttribute('data-date')", "document.getElementById('app').getAttribute('data-date')")
     inner += f"<script>{js}</script>\n"
-    full = ("<!doctype html>\n<html lang=\"zh-CN\"><head><meta charset=\"utf-8\">"
+    from i18n import LANG, html as i18n_html
+    inner = i18n_html(inner)
+    lang_attr = {"en": "en", "ja": "ja"}.get(LANG, "zh-CN")
+    full = ("<!doctype html>\n<html lang=\"" + lang_attr + "\"><head><meta charset=\"utf-8\">"
             "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\">\n"
             + inner.replace("</style>\n", "</style>\n</head><body>\n", 1) + "</body></html>\n")
-    for old in plan.glob("*拍摄核对表*.html"):
-        old.unlink()
-    out = plan / out_name(meta)
+    if a.out:
+        out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
+    else:
+        for old in plan.glob("*拍摄核对表*.html"):
+            old.unlink()
+        out = plan / out_name(meta)
     out.write_text(full, encoding="utf-8")
     if a.fragment:
         Path(a.fragment).write_text(inner, encoding="utf-8")

@@ -17,7 +17,8 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
-from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, font, panel, text_block  # noqa: E402
+from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, font, panel, text_block, page_header  # noqa: E402
+from i18n import tr  # noqa: E402
 from palette import rgb_to_lab, delta_e  # noqa: E402
 
 
@@ -32,7 +33,7 @@ def swatch_row(d, x, y, items, w=92, h=54, f=None, ft=None):
         d.rectangle((x, y, x + w, y + h), fill=hex_rgb(hx), outline=LINE)
         d.text((x, y + h + 4), label, font=f, fill=INK)
         if sub:
-            t = sub
+            t = sub = tr(sub)
             while t and d.textlength(t + "…", font=ft) > w + 6:
                 t = t[:-1]
             d.text((x, y + h + 22), t + ("…" if t != sub else ""), font=ft, fill=MUTED)
@@ -53,11 +54,8 @@ def separation(outfit_colors, scene_colors):
 def page_main(o, pal, meta, out):
     img = Image.new("RGB", (W, H), BG); d = ImageDraw.Draw(img)
     f_title, f_h, f_b, f_s, f_t = font(44, True), font(24, True), font(20), font(18), font(15)
-    d.text((40, 26), "穿搭", font=font(52, True), fill=GREEN)
-    d.line([(158, 34), (158, 84)], fill=GREEN, width=3)
-    d.text((176, 30), o.get("title") or "本次出行的服装方案", font=f_title, fill=GREEN)
-    sub = f"{meta.get('place','').split('（')[0]}　{meta.get('date','')}"
-    d.text((W - 40 - d.textlength(sub, font=f_s), 52), sub, font=f_s, fill=MUTED)
+    sub = f"{tr(meta.get('place','').split('（')[0])}　{meta.get('date','')}"
+    page_header(d, tr("穿搭"), tr(o.get("title") or "本次出行的服装方案"), sub)
 
     # 左栏：色卡与分离度
     lx0, lx1 = 40, 760
@@ -89,10 +87,12 @@ def page_main(o, pal, meta, out):
     rx0, rx1 = 790, W - 40
     y = panel(d, (rx0, 110, rx1, 430), "主方案", f_h)
     m = o.get("main", {})
-    for k, label in (("top", "上装"), ("bottom", "下装"), ("layer", "外层"), ("shoes", "鞋"), ("accessories", "配饰"), ("bag", "包")):
+    labels = (("top", "上装"), ("bottom", "下装"), ("layer", "外层"), ("shoes", "鞋"), ("accessories", "配饰"), ("bag", "包"))
+    kw = max([66] + [d.textlength(tr(lb), font=f_t) + 12 for _, lb in labels])     # 标签列按译文加宽
+    for k, label in labels:
         if m.get(k):
             d.text((rx0 + 14, y), label, font=f_t, fill=GREEN)
-            y = text_block(d, (rx0 + 80, y), m[k], f_t, rx1 - rx0 - 100, spacing=2) + 2
+            y = text_block(d, (rx0 + 14 + kw, y), m[k], f_t, rx1 - rx0 - 34 - kw, spacing=2) + 2
     if o.get("fit_notes"):
         y += 4
         y = text_block(d, (rx0 + 14, y), o["fit_notes"], f_t, rx1 - rx0 - 28, fill=MUTED, spacing=2)
@@ -115,9 +115,7 @@ def page_shots(o, meta, out):
         return None
     img = Image.new("RGB", (W, H), BG); d = ImageDraw.Draw(img)
     f_h, f_t = font(24, True), font(16)
-    d.text((40, 26), "穿搭", font=font(52, True), fill=GREEN)
-    d.line([(158, 34), (158, 84)], fill=GREEN, width=3)
-    d.text((176, 30), "逐张着装提醒", font=font(44, True), fill=GREEN)
+    page_header(d, tr("穿搭"), tr("逐张着装提醒"))
     items = sorted(per.items())
     cols = 2 if len(items) > 12 else 1
     colw = (W - 80 - (cols - 1) * 20) // cols

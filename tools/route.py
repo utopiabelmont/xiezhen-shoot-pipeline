@@ -28,7 +28,8 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
-from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, GOLD, font, panel, text_block, wrap, latlon_to_px  # noqa: E402
+from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, GOLD, font, panel, text_block, wrap, latlon_to_px, page_header  # noqa: E402
+from i18n import tr  # noqa: E402
 
 DWELL = {"still": 8, "burst": 4, "video": 4, "live": 1}
 STOP_EXTRA = 2
@@ -233,11 +234,8 @@ def main():
     # 路线页
     img = Image.new("RGB", (W, H), BG); d = ImageDraw.Draw(img)
     f_title, f_h, f_s, f_t = font(44, True), font(24, True), font(18), font(15)
-    d.text((40, 26), "路线", font=font(52, True), fill=GREEN)
-    d.line([(158, 34), (158, 84)], fill=GREEN, width=3)
-    d.text((176, 30), f"园内游览与拍摄顺序（{len(rows)} 站，步行约 {result['total_walk_m']} m）", font=f_title, fill=GREEN)
-    sub = f"{meta.get('place','').split('（')[0]}　{meta.get('date','')}"
-    d.text((W - 40 - d.textlength(sub, font=f_s), 52), sub, font=f_s, fill=MUTED)
+    sub = f"{tr(meta.get('place','').split('（')[0])}　{meta.get('date','')}"
+    page_header(d, tr("路线"), tr(f"园内游览与拍摄顺序（{len(rows)} 站，步行约 {result['total_walk_m']} m）"), sub)
     # 地图：整张风格化底图缩放到左侧面板
     mx0, my0, mx1, my1 = 40, 110, 900, H - 60
     scale_img = min((mx1 - mx0) / base.width, (my1 - my0) / base.height)
@@ -273,12 +271,14 @@ def main():
         d.text((x, y), hdr, font=font(15, True), fill=GREEN)
     y += 24
     for r in rows:
-        vals = [str(r["seq"]), r["name"][:11], None, f"{r['walk_m']}m{'~' if r['approx'] else ''}", r["arrive"], r["leave"]]
+        vals = [str(r["seq"]), None, None, f"{r['walk_m']}m{'~' if r['approx'] else ''}", r["arrive"], r["leave"]]
         for (x, _), v in zip(cols, vals):
             if v is not None:
                 d.text((x, y), v, font=f_t, fill=INK)
+        name = r["name"] if tr(r["name"]) != r["name"] else r["name"][:11]
+        y1 = text_block(d, (cols[1][0], y), name, f_t, cols[2][0] - cols[1][0] - 10, spacing=1)
         y2 = text_block(d, (cols[2][0], y), " ".join(r["shots"]), f_t, 200, spacing=1)
-        y = max(y + 22, y2 + 2)
+        y = max(y + 22, y1 + 2, y2 + 2)
         if r.get("note"):
             y = text_block(d, (rx0 + 44, y), r["note"], font(13), rx1 - rx0 - 60, fill=MUTED, spacing=1) + 2
         if y > H - 190:

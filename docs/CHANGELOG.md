@@ -1,5 +1,13 @@
 # 变更记录
 
+## 1.8.0 — 2026-09-30
+
+- README 分成三种语言：`README.md`（英文，GitHub 默认显示）、`README.zh-CN.md`（中文）、`README.ja.md`（日文），顶部互相链接。
+- 页面多语言输出：新增 `tools/i18n.py` 与 `locales/en.json`、`locales/ja.json`。设置 `XIEZHEN_LANG=en` / `ja` 后，分镜卡、运镜页、行程、路线、穿搭页、运镜库动图、太阳轨迹图与核对表按整句查表翻译，英文按单词折行；查不到的保持中文，`XIEZHEN_I18N_MISSING` 列出缺译，`XIEZHEN_I18N_COLLECT` 在中文渲染时收集原文。
+- 版式随译文长度调整：页眉按实际宽度排并缩小过长标题（`page_header`），面板标题过长时缩小，相机设置、穿搭主方案与运镜页的标签列按最长标签加宽，SNS 标签放不下时换行，路线表的停留点名称可折行。中文输出不变（页眉位置有几像素差异）。
+- `scripts/readme_images.py --lang en|ja|zh`：从本机企划与出图结果重出 README 配图到 `docs/img/<语言>/`；`XIEZHEN_ONLY` 只出指定编号的分镜卡与运镜页；`checklist.py --out` 另存核对表。
+- Codex 生成的画面（人物示意图、水彩底图）本身没有文字，各语言共用；翻译的是脚本叠加在页面上的文字。
+
 ## 1.7.1 — 2026-09-30
 
 - 出图工具：INSTALL 与 WINDOWS_SETUP 把 codex-imagegen-cli 固定到 0.2.0（提交 `bf126f9`），改为非 editable 安装；写明它是第三方工具、调用未公开的 Codex 图片接口、需要明文 `auth.json`，以及凭据的保管方法和不要设置的两个环境变量。README 的数据来源表与已知限制同步。

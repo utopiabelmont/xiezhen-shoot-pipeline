@@ -36,7 +36,8 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
-from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, font, panel, text_block  # noqa: E402
+from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, font, panel, text_block, page_header  # noqa: E402
+from i18n import tr  # noqa: E402
 
 MODE = {"bus": "巴士", "train": "电车", "walk": "步行", "taxi": "出租车", "car": "自驾", "ropeway": "缆车", "ship": "船"}
 ACCENT = (176, 98, 40)
@@ -112,10 +113,7 @@ def main():
 
     img = Image.new("RGB", (W, H), BG); d = ImageDraw.Draw(img)
     f_title, f_h, f_s, f_t = font(44, True), font(24, True), font(18), font(15)
-    d.text((40, 26), "行程", font=font(52, True), fill=GREEN)
-    d.line([(158, 34), (158, 84)], fill=GREEN, width=3)
-    d.text((176, 30), T.get("title", "一日行程"), font=f_title, fill=GREEN)
-    d.text((W - 40 - d.textlength(T.get("date", ""), font=f_s), 52), T.get("date", ""), font=f_s, fill=MUTED)
+    page_header(d, tr("行程"), tr(T.get("title", "一日行程")), T.get("date", ""))
 
     # 左：示意地图（真实经纬度等比，北在上）
     mx0, my0, mx1, my1 = 40, 110, 900, 590

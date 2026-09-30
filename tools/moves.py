@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import re
 import sys
 from pathlib import Path
@@ -22,7 +23,8 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
-from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, font, panel, text_block  # noqa: E402
+from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, font, panel, text_block, page_header  # noqa: E402
+from i18n import tr  # noqa: E402
 
 CAM = (176, 98, 40)          # 相机轨迹
 SUBJ = GREEN                 # 人物轨迹
@@ -564,7 +566,7 @@ def draw_frames(img, x, y, P, fw, fh, gap, cols, captions=True, sid=None):
         fx = x + i * (fw + gap)
         img.paste(photo_frame(photos[i], fw, fh) if photos else draw_frame(P, t, fw, fh, cols), (fx, y))
         d.rectangle((fx, y, fx + fw, y + fh), outline=INK, width=2)
-        d.rectangle((fx, y, fx + 26, y + 22), fill=VIDEO)
+        d.rectangle((fx, y, fx + 12 + d.textlength(lab, font=font(14, True)), y + 22), fill=VIDEO)
         d.text((fx + 6, y + 2), lab, font=font(14, True), fill=(255, 255, 255))
         if i < 2:
             arrow(d, (fx + fw + 4, y + fh / 2), (fx + fw + gap - 4, y + fh / 2), MUTED, w=2, head=7)
@@ -613,16 +615,9 @@ def render_page(shot, meta, outfit, out_path):
     P = params(shot)
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
-    d.text((40, 26), shot["id"], font=font(52, True), fill=GREEN)
-    tx = 40 + d.textlength(shot["id"], font=font(52, True)) + 16
-    d.line([(tx - 8, 34), (tx - 8, 84)], fill=GREEN, width=3)
-    title = f"运镜示意 · {P['move']}"
-    d.text((tx + 6, 30), title, font=font(40, True), fill=GREEN)
-    bx = tx + 6 + d.textlength(title, font=font(40, True)) + 16
-    d.rounded_rectangle((bx, 40, bx + 74, 76), radius=6, fill=VIDEO)
-    d.text((bx + 10, 44), "短片", font=font(24, True), fill=(255, 255, 255))
-    sub = f"{shot.get('title', '')}　{shot.get('lens', '')}　{ {'24p': '24p 实时', 'sq60': 'S&Q 60→24', 'sq120': 'S&Q 120→24（裁 1.52×）'}.get(P['mode'], P['mode']) }"
-    d.text((W - 40 - d.textlength(sub, font=font(18)), 52), sub, font=font(18), fill=MUTED)
+    title = f"{tr('运镜示意')} · {tr(P['move'])}"
+    sub = f"{tr(shot.get('title', ''))}　{shot.get('lens', '')}　{tr({'24p': '24p 实时', 'sq60': 'S&Q 60→24', 'sq120': 'S&Q 120→24（裁 1.52×）'}.get(P['mode'], P['mode']))}"
+    page_header(d, shot["id"], title, sub, badge=tr("短片"), badge_fill=VIDEO, title_size=40)
 
     photos = frame_images(shot["id"])
     top1 = 520 if photos else 640                    # 有 Codex 三帧时压低上半部，把画面变化放大
@@ -644,12 +639,13 @@ def render_page(shot, meta, outfit, out_path):
     d.text((rx, y), "时间条", font=font(18, True), fill=GREEN)
     draw_timeline(d, rx, y + 30, W - 70 - rx, P)
     yy = y + 120
+    labw = max(56, 12 + max(d.textlength(tr(x), font=font(16, True)) for x in ("起幅", "落幅", "画面", "曝光")))   # 标签列按译文加宽
     for lab, val in (("起幅", P["start"]), ("落幅", P["end"]), ("画面", FRAME_NOTE[P["type"]]), ("曝光", shot.get("clip", {}).get("exposure", "")),
                      ("ND", shot.get("clip", {}).get("nd", ""))):
         if not val:
             continue
         d.text((rx, yy), lab, font=font(16, True), fill=GREEN)
-        yy = text_block(d, (rx + 56, yy), val, font(16), W - 70 - rx - 56, spacing=3) + 6
+        yy = text_block(d, (rx + labw, yy), val, font(16), W - 70 - rx - labw, spacing=3) + 6
     foot = ("运镜示意：距离与机高按分镜估算；起 / 中 / 止三帧为 AI 按文字描述生成的示意画面，现场以取景器为准。" if photos else
             "运镜示意：距离与机高按分镜估算，三帧按焦段、距离和俯仰角推算人物在画面里的大小与位置，现场以取景器为准。")
     d.text((40, H - 32), foot, font=font(15), fill=MUTED)
@@ -726,6 +722,7 @@ def _tile(img, x, y, tw, th, label, sub, P, cols):
     frames_w = 3 * fw + 2 * gap
     room = tw - frames_w - 50
     f14 = font(14)
+    sub = tr(sub)
     while sub and d.textlength(sub, font=f14) > room:
         sub = sub[:-2] + "…" if not sub.endswith("…") else sub[:-2] + "…"
     d.text((x + 16, y + 40), sub, font=f14, fill=MUTED)
@@ -800,6 +797,9 @@ def main():
     for old in [*out.glob("move_*.png"), *out.glob("movem_*.png"), *out.glob("moves_overview_*.png")]:
         old.unlink()
     vids = [s for s in SL["shots"] if s.get("medium") == "video" and s.get("clip")]
+    only = [x.strip() for x in os.environ.get("XIEZHEN_ONLY", "").split(",") if x.strip()]   # 只出指定编号（README 配图等）
+    if only:
+        vids = [s for s in vids if s["id"] in only]
     rj = plan / "route.json"
     if rj.exists():                                   # 一览按游览顺序
         order = json.loads(rj.read_text(encoding="utf-8")).get("order", [])
