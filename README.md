@@ -113,7 +113,7 @@ flowchart LR
 
 ## 快速开始
 
-**纯 Codex 可用，无需安装 Claude。** 完成 Python 环境安装后，Windows 执行 `.venv\Scripts\python.exe scripts/install_skill.py`，macOS / Linux 执行 `.venv/bin/python scripts/install_skill.py`，即可安装 skill 并登记仓库。在 Codex 中用 `$xiezhen-shoot-planner` 开始规划；详细步骤、项目范围安装与能力边界见 [INSTALL.md 第 4 节](INSTALL.md#4-安装-skill纯-codex-推荐)。SNS 使用当前可用的网页 / 浏览器工具，出图使用 codex-imagegen-cli；缺少可选能力时记录缺口并完成其余产物。
+**纯 Codex 可用，无需安装 Claude。** 完成 Python 环境安装后，Windows 执行 `.venv\Scripts\python.exe scripts/install_skill.py`，macOS / Linux 执行 `.venv/bin/python scripts/install_skill.py`，即可安装 skill 并登记仓库。在 Codex 中用 `$xiezhen-shoot-planner` 开始规划；详细步骤、项目范围安装与能力边界见 [INSTALL.md 第 4 节](INSTALL.md#4-安装-skill纯-codex-推荐)。纯 Codex 可通过桌面版浏览器连接或 MCP 使用已登录浏览器，接入方式见下方「纯 Codex 的浏览器与电脑操作」；出图使用 codex-imagegen-cli。安装 skill 本身不会自动安装这些浏览器 / 桌面工具，缺少可选能力时记录缺口并完成其余产物。
 
 新电脑从零安装（Python 环境、可选 codex-imagegen、Codex 或 Claude skill、自测）按 [`INSTALL.md`](INSTALL.md) 走，约 10 分钟。已装好的机器：
 
@@ -161,6 +161,33 @@ python pipeline.py status  hakone-1003
 器材不说就用默认（Sony α7 V + 24-105mm F4 + HVL-F60RM2，iPhone 14 Pro 拍实况，DJI Osmo Pocket 3 拍稳定器短片，Ricoh GR IV 随手抓拍）；有几台设备都告诉它，SNS 调研会按每台设备各搜一轮，优先复刻同款设备拍的机位帖，分镜标明每张用哪台。Codex / Claude 会按阶段号跑脚本、做网页与 SNS 调研、抽色定穿搭、照着 SNS 素材写分镜、排路线并按路线编号、编 prompt、出图、检查、合成 PDF，并给出时间线、模特页、到场清单和剪辑单。人工阶段的判断标准都写在 skill 与 `docs/` 里，生成图只标 test / failed，用户确认后才 final。
 
 仓库路径不写死在 skill 里：Codex / Claude 按 对话指定 → 已连接文件夹里含 `pipeline.py` 的目录 → `~/.xiezhen-pipeline/config.json`（`pipeline.py register` 写入）的顺序找。
+
+### 纯 Codex 的浏览器与电脑操作
+
+纯 Codex 可以接入浏览器和电脑操作工具。实际能力取决于当前会话启用的工具、浏览器连接与网站访问权限；终端、网页搜索、已登录浏览器和 Windows 桌面操作是分别配置的能力。云端会话也不会自动取得本机的 Chrome 登录状态。
+
+**桌面版优先使用官方浏览器连接。** 在支持该功能的 Codex / ChatGPT 桌面环境中，通过 Settings → Computer Use 安装并连接浏览器扩展，再在对话里选择 `@Chrome` / `@Edge` 或指定标签页，使用已登录 SNS 的浏览器配置文件。官方 Computer Use 也提供桌面应用操作，具体可用性取决于平台、地区与启用状态；浏览器连接与桌面应用操作分别设置。见 [官方浏览器扩展说明](https://learn.chatgpt.com/docs/chrome-extension) 与 [官方电脑操作说明](https://learn.chatgpt.com/use-cases/use-your-computer-with-codex)。
+
+**CLI 或需要独立安装方案时，可选择下面的 GitHub 项目：**
+
+| 项目 | 接入的能力 | 在本流水线中的用途与限制 |
+|---|---|---|
+| [Microsoft Playwright MCP](https://github.com/microsoft/playwright-mcp)（推荐） | 打开页面、搜索、点击、滚动、读取页面，另有截图工具；扩展模式可连接现有 Chrome / Edge 标签页并复用登录会话 | 适合逐帖调研 SNS；默认页面快照是文字与可访问性结构，不能据此判断照片里的构图、姿势与光线。扩展安装见 [上游说明](https://github.com/microsoft/playwright/blob/main/packages/extension/README.md) |
+| [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp) | 控制 Chrome、读取页面、查看截图与网络请求；可连接正在运行的浏览器 | 适合动态页面调研与加载问题排查；复用已有浏览器需按 [连接说明](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/advanced-usage.md) 配置调试连接 |
+| [Windows-MCP](https://github.com/CursorTouch/Windows-MCP) | Windows 窗口、鼠标、键盘、界面读取与截图 | 需要操作文件选择框、资源管理器等桌面应用时使用；上游目前要求 Python 3.13+ 与 uv，中文 Windows 的部分工具有适配注意事项，不直接复用本流水线的 Python 3.12 venv |
+| [Browser Use](https://github.com/browser-use/browser-use) | 给 Codex 等代理提供浏览器 CLI，也提供独立浏览器代理与云服务 | 适合复杂浏览流程；CLI 接入现有 Codex 与独立代理是不同用法，独立代理通常另需模型 API 配置，云服务可能产生额外费用 |
+
+Playwright MCP 扩展模式的 Codex 配置示例（先安装 Node.js / npm，使 `npx` 可用，并按上游说明安装浏览器扩展）：
+
+```powershell
+codex mcp add playwright -- npx -y @playwright/mcp@latest --extension
+```
+
+重启或新建 Codex 会话后，按扩展提示连接已登录 SNS 的标签页，再用 `$xiezhen-shoot-planner` 开始调研。以上命令只配置 MCP，不会自动安装浏览器扩展或替你登录 SNS。
+
+SNS 调研要区分「读文字」与「看照片」：标题、正文、评论和页面结构可以支持文字调研；要复刻构图、人物位置、姿势与光线，还需要当前工具能提供可视内容，且符合本仓库的素材规则。现有规则禁止下载或截图 SNS 原帖图片、禁止把它们交给生图模型；依赖页面截图进行视觉判断的方案需先明确并调整相关规则，安装工具不会自动改变这个约束。无法实际观察原帖时不编造照片细节，只记录可核实的文字资料与链接，分镜标「无 SNS 素材」。
+
+这些是按上游公开文档列出的可选接入方式，尚未在本仓库中逐一实测小红书 / Instagram / 抖音 / TikTok。登录弹窗、验证码与平台访问限制仍会影响调研，遇到限制停止该平台操作并记录缺口，不保证安装后每个平台均可访问。完整素材规则见 [SNS_NOTES](docs/SNS_NOTES.md)。
 
 ## 使用范例
 
