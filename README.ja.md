@@ -12,7 +12,15 @@
 
 ## 撮影台本 PDF と撮影チェックリスト
 
-企画ごとに、現場で使うファイルを2つ出力します。`<日期>_<地点>_拍摄脚本.pdf`（印刷するかタブレットで閲覧）と `<日期>_<地点>_拍摄核对表.html`（スマートフォンで開いて1項目ずつチェック）です。[`examples/hakone-0928-v5/`](examples/hakone-0928-v5/)（箱根ガラスの森美術館、2026-09-28、13:00 現地着、雨天、α7 V + 24-105mm F4、v5、47ページ）を例にとると、PDF は先頭から次の構成になっています。
+企画ごとに、現場で使うファイルを2つ出力します。`<日期>_<地点>_拍摄脚本.pdf`（印刷するかタブレットで閲覧）と `<日期>_<地点>_拍摄核对表.html`（スマートフォンで開いて1項目ずつチェック）です。以下の2つの実践例には成果物一式が付いています。概要の行をクリックすると展開します。
+
+### 実践例 1：箱根ガラスの森美術館（雨天、ボディ1台）
+
+<details><summary><b>箱根ガラスの森美術館 · 2026-09-28 · 雨天 · 13:00 現地着 · α7 V + 24-105mm F4 · 38カット · 47ページ（クリックで展開）</b></summary>
+
+<br>
+
+成果物は [`examples/hakone-0928-v5/`](examples/hakone-0928-v5/)（v5）にあります。PDF は先頭から次の構成になっています。
 
 | ページ | 内容 | 生成元 |
 |---|---|---|
@@ -36,26 +44,6 @@
 
 ![カメラワークページ](docs/img/ja/move_page.jpg)
 
-カメラワーク集：11種類のカメラワークを、同じオリジナルの人物・同じ衣装・同じ架空の庭園美術館で描き、`tools/move_gif.py` でアニメーション GIF に合成しています。左の俯瞰図ではオレンジの点がカメラ、緑の点が人物で、画面と同期して動きます。右は縦位置 9:16 の画面です。1本のカメラワークの中で背景と人物が軌跡に沿って連続的に変化するよう、画面は2通りの方法で作っています。
-
-- カメラだけが動き、人物は動かない4種（ティルトダウンで見せる、前景ワイプで見せる、固定から微プッシュイン、引きながらティルトアップ）：Codex がまず軌跡全体を含む大きなマスター画像を1枚描き、カメラワークの経路に沿ってマスター上で 9:16 のフレームを連続的に動かして切り出します。すべてのフレームが同じ画像から切り出されるため、背景や人物が前後で食い違いません。
-- 人物が動く、またはカメラが人物についていく7種：開始フレームを参照画像として edit を行い、フレームごとに説明文の該当部分だけを書き換えます。横フォローと後ろフォローはフレームごとにリレーし（第2フレームは第1フレームを、第3フレームは第2フレームを参照……）、背景の平行移動やアーチへの接近が累積していきます。固定カメラの数種はすべて同じ開始フレームを参照するため、構図は変わりません。
-
-フレームごとのプロンプトと切り出し経路は `tools/moves_library_prompts.py`（`MASTERS` / `RECIPES` / `EDITS` / `CHAIN`）に、元フレームと生成記録は `docs/img/moves/frames/` にあります。
-
-![カメラワーク集のアニメーション](docs/img/ja/moves/moves_library.gif)
-
-<details><summary>1本ずつ拡大して見る</summary>
-
-<table>
-<tr><td align="center"><b>ティルトダウンで見せる</b><br><img src="docs/img/ja/moves/01_tilt_down_reveal.gif" width="300" alt="ティルトダウンで見せる"></td><td align="center"><b>前景ワイプで見せる</b><br><img src="docs/img/ja/moves/02_wipe_reveal.gif" width="300" alt="前景ワイプで見せる"></td><td align="center"><b>横フォロー</b><br><img src="docs/img/ja/moves/03_track_side.gif" width="300" alt="横フォロー"></td></tr>
-<tr><td align="center"><b>後ろフォロー</b><br><img src="docs/img/ja/moves/04_track_behind.gif" width="300" alt="後ろフォロー"></td><td align="center"><b>前フォロー（後ろ歩き）</b><br><img src="docs/img/ja/moves/05_track_front.gif" width="300" alt="前フォロー（後ろ歩き）"></td><td align="center"><b>固定から微プッシュイン</b><br><img src="docs/img/ja/moves/06_push_in.gif" width="300" alt="固定から微プッシュイン"></td></tr>
-<tr><td align="center"><b>1/4 周回り込み</b><br><img src="docs/img/ja/moves/07_orbit_quarter.gif" width="300" alt="1/4 周回り込み"></td><td align="center"><b>固定・振り返り</b><br><img src="docs/img/ja/moves/08_static_turn.gif" width="300" alt="固定・振り返り"></td><td align="center"><b>固定スロー</b><br><img src="docs/img/ja/moves/09_static.gif" width="300" alt="固定スロー"></td></tr>
-<tr><td align="center"><b>引きながらティルトアップ</b><br><img src="docs/img/ja/moves/10_pull_back_tilt_up.gif" width="300" alt="引きながらティルトアップ"></td><td align="center"><b>固定・人物が遠ざかる</b><br><img src="docs/img/ja/moves/11_static_walk_out.gif" width="300" alt="固定・人物が遠ざかる"></td></tr>
-</table>
-
-</details>
-
 ![行程ページ](docs/img/ja/trip_page.jpg)
 
 ![ルートページ](docs/img/ja/route_page.jpg)
@@ -76,9 +64,89 @@
 
 ![太陽の軌跡](docs/img/ja/sun_path.png)
 
-その他の例：[`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（同じ撮影地の v3.5。カットを先に書いてから SNS と照合、43ページ）、[`examples/asakusa-0928/`](examples/asakusa-0928/)（浅草寺。建物が密集した市街地のため南北2枚のベースマップを使用、12枚）、[`examples/hakone-0928-v2/`](examples/hakone-0928-v2/)（箱根の 1.0 版、13枚、ポーラ美術館の園外ベースマップを含む）。
+</details>
+
+### 実践例 2：東京タワー（市街地、晴天、4台の機材）
+
+<details><summary><b>東京タワー · 2026-10-03 · 晴天 · 15:20 現地着 · α7 V / GR IV / Pocket 3 / iPhone · 27カット · 37ページ（クリックで展開）</b></summary>
+
+<br>
+
+Codex / Claude への依頼文：
+
+> /xiezhen-shoot-planner 東京タワーの撮影スポットで撮影台本を作ってください。日付は未定で、この先晴れた日に行きます。機材は iPhone 14 Pro、ソニー a7M5 + 24-105 F4、リコー GR4、DJI Pocket 3 です。
+
+成果物は [`examples/tokyotower-1003/`](examples/tokyotower-1003/) にあります。`2026-10-03_东京塔_拍摄脚本.pdf`（37ページ）と `2026-10-03_东京塔_拍摄核对表.html` です。この例のページは中国語で出力しています。
+
+![東京タワー 27カットのイメージ画像一覧](docs/img/tokyo_contact.jpg)
+
+実践例 1 との違い：
+
+- **日付を予報で決める**。依頼は「晴れた日に行く」だけだったので、先に tenki.jp、ウェザーニュース、Open-Meteo を確認し、直近の晴天日 10/3（降水確率 20%、15〜16時の雲量 0〜3%）を選び、10/10 と 10/11 を予備日にしました。`sun.md` によると日の入りは 17:23、ブルーアワーは 17:39〜17:49。市街地では地形より先に高層ビルが日差しを遮るため、17時以降は地上に直射光が届かず、タワーの上部だけに光が当たります。
+- **光の向きでルートを組む**。午後はまず順光になるタワーの南側と西側を回り（赤羽橋の道路標識、芝公園のベンチ、北海道ワインの階段、うかいの階段、カレドタワーの路地）、17:00 に東側へ移動してタワーの足元で 17:22 前後の点灯を待ちます。17:46 に増上寺で大殿と点灯したタワーのブルーアワーのメインカットを撮り、東麻布の電話ボックスで締めます。11地点、徒歩約 2.75 km、15:20 → 18:42。
+- **市街地ではベースマップを複数使う**。700 m の全体図はルート計算にだけ使い、カードの俯瞰図には南・西・東の 360〜400 m の地区別ベースマップ3枚を使います。拡大しても路地が読み取れます。水彩化の段階で2枚が歩道を水路として描いたため、`--prompt-extra` で川や水面が一切ないことを明記して描き直しました。
+- **4台の機材の分担**。α7 V + 24-105 はメインの静止画、連写、S-Log3 動画クリップ。GR IV は坂道での振り返りと電話ボックスの締めのカットで、後者は同じ電話ボックスを GR4 で撮った抖音の投稿に倣っています。Pocket 3 は路地の後ろフォローとタワー足元の 1/4 周回り込みの2本のジンバル動画。iPhone は Live Photos 7本。SNS 調査は機材ごとに1回ずつ検索し、同じ機材で撮られた投稿を優先して再現しています。
+- **SNS 素材**。アングル投稿13件（いいねの多い小紅書のノート2本を1枚ずつ分けた10件、抖音1件、Instagram 2件）と、プラットフォームのまとめ2件（小紅書「点点」による47ノートのまとめ、12か所のアングルを並べた抖音の画像投稿の本文）。静止画14枚のうち12枚が素材に倣った設計で、残り2枚（路地入口の寄り、タワー足元の指先のアップ）とすべての動画クリップ・Live Photos が補足カットです。
+- **コーデ**。撮影地の色はグレーの街並み、晴れた空の青、タワーのインターナショナルオレンジ。服はオレンジの隣接色にあたるオフホワイトとライトキャメルでまとめ、トマトレッドの小さなバッグを唯一の高彩度色にしています。17時以降は薄手のトレンチを重ね、夜のカットではオフホワイトのシャツワンピースが顔の下に明るい面をつくります。
+
+| ページ | 数 | 内容 |
+|---|---|---|
+| 行程ページ | 1 | 赤羽橋駅からの出入り、代替案の麻布台ヒルズ 33階、15〜20時の1時間ごとの天気 |
+| コーデページ | 2 | 撮影地の色と服の色の ΔE、メイン案、曇り・雨・ライトアップ時のシルバーホワイト版への差し替え、27カット分の個別メモ |
+| ルートページ | 1 | 全体図上の11地点と各地点の到着・出発時刻 |
+| カット | 27 | 静止画14枚（うち連写2枚）、動画クリップ6本、Live Photos 7本。番号がそのまま周遊順 |
+| カメラワークページ | 6 | ティルトダウンで見せる、後ろフォロー、1/4 周回り込み、固定スロー、固定・振り返り、固定・人物が遠ざかる |
+
+カード4枚：赤羽橋の道路標識のメインカット（小紅書のアングル投稿）、うかい右手の道路でガードレールに腰掛けるカット（抖音の画像投稿の本文）、増上寺のブルーアワーのメインカット（小紅書「点点」のまとめ）、電話ボックスの締め（GR IV と同じ機種の投稿）。
+
+![東京タワーのカード4枚](docs/img/tokyo_cards_gallery.jpg)
+
+![東京タワーのルートページ](docs/img/tokyo_route.jpg)
+
+全体図1枚と地区別ベースマップ3枚：
+
+![東京タワーのベースマップ](docs/img/tokyo_basemaps.jpg)
+
+タワー足元の 1/4 周回り込み（Pocket 3）：開始フレームは点灯前、終了フレームではタワーが点灯しています。
+
+![東京タワーのカメラワークページ](docs/img/tokyo_move.jpg)
+
+![東京タワーの行程ページ](docs/img/tokyo_trip.jpg)
+
+![東京タワーのコーデページ](docs/img/tokyo_outfit.jpg)
+
+生成記録：静止画と Live Photos 21枚、動画クリップの3フレーム18枚を3系統に分けて並列で1回ずつ投入しました。1枚ずつ確認したあと、5枚はフレーミングの記述を書き直して再生成しています。19 は背景のタワーがはっきりしすぎて 105mm の浅い被写界深度と合わない、20 は3フレームでショットサイズがそろっていない、22 の開始フレームはタワーを振り返る斜め後ろからの横顔のはずがカメラ目線になっていた、という理由です。2回目では1枚が12分止まったため、手動で中断して投入し直しました。2回分の記録は `generation_log.jsonl` にあり、差し替えたものは `failed` として理由を書いています。
+
+</details>
+
+### カメラワーク集
+
+11種類のカメラワークを、同じオリジナルの人物・同じ衣装・同じ架空の庭園美術館で描き、`tools/move_gif.py` でアニメーション GIF に合成しています。左の俯瞰図ではオレンジの点がカメラ、緑の点が人物で、画面と同期して動きます。右は縦位置 9:16 の画面です。1本のカメラワークの中で背景と人物が軌跡に沿って連続的に変化するよう、画面は2通りの方法で作っています。
+
+- カメラだけが動き、人物は動かない4種（ティルトダウンで見せる、前景ワイプで見せる、固定から微プッシュイン、引きながらティルトアップ）：Codex がまず軌跡全体を含む大きなマスター画像を1枚描き、カメラワークの経路に沿ってマスター上で 9:16 のフレームを連続的に動かして切り出します。すべてのフレームが同じ画像から切り出されるため、背景や人物が前後で食い違いません。
+- 人物が動く、またはカメラが人物についていく7種：開始フレームを参照画像として edit を行い、フレームごとに説明文の該当部分だけを書き換えます。横フォローと後ろフォローはフレームごとにリレーし（第2フレームは第1フレームを、第3フレームは第2フレームを参照……）、背景の平行移動やアーチへの接近が累積していきます。固定カメラの数種はすべて同じ開始フレームを参照するため、構図は変わりません。
+
+フレームごとのプロンプトと切り出し経路は `tools/moves_library_prompts.py`（`MASTERS` / `RECIPES` / `EDITS` / `CHAIN`）に、元フレームと生成記録は `docs/img/moves/frames/` にあります。
+
+![カメラワーク集のアニメーション](docs/img/ja/moves/moves_library.gif)
+
+<details><summary>1本ずつ拡大して見る</summary>
+
+<table>
+<tr><td align="center"><b>ティルトダウンで見せる</b><br><img src="docs/img/ja/moves/01_tilt_down_reveal.gif" width="300" alt="ティルトダウンで見せる"></td><td align="center"><b>前景ワイプで見せる</b><br><img src="docs/img/ja/moves/02_wipe_reveal.gif" width="300" alt="前景ワイプで見せる"></td><td align="center"><b>横フォロー</b><br><img src="docs/img/ja/moves/03_track_side.gif" width="300" alt="横フォロー"></td></tr>
+<tr><td align="center"><b>後ろフォロー</b><br><img src="docs/img/ja/moves/04_track_behind.gif" width="300" alt="後ろフォロー"></td><td align="center"><b>前フォロー（後ろ歩き）</b><br><img src="docs/img/ja/moves/05_track_front.gif" width="300" alt="前フォロー（後ろ歩き）"></td><td align="center"><b>固定から微プッシュイン</b><br><img src="docs/img/ja/moves/06_push_in.gif" width="300" alt="固定から微プッシュイン"></td></tr>
+<tr><td align="center"><b>1/4 周回り込み</b><br><img src="docs/img/ja/moves/07_orbit_quarter.gif" width="300" alt="1/4 周回り込み"></td><td align="center"><b>固定・振り返り</b><br><img src="docs/img/ja/moves/08_static_turn.gif" width="300" alt="固定・振り返り"></td><td align="center"><b>固定スロー</b><br><img src="docs/img/ja/moves/09_static.gif" width="300" alt="固定スロー"></td></tr>
+<tr><td align="center"><b>引きながらティルトアップ</b><br><img src="docs/img/ja/moves/10_pull_back_tilt_up.gif" width="300" alt="引きながらティルトアップ"></td><td align="center"><b>固定・人物が遠ざかる</b><br><img src="docs/img/ja/moves/11_static_walk_out.gif" width="300" alt="固定・人物が遠ざかる"></td></tr>
+</table>
+
+</details>
+
+### その他の例
+
+[`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（同じ撮影地の v3.5。カットを先に書いてから SNS と照合、43ページ）、[`examples/asakusa-0928/`](examples/asakusa-0928/)（浅草寺。建物が密集した市街地のため南北2枚のベースマップを使用、12枚）、[`examples/hakone-0928-v2/`](examples/hakone-0928-v2/)（箱根の 1.0 版、13枚、ポーラ美術館の園外ベースマップを含む）。
 
 ![浅草寺のカード4枚](docs/img/ja/cards_gallery_asakusa.jpg)
+
 
 ## ワークフロー
 
@@ -261,6 +329,12 @@ SNS 調査では「文字を読む」ことと「写真を見る」ことを区�
 
 [`INSTALL.md`](INSTALL.md) に従ってローカルで `setup.cmd` を実行し（uv のインストール、venv の作成、セルフチェック）、最後に `pipeline.py register --root E:\tools\xiezhen-pipeline` でパスを登録します。以降の会話ではリポジトリの場所を伝える必要はありません。Codex へのログインは本人がターミナルで行う必要があり、Codex / Claude がアカウントやパスワードを扱うことはありません。
 
+**12. 日付未定で天気を見て日を選ぶ、複数の機材で分担する**
+
+> 東京タワー、この先晴れた日に行きます。機材は iPhone 14 Pro、a7M5 + 24-105、GR4、Pocket 3。
+
+16日先までの予報を確認して直近の晴天日で企画を作り、予報の要約を `meta.forecast` に書きます。`init --gear` には4台すべてを記入します。SNS 調査は機材ごとに1回ずつ検索し、同じ機材で撮られた投稿を優先して再現し、カットごとに `device` を書きます。市街地では全体図1枚でルートを計算し、俯瞰図には地区別のベースマップを複数使います。成果物は [`examples/tokyotower-1003`](examples/tokyotower-1003)（実践例 2）を参照してください。
+
 ## ディレクトリ構成
 
 ```
@@ -292,7 +366,7 @@ setup.cmd run_job.cmd run_shots.cmd   Windows 用のダブルクリック起動�
 skill/                 Codex / Claude 共通のワークフロー skill と段階の概要
 INSTALL.md             新しい PC へのインストール手順（Windows / macOS / Linux、codex-imagegen、skill、アップデート、よくある質問）
 docs/                  WORKFLOW（SOP）、SNS_NOTES（SNS 素材起点のカット設計）、SHOT_DESIGN（カット設計の基本ルール）、OUTFIT_GUIDE（コーデ）、VIDEO_NOTES（連写/動画クリップ/Live Photos）、ROUTE_NOTES（行程と園内ルート）、CAMERA_NOTES（α7 V の外観、ストロボ、動画プリセット）、CARD_SPEC（カードのレイアウト）、WINDOWS_SETUP（導入と既知のハマりどころ）、CHANGELOG
-examples/              hakone-0928-v5（38枚、SNS 起点、47ページ）、hakone-0928-v3（v3.5、43ページ）、asakusa-0928（12枚、ベースマップ2枚）、hakone-0928-v2（13枚）
+examples/              tokyotower-1003（27枚、晴天の市街地、機材4台、37ページ）、hakone-0928-v5（38枚、SNS 起点、47ページ）、hakone-0928-v3（v3.5、43ページ）、asakusa-0928（12枚、ベースマップ2枚）、hakone-0928-v2（13枚）
 plans/ inbox/ out/ refs/   実行時のディレクトリ（リポジトリには含めない。残したい企画は examples/ にコピー）
 ```
 

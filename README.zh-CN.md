@@ -14,7 +14,15 @@
 
 ## 拍摄脚本 PDF 与核对表
 
-每个企划产出两份给现场用的文件：`<日期>_<地点>_拍摄脚本.pdf`（打印或平板看）和 `<日期>_<地点>_拍摄核对表.html`（手机打开逐条勾选）。以 [`examples/hakone-0928-v5/`](examples/hakone-0928-v5/)（箱根ガラスの森美術館，2026-09-28，13:00 到场，雨天，α7 V + 24-105mm F4，v5，47 页）为例，PDF 从前到后：
+每个企划产出两份给现场用的文件：`<日期>_<地点>_拍摄脚本.pdf`（打印或平板看）和 `<日期>_<地点>_拍摄核对表.html`（手机打开逐条勾选）。下面两个实战案例都附完整成品，点标题展开。
+
+### 实战案例 1：箱根ガラスの森美術館（雨天、单机身）
+
+<details><summary><b>箱根ガラスの森美術館 · 2026-09-28 · 雨天 · 13:00 到场 · α7 V + 24-105mm F4 · 38 条分镜 · 47 页（点击展开）</b></summary>
+
+<br>
+
+成品在 [`examples/hakone-0928-v5/`](examples/hakone-0928-v5/)（v5）。PDF 从前到后：
 
 | 页 | 内容 | 由谁生成 |
 |---|---|---|
@@ -38,26 +46,6 @@
 
 ![运镜页](docs/img/move_page.jpg)
 
-运镜库：11 种运镜，同一位原创人物、同一套服装、同一处虚构的庭园美术馆，`tools/move_gif.py` 合成动图。左边俯视图上橙点是相机、绿点是人物，随画面同步移动；右边是竖幅 9:16 画面。为了让同一条运镜里的背景和人物随轨迹连续变化，画面分两种做法：
-
-- 只动镜头、人物不动的 4 种（下摇揭示、遮挡揭示、固定微推、后拉上摇）：Codex 先画一张包含整段轨迹的大母版，再按运镜路径在母版上连续移动 9:16 取景框，每一帧都取自同一张图，背景和人物不会前后对不上。
-- 人物在动、或相机跟着人物走的 7 种：以起幅为参考图做 edit，每帧只改描述里的那部分。侧跟与后跟逐帧接力（第 2 帧以第 1 帧为参考，第 3 帧以第 2 帧为参考……），背景的平移、拱门的靠近一路累积；固定机位的几种都以同一张起幅为参考，构图不变。
-
-逐帧 prompt 与取景路径在 `tools/moves_library_prompts.py`（`MASTERS` / `RECIPES` / `EDITS` / `CHAIN`），原帧与生成记录在 `docs/img/moves/frames/`。
-
-![运镜库动图](docs/img/moves/moves_library.gif)
-
-<details><summary>逐条放大看</summary>
-
-<table>
-<tr><td align="center"><b>下摇揭示</b><br><img src="docs/img/moves/01_tilt_down_reveal.gif" width="300" alt="下摇揭示"></td><td align="center"><b>遮挡揭示</b><br><img src="docs/img/moves/02_wipe_reveal.gif" width="300" alt="遮挡揭示"></td><td align="center"><b>侧跟</b><br><img src="docs/img/moves/03_track_side.gif" width="300" alt="侧跟"></td></tr>
-<tr><td align="center"><b>后跟</b><br><img src="docs/img/moves/04_track_behind.gif" width="300" alt="后跟"></td><td align="center"><b>前跟（相机倒退）</b><br><img src="docs/img/moves/05_track_front.gif" width="300" alt="前跟（相机倒退）"></td><td align="center"><b>固定微推</b><br><img src="docs/img/moves/06_push_in.gif" width="300" alt="固定微推"></td></tr>
-<tr><td align="center"><b>1/4 环绕</b><br><img src="docs/img/moves/07_orbit_quarter.gif" width="300" alt="1/4 环绕"></td><td align="center"><b>固定 · 转身回眸</b><br><img src="docs/img/moves/08_static_turn.gif" width="300" alt="固定 · 转身回眸"></td><td align="center"><b>固定机位升格</b><br><img src="docs/img/moves/09_static.gif" width="300" alt="固定机位升格"></td></tr>
-<tr><td align="center"><b>后拉上摇</b><br><img src="docs/img/moves/10_pull_back_tilt_up.gif" width="300" alt="后拉上摇"></td><td align="center"><b>固定 · 人走远</b><br><img src="docs/img/moves/11_static_walk_out.gif" width="300" alt="固定 · 人走远"></td></tr>
-</table>
-
-</details>
-
 ![行程页](docs/img/trip_page.jpg)
 
 ![路线页](docs/img/route_page.jpg)
@@ -78,9 +66,89 @@
 
 ![太阳轨迹](docs/img/sun_path.png)
 
-其它示例：[`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（同一场地的 v3.5，分镜先写好再对照 SNS，43 页）、[`examples/asakusa-0928/`](examples/asakusa-0928/)（浅草寺，密集城区用南北两张底图，12 张）和 [`examples/hakone-0928-v2/`](examples/hakone-0928-v2/)（箱根 1.0 版，13 张，含 Pola 美术馆园外底图）。
+</details>
+
+### 实战案例 2：东京塔（城区、晴天、四台设备）
+
+<details><summary><b>东京塔 · 2026-10-03 · 晴天 · 15:20 到场 · α7 V / GR IV / Pocket 3 / iPhone · 27 条分镜 · 37 页（点击展开）</b></summary>
+
+<br>
+
+对 Codex / Claude 说的话：
+
+> /xiezhen-shoot-planner 给东京塔的出片位置写拍摄脚本。日期没定，接下来哪天晴天就哪天出发；设备是 iPhone 14 Pro、索尼 a7M5 + 24-105 F4、理光 GR4 和大疆 Pocket 3。
+
+成品在 [`examples/tokyotower-1003/`](examples/tokyotower-1003/)：`2026-10-03_东京塔_拍摄脚本.pdf`（37 页）与 `2026-10-03_东京塔_拍摄核对表.html`。
+
+![东京塔 27 条分镜示意图](docs/img/tokyo_contact.jpg)
+
+和实战案例 1 不一样的地方：
+
+- **日期按预报定**。用户只说「哪天晴天就哪天」，先查 tenki.jp、Weathernews 与 Open-Meteo，取最近的晴天 10/3（降水 20%，15–16 时云量 0–3%），10/10、10/11 作备选。`sun.md` 给出日落 17:23、蓝调 17:39–17:49；城区高楼比地形更早挡光，17 时以后地面已没有直射光，只剩塔身上部受光。
+- **按光线排路线**。下午先拍塔南、塔西的顺光面（赤羽橋路牌、芝公园长椅、北海道ワイン台阶、うかい楼梯、カレドタワー巷子），17:00 转到塔东，在塔脚等 17:22 前后点灯，17:46 到增上寺拍大殿与亮灯铁塔的蓝调主图，最后在东麻布的电话亭收尾。11 站，步行约 2.75 km，15:20 → 18:42。
+- **城区用多张底图**。700 m 的总图只用来算路线；分镜卡的俯视图用南、西、东三张 360–400 m 的分区底图，放大后街巷仍看得清。风格化时有两张把步道画成了水渠，加 `--prompt-extra` 写明「没有任何河流与水面」重画一次。
+- **四台设备分工**。α7 V + 24-105 拍主线照片、连拍和 S-Log3 短片；GR IV 拍坡道回眸与电话亭收尾，后者照的是抖音上一条用 GR4 拍的同一个电话亭；Pocket 3 拍巷子后跟和塔脚环绕两条云台短片；iPhone 拍 7 条实况。SNS 调研按每台设备各搜一轮，同款设备的帖子优先复刻。
+- **SNS 素材**。机位帖 13 条（小红书两篇高赞笔记逐图拆成 10 条，抖音 1 条，Instagram 2 条），平台汇总 2 条（小红书「点点」47 篇笔记、抖音一篇 12 机位图文的文字）。14 张照片里 12 张照着素材设计，2 张（巷口近景、塔脚指尖特写）与全部短片、实况是补充分镜。
+- **穿搭**。场地是灰色街道、晴空蓝与铁塔的国际橙，服装取与橙相邻的米白、浅驼，番茄红小包作唯一的饱和色；17 时后加薄风衣，夜景里米白衬衫裙给脸下方留一块亮面。
+
+| 页 | 数量 | 内容 |
+|---|---|---|
+| 行程页 | 1 | 赤羽橋站进出、备选的麻布台之丘 33 层、15–20 时逐时天气 |
+| 穿搭页 | 2 | 场地色与服装色 ΔE、主方案、转阴 / 雨天 / 灯光银白版的替换、27 条逐张提醒 |
+| 路线页 | 1 | 总图上的 11 站与每站到达离开时刻 |
+| 分镜 | 27 | 14 张照片（含 2 张连拍）、6 条短片、7 条实况，编号即游览顺序 |
+| 运镜页 | 6 | 下摇揭示、后跟、四分之一环绕、固定升格、固定转身回眸、人走远 |
+
+四张分镜卡：赤羽橋路牌主图（小红书机位帖）、うかい右手公路坐护栏（抖音图文的文字）、增上寺蓝调主图（小红书点点汇总）、电话亭收尾（GR IV 同款设备）。
+
+![东京塔四张分镜卡](docs/img/tokyo_cards_gallery.jpg)
+
+![东京塔路线页](docs/img/tokyo_route.jpg)
+
+一张总图加三张分区底图：
+
+![东京塔底图](docs/img/tokyo_basemaps.jpg)
+
+塔脚的四分之一环绕（Pocket 3）：起幅在点灯前，落幅时塔身已亮。
+
+![东京塔运镜页](docs/img/tokyo_move.jpg)
+
+![东京塔行程页](docs/img/tokyo_trip.jpg)
+
+![东京塔穿搭页](docs/img/tokyo_outfit.jpg)
+
+出图记录：21 张照片与实况、18 张短片三帧，分三路并行一次提交。逐张检查后 5 张改写取景段重出：19 的背景塔身太清楚，和 105mm 浅景深不符；20 的三帧景别前后不一致；22 的起幅应是回望铁塔的侧后脸，生成成了看镜头。第二轮里有一张卡住 12 分钟，手动中止后重新提交。两轮记录都在 `generation_log.jsonl`，被替换的标为 `failed` 并写明原因。
+
+</details>
+
+### 运镜库
+
+11 种运镜，同一位原创人物、同一套服装、同一处虚构的庭园美术馆，`tools/move_gif.py` 合成动图。左边俯视图上橙点是相机、绿点是人物，随画面同步移动；右边是竖幅 9:16 画面。为了让同一条运镜里的背景和人物随轨迹连续变化，画面分两种做法：
+
+- 只动镜头、人物不动的 4 种（下摇揭示、遮挡揭示、固定微推、后拉上摇）：Codex 先画一张包含整段轨迹的大母版，再按运镜路径在母版上连续移动 9:16 取景框，每一帧都取自同一张图，背景和人物不会前后对不上。
+- 人物在动、或相机跟着人物走的 7 种：以起幅为参考图做 edit，每帧只改描述里的那部分。侧跟与后跟逐帧接力（第 2 帧以第 1 帧为参考，第 3 帧以第 2 帧为参考……），背景的平移、拱门的靠近一路累积；固定机位的几种都以同一张起幅为参考，构图不变。
+
+逐帧 prompt 与取景路径在 `tools/moves_library_prompts.py`（`MASTERS` / `RECIPES` / `EDITS` / `CHAIN`），原帧与生成记录在 `docs/img/moves/frames/`。
+
+![运镜库动图](docs/img/moves/moves_library.gif)
+
+<details><summary>逐条放大看</summary>
+
+<table>
+<tr><td align="center"><b>下摇揭示</b><br><img src="docs/img/moves/01_tilt_down_reveal.gif" width="300" alt="下摇揭示"></td><td align="center"><b>遮挡揭示</b><br><img src="docs/img/moves/02_wipe_reveal.gif" width="300" alt="遮挡揭示"></td><td align="center"><b>侧跟</b><br><img src="docs/img/moves/03_track_side.gif" width="300" alt="侧跟"></td></tr>
+<tr><td align="center"><b>后跟</b><br><img src="docs/img/moves/04_track_behind.gif" width="300" alt="后跟"></td><td align="center"><b>前跟（相机倒退）</b><br><img src="docs/img/moves/05_track_front.gif" width="300" alt="前跟（相机倒退）"></td><td align="center"><b>固定微推</b><br><img src="docs/img/moves/06_push_in.gif" width="300" alt="固定微推"></td></tr>
+<tr><td align="center"><b>1/4 环绕</b><br><img src="docs/img/moves/07_orbit_quarter.gif" width="300" alt="1/4 环绕"></td><td align="center"><b>固定 · 转身回眸</b><br><img src="docs/img/moves/08_static_turn.gif" width="300" alt="固定 · 转身回眸"></td><td align="center"><b>固定机位升格</b><br><img src="docs/img/moves/09_static.gif" width="300" alt="固定机位升格"></td></tr>
+<tr><td align="center"><b>后拉上摇</b><br><img src="docs/img/moves/10_pull_back_tilt_up.gif" width="300" alt="后拉上摇"></td><td align="center"><b>固定 · 人走远</b><br><img src="docs/img/moves/11_static_walk_out.gif" width="300" alt="固定 · 人走远"></td></tr>
+</table>
+
+</details>
+
+### 其它示例
+
+[`examples/hakone-0928-v3/`](examples/hakone-0928-v3/)（同一场地的 v3.5，分镜先写好再对照 SNS，43 页）、[`examples/asakusa-0928/`](examples/asakusa-0928/)（浅草寺，密集城区用南北两张底图，12 张）和 [`examples/hakone-0928-v2/`](examples/hakone-0928-v2/)（箱根 1.0 版，13 张，含 Pola 美术馆园外底图）。
 
 ![浅草寺四张小抄](docs/img/cards_gallery_asakusa.jpg)
+
 
 ## 工作流
 
@@ -261,6 +329,12 @@ SNS 调研要区分「读文字」与「看照片」：标题、正文、评论�
 
 按 [`INSTALL.md`](INSTALL.md) 在本机跑 `setup.cmd`（装 uv、建 venv、自检），最后 `pipeline.py register --root E:\tools\xiezhen-pipeline` 登记路径，之后的对话不用再说仓库位置。Codex 登录需要本人在终端完成，Codex / Claude 不经手账号密码。
 
+**12. 日期没定，按天气挑日子；多台设备分工**
+
+> 东京塔，接下来哪天晴天就哪天去。设备是 iPhone 14 Pro、a7M5 + 24-105、GR4 和 Pocket 3。
+
+先查 16 天预报，取最近的晴天立项，预报摘要写进 `meta.forecast`；`init --gear` 写全四台设备；SNS 按每台设备各搜一轮，同款设备的帖子优先复刻，分镜逐条写 `device`。城区场地用一张总图算路线、几张分区底图给俯视图。成品见 [`examples/tokyotower-1003`](examples/tokyotower-1003)（实战案例 2）。
+
 ## 目录
 
 ```
@@ -292,7 +366,7 @@ setup.cmd run_job.cmd run_shots.cmd   Windows 双击入口
 skill/                 Codex / Claude 共用的流程 skill 与阶段总览
 INSTALL.md             新电脑安装说明（Windows / macOS / Linux、codex-imagegen、skill、更新、常见问题）
 docs/                  WORKFLOW（SOP）、SNS_NOTES（SNS 素材驱动的分镜）、SHOT_DESIGN（分镜基本法）、OUTFIT_GUIDE（穿搭）、VIDEO_NOTES（连拍/短片/实况）、ROUTE_NOTES（行程与园内路线）、CAMERA_NOTES（α7 V 外观、闪光灯、短片预设）、CARD_SPEC（小抄版式）、WINDOWS_SETUP（部署与已知坑）、CHANGELOG
-examples/              hakone-0928-v5（38 张，SNS 驱动，47 页）、hakone-0928-v3（v3.5，43 页）、asakusa-0928（12 张，双底图）、hakone-0928-v2（13 张）
+examples/              tokyotower-1003（27 张，晴天城区，四台设备，37 页）、hakone-0928-v5（38 张，SNS 驱动，47 页）、hakone-0928-v3（v3.5，43 页）、asakusa-0928（12 张，双底图）、hakone-0928-v2（13 张）
 plans/ inbox/ out/ refs/   运行时目录（不入库；要保留的企划复制到 examples/）
 ```
 
