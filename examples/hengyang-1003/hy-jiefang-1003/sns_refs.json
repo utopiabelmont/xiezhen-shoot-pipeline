@@ -1,0 +1,301 @@
+{
+ "plan": "hy-jiefang-1003",
+ "browsed": "2026-10-02 18:10–19:50，Chrome 已登录账号人工级浏览；只记链接与观察，不保存图片",
+ "fields_note": "cam_bearing 指从人物到相机的方位；cam_dist 为相机到人物的距离；frame 为竖幅构图里人物的位置（x 为人物中心的横向占比，top/feet 为头顶与脚底的纵向占比）。",
+ "refs": [
+  {
+   "id": "S01",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68d1648f000000000b01327f",
+   "posted": "2025-09-22",
+   "post_title": "衡阳约拍 解放路天桥夜景（小米粥📷，3 赞）",
+   "title": "天桥栏杆 · 夜景半身（封面）",
+   "spot": "解放路人行天桥栏杆边",
+   "stop": "解放路天桥",
+   "latlon": [
+    26.90014,
+    112.60662
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 2,
+   "cam_h": "胸口",
+   "lens_est": "约 50–85mm",
+   "kind": "半身",
+   "time_light": "夜间",
+   "weather": "—",
+   "pose": "lean",
+   "gaze": "away",
+   "pose_note": "倚在天桥栏杆上，侧脸，手边拿着东西",
+   "fg_bg": "背景是桥下车流与两侧楼面灯光的大颗光斑",
+   "outfit": "深色上衣",
+   "visual": {
+    "light": "街灯与车灯",
+    "tone": "暗部深、光斑暖",
+    "composition": "人物在左半，右半是光斑"
+   },
+   "frame": {
+    "x": 0.4,
+    "top": 0.2,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "只看了搜索页封面，构图按封面概略；原帖夜景，本组下午到，改成日景：背景是车流与招牌的色块虚化，用 iPhone 人像模式"
+   },
+   "shots": [
+    "02"
+   ],
+   "use_by_shot": {
+    "02": "机位、景别与构图：倚天桥栏杆半身、人物在左半、右半虚化；夜景改日景"
+   }
+  },
+  {
+   "id": "S02",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/6aa216d3000000002600bb48",
+   "posted": "2026-09-10",
+   "post_title": "衡阳2天1夜保姆级攻略‼️（烛染尘，513 赞）——你给的路线图",
+   "title": "3D 裸眼屏路口（路线图第 3 张）",
+   "spot": "解放路与中山北路交汇处商场转角的弧形大屏",
+   "stop": "3D 屏路口",
+   "latlon": [
+    26.90005,
+    112.60755
+   ],
+   "cam_bearing": 225,
+   "cam_dist": 40,
+   "cam_h": "眼平",
+   "lens_est": "广角",
+   "kind": "环境远景",
+   "time_light": "白天阴天",
+   "weather": "阴",
+   "pose": "",
+   "gaze": "",
+   "pose_note": "原图没有人物，是商场转角大屏与路口车流的全景",
+   "fg_bg": "前景路口车流与电动车，背景转角商场与弧形大屏，屏下一排招牌",
+   "outfit": "—",
+   "visual": {
+    "light": "阴天",
+    "tone": "屏幕鲜艳、街道灰",
+    "composition": "大屏占画面上半"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.7,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "大屏位置不变；本组加入人物，0.5× 低机位仰拍把人和屏放进同一画面"
+   },
+   "shots": [
+    "05"
+   ],
+   "use_by_shot": {
+    "05": "地点与构图：大屏占上半；原图无人，本组 0.5× 低机位仰拍把人与屏同框"
+   }
+  },
+  {
+   "id": "S03",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/6a2d07a5000000001603ded0",
+   "posted": "2026-06-13",
+   "post_title": "是谁在衡阳解放路拍到了超有港味的大片！！！（羊肉串串串儿📷）",
+   "title": "解放路街头 · 港味半身",
+   "spot": "解放路商圈街头",
+   "stop": "中山北路老街",
+   "latlon": [
+    26.9015,
+    112.6073
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 3,
+   "cam_h": "胸口",
+   "lens_est": "约 35–50mm",
+   "kind": "七分",
+   "time_light": "夜间",
+   "weather": "—",
+   "pose": "stand",
+   "gaze": "camera",
+   "pose_note": "站在街头招牌下，直视镜头",
+   "fg_bg": "背后是商铺招牌与灯箱的色块",
+   "outfit": "—",
+   "visual": {
+    "light": "招牌灯光",
+    "tone": "港风高反差",
+    "composition": "人物居中，招牌色块作底"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.2,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "低",
+    "why": "只看了帖子文字与封面，原帖细节不全；本组按「招牌下直视镜头」的港风思路在中山北路老街做日景版，撑透明伞"
+   },
+   "shots": [
+    "10"
+   ],
+   "use_by_shot": {
+    "10": "思路：招牌色块作底、直视镜头的港风七分；本组日景加透明伞"
+   }
+  },
+  {
+   "id": "S04",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69959c2c000000000a029131",
+   "posted": "2026-02-18",
+   "post_title": "衡阳这条老街，藏着多少人的年少时光（吴买乐，57 赞）",
+   "title": "解放路与中山南北路 · 老街回望",
+   "spot": "中山北路老街口",
+   "stop": "中山北路老街",
+   "latlon": [
+    26.9023,
+    112.60745
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 10,
+   "cam_h": "眼平",
+   "lens_est": "—",
+   "kind": "环境",
+   "time_light": "白天",
+   "weather": "—",
+   "pose": "",
+   "gaze": "",
+   "pose_note": "帖文：老房子还在原来的地方，拐过每一个街角画面就切回十几年前；路口那家快餐店已经不在了",
+   "fg_bg": "老楼、街角、路面老砖",
+   "outfit": "—",
+   "visual": {
+    "light": "—",
+    "tone": "怀旧",
+    "composition": "街角"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.4,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "只用帖文的情绪：本组在老街口用 5× 长焦压缩街道，让她回头望"
+   },
+   "shots": [
+    "12",
+    "13"
+   ],
+   "use_by_shot": {
+    "12": "情绪：老街回望；本组 5× 长焦近景",
+    "13": "也参考：解放路与中山南北路 · 老街回望"
+   }
+  },
+  {
+   "id": "S05",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68f1ef690000000004015e1f",
+   "posted": "2025-10-21",
+   "post_title": "衡阳解放路商圈一瞥（三郎-箭与光影，66 赞）",
+   "title": "解放路商圈扫街（图 1–3 中山北路）",
+   "spot": "解放路与中山南北路",
+   "stop": "路口斑马线",
+   "latlon": [
+    26.9002,
+    112.6076
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 20,
+   "cam_h": "眼平",
+   "lens_est": "—",
+   "kind": "环境",
+   "time_light": "白天",
+   "weather": "—",
+   "pose": "",
+   "gaze": "",
+   "pose_note": "第一视角扫街，人流、车流与招牌",
+   "fg_bg": "路口人流车流",
+   "outfit": "—",
+   "visual": {
+    "light": "—",
+    "tone": "烟火气",
+    "composition": "街景"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.5,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "扫街视角改成斑马线过马路的连拍"
+   },
+   "shots": [
+    "08"
+   ],
+   "use_by_shot": {
+    "08": "视角：商圈扫街；改成 5× 长焦压缩的过马路连拍"
+   }
+  },
+  {
+   "id": "S06",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/6920059a000000001e00279d",
+   "posted": "2025-11-21",
+   "post_title": "衡阳解放路拍照📸（楊 DD，8 赞）",
+   "title": "解放路夜景人像（评论：天桥与一家精品店）",
+   "spot": "解放路天桥",
+   "stop": "解放路天桥",
+   "latlon": [
+    26.90014,
+    112.60662
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 4,
+   "cam_h": "胸口",
+   "lens_est": "—",
+   "kind": "全身",
+   "time_light": "夜间",
+   "weather": "—",
+   "pose": "stand",
+   "gaze": "camera",
+   "pose_note": "封面是夜色街头的全身人像；作者在评论里说机位是「解放路的天桥跟一个精品店」",
+   "fg_bg": "夜色街头灯光",
+   "outfit": "亮片外套",
+   "visual": {
+    "light": "夜间",
+    "tone": "—",
+    "composition": "全身"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.25,
+    "feet": 0.92
+   },
+   "reproducible": {
+    "level": "低",
+    "why": "只确认了机位在天桥；本组用天桥做开场远景"
+   },
+   "shots": [
+    "01"
+   ],
+   "use_by_shot": {
+    "01": "也参考：解放路夜景人像（评论：天桥与一家精品店）"
+   }
+  },
+  {
+   "id": "Q1",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/search_result?keyword=%E8%A1%A1%E9%98%B3%E8%A7%A3%E6%94%BE%E8%B7%AF%20%E6%8B%8D%E7%85%A7",
+   "posted": "2026-10-02",
+   "title": "小红书「点点」汇总：衡阳解放路 拍照（45 篇笔记）",
+   "summary": "解放路观景台（湘江两岸夜景与灯光秀）；解放路天桥（路灯车流交织，港风，长曝光拍车流光轨）；3D 裸眼大屏（石鼓区解放路与中山北路交汇处，白天晚上都吸睛，适合路人视角打卡）；韩系自拍馆与小众咖啡（解放路 38 号）；户外夜景 19:30–21:00 最好；周末节假日人多，停车难，建议打车。",
+   "shots": [
+    "01",
+    "03",
+    "05",
+    "07",
+    "13",
+    "18"
+   ]
+  }
+ ]
+}

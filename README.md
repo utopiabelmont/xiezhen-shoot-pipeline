@@ -14,7 +14,7 @@ The detailed documentation ([INSTALL.md](INSTALL.md), [docs/](docs/), the templa
 
 ## Shoot script PDF and checklist
 
-Each plan produces two files for use on site: `<日期>_<地点>_拍摄脚本.pdf` (date, place, "shoot script"; for printing or a tablet) and `<日期>_<地点>_拍摄核对表.html` (date, place, "shoot checklist"; opened on a phone and ticked off item by item). Each of the two case studies below comes with the complete output; click a summary line to expand it.
+Each plan produces two files for use on site: `<日期>_<地点>_拍摄脚本.pdf` (date, place, "shoot script"; for printing or a tablet) and `<日期>_<地点>_拍摄核对表.html` (date, place, "shoot checklist"; opened on a phone and ticked off item by item). Each of the three case studies below comes with the complete output; click a summary line to expand it.
 
 ### Case study 1: Hakone Glass Forest Museum (rain, one camera body)
 
@@ -118,6 +118,73 @@ Quarter orbit at the foot of the tower (Pocket 3): the start frame is before the
 ![Tokyo Tower outfit page](docs/img/tokyo_outfit.jpg)
 
 Generation log: the 21 stills and Live Photos and the 18 clip frames (three per clip) were submitted once, in three parallel batches. After each image was checked, 5 were regenerated with a rewritten framing section: in 19 the tower in the background was too sharp for the shallow depth of field at 105mm; the three frames of 20 did not keep the same shot size; the start frame of 22 should show the face from behind and to the side, looking back at the tower, but came out looking at the camera. In the second round one image hung for 12 minutes; it was stopped by hand and resubmitted. Both rounds are recorded in `generation_log.jsonl`, and the replaced images are marked `failed` with the reason.
+
+</details>
+
+### Case study 3: Hengyang, four spots in one day (overcast with showers, iPhone only)
+
+<details><summary><b>Hengyang · 2026-10-03 · overcast, late-afternoon showers · 08:30–19:30 · iPhone 16 Pro Max only · 4 plans, 103 shots · 4 PDFs, 139 pages (click to expand)</b></summary>
+
+<br>
+
+What was said to Codex / Claude, with a screenshot of a Xiaohongshu route map attached (Shigu Academy → Baoweili → Jiefang Road → Dongzhou Island, with taxi minutes between them):
+
+> /xiezhen-shoot-planner Use this skill to make a one-day travel shoot script for the four spots in the image I uploaded. The date is tomorrow, 10/3, and the device is an iPhone 16 Pro Max. No upper limit on the number of shots: do every one you can find, but remove duplicates.
+
+The output is in [`examples/hengyang-1003/`](examples/hengyang-1003/), one plan folder per spot, each with its own `2026-10-03_<地点>_拍摄脚本.pdf` and `2026-10-03_<地点>_拍摄核对表.html`. The pages of this example are in Chinese.
+
+| Plan | Spot | Time | Stills (+ optional) | Clips / Live Photos | Hero shot | PDF |
+|---|---|---|---|---|---|---|
+| [`hy-shigu-1003`](examples/hengyang-1003/hy-shigu-1003/) | Shigu Academy | 08:30–10:55 | 12 (+3) | 5 / 6 | Full length with a fan at the lattice doors of Daguan Hall | 35 pages |
+| [`hy-baoweili-1003`](examples/hengyang-1003/hy-baoweili-1003/) | Baoweili | 11:10–13:56 | 15 (+4) | 5 / 6 | Half length holding flowers on the platform (Portrait mode) | 39 pages |
+| [`hy-jiefang-1003`](examples/hengyang-1003/hy-jiefang-1003/) | Jiefang Road | 14:10–16:07 | 9 | 5 / 6 | Low-angle shot under the 3D billboard | 29 pages |
+| [`hy-dongzhou-1003`](examples/hengyang-1003/hy-dongzhou-1003/) | Dongzhou Island | 16:20–19:30 | 13 (+3) | 5 / 5 (+1) | Looking back from the railing under the covered-bridge lanterns | 36 pages |
+
+![Preview images for the four Hengyang spots](docs/img/hengyang_contact.jpg)
+
+Compared with case studies 1 and 2:
+
+| | Case 1 Hakone | Case 2 Tokyo Tower | Case 3 Hengyang |
+|---|---|---|---|
+| Scope | One museum | One landmark and the streets around it | Four spots in one day, one plan each |
+| Date and weather | Fixed date, rain throughout | Nearest sunny day from the forecast | Fixed date (the next day), overcast, showers at 16–18h |
+| Devices | α7 V + 24-105 | α7 V, GR IV, Pocket 3, iPhone with split roles | iPhone 16 Pro Max only |
+| SNS material | 7 camera-spot posts, 13 pose posts | 13 camera-spot posts, 2 platform summaries | 56 camera spots from 24 posts, 7 platform summaries |
+| Shots | 38 | 27 | 103 (no upper limit, kept after de-duplication) |
+| Route based on | Official facility order, guides, hourly rain | Guide order, light direction, lighting-up time | The user's route map; within each spot, opening hours, showers and sunset |
+| Pages | 47 | 37 | 139 across four PDFs |
+
+In more detail:
+
+- **Four spots in one day.** The order of the spots and the travel times follow the route map the user supplied (DAY1 of 烛染尘's "Hengyang 2 days 1 night" guide). Each spot has its own base map, route page and shot numbers starting at 01. The four plans share one `trip.json`, so the first page of all four PDFs is the same itinerary page for the whole day: 08:30 Shigu Academy → 11:10 Baoweili → 14:10 Jiefang Road → 16:20 Dongzhou Island → 19:30 done, with 15, 11 and 12 minutes by taxi in between. Inside each spot the order follows opening hours, showers and sunset: Shigu Academy is shot at 8:30–10:00, when it is least crowded after opening; on Dongzhou Island the heaviest shower at 17h falls while shooting under the corridors of Chuanshan Academy, the lawn at Fuzhi Tower comes around 18:00, and the covered-bridge lanterns come after sunset.
+- **One phone only.** Focal lengths are written as iPhone lens settings (0.5× 13mm, 1× 24/28/35mm, 2× 48mm, Portrait mode 2×, 5× 120mm). Clips use three modes: 4K 24 fps in real time, 4K 60 fps slowed to 24p at home, and Slo-mo 4K 120 fps, in place of the α7 V S&Q presets of case studies 1 and 2. Bursts are taken by sliding the shutter button left. There is no flash and none is used; night shots rely on the lanterns and Night mode. Besides the searches per spot, SNS research ran one extra round per device ("衡阳 iPhone 拍照", a Xiaohongshu Diandian summary of 59 notes).
+- **No upper limit, with de-duplication.** The four spots gave 56 camera spots from 24 posts, and the same wall or the same tree was often shot in several posts. This case adds a de-duplication step: each plan has a `dedupe.md` that applies four rules. Material from the same position with the same shot size is merged into one shot, with the secondary posts recorded in `src.also`. Material from the same position with a different shot size or pose keeps one still and becomes Live Photos or clips for the rest. Shots in the same set that repeat the same pose, gaze and shot size become optional. Material whose position is unclear or whose season does not match is not used. The result is 49 main stills (8 of them bursts), 10 optional stills, 20 clips and 24 Live Photos; `dedupe.md` maps every piece of material to its shot.
+- **Night posts rewritten for daytime.** On social media Jiefang Road is almost all night shots (traffic seen from the footbridge, Hong Kong-style signs). The visit is in the afternoon, so every shot was rewritten as an overcast daytime shot, and each card keeps the night version of the original post under "backup".
+- **One outfit across four spots.** A pale moon-white Chinese-collar top with frog buttons and a long oat skirt, with a dark green cardigan added in the afternoon. Props change with the spot: a folding fan at Shigu Academy, yellow daisies at Baoweili, a clear umbrella and street snacks on Jiefang Road, the umbrella and the fan on Dongzhou Island. No Commons photos of the sites were found (palette returned 0), so the colours were chosen from the site colours seen in the SNS posts.
+- **Base map and position fixes.** Dongzhou Island sits in the middle of the Xiang River, and the OSM render drew the island as water; a second version with the island filled in as land was rendered and composited. The first styling of Baoweili and Jiefang Road turned the streets into parks, so they were redrawn with `--prompt-extra` stating that they are city streets. At Shigu Academy the approximate positions of 9 shots fell on the river; subject and camera were moved together to the nearest bank (5–23 m). These three fixes were made with one-off scripts inside the plans.
+- **Materials for the day.** The timeline for each spot lists decision points (booking failed, the second floor of Hejiang Pavilion closed, the cliff-inscription path closed, heaviest shower, lanterns not lit yet, wanting a sit-down lunch, and so on). The Shigu Academy `clips.md` also has an edit list for a whole-day reel of 10 clips from the four spots.
+
+The four hero shots: Daguan Hall at Shigu Academy (Xiaohongshu camera-spot post; the round fan in the post is replaced with a folding fan), the Baoweili platform (Xiaohongshu camera-spot post shot on an a6700 at a medium focal length, redone in iPhone Portrait mode at 2×), the 3D billboard on Jiefang Road (the image in the user's route map has no person in it; a person was added for a 0.5× low-angle shot), and the covered bridge on Dongzhou Island (Xiaohongshu camera-spot post; with no sunset under the overcast sky, the key light becomes the lanterns after sunset).
+
+![Hero shot pages for the four Hengyang spots](docs/img/hengyang_cards_gallery.jpg)
+
+The itinerary page shared by the four PDFs:
+
+![Hengyang itinerary page](docs/img/hengyang_trip.jpg)
+
+The route pages of the four spots:
+
+![Route pages for the four Hengyang spots](docs/img/hengyang_routes.jpg)
+
+Dongzhou Island 02, a wipe reveal (opening clip): the start frame is a pillar of the covered bridge, and a sideways move reveals her walking along the bridge.
+
+![Dongzhou Island camera-move page](docs/img/hengyang_move.jpg)
+
+![Hengyang outfit page](docs/img/hengyang_outfit.jpg)
+
+Generation log: the 103 preview images and the 60 start / mid / end frames of the 20 clips were submitted in 8 parallel batches (4 for stills, 4 for camera-move frames). Most images took 30–60 seconds; including the regenerations, everything finished in about 35 minutes. One Baoweili batch hung on shot 20, and the remaining shots were submitted again as new batches. In the image-by-image check, Dongzhou Island 02 and 03 showed the covered-bridge lanterns already lit at 16:30, which contradicts "the lanterns come on after sunset"; they were regenerated with "the lanterns are not lit yet" added to the light section, together with the three camera-move frames of 02. Shot 26 (the three-faced Guanyin at Luohan Temple) was also regenerated after it was misjudged as single-faced from a thumbnail; on checking the full image, both rounds show three faces. Both rounds are recorded in each plan's `generation_log.jsonl` and `generation_log_moves.jsonl`: the first-round 02 and 03 are marked `failed` with the reason, and the first-round 26 is noted as replaced.
+
+![Dongzhou Island 02 and 03 before and after regeneration](docs/img/hengyang_redo.jpg)
 
 </details>
 
@@ -335,6 +402,12 @@ Following [`INSTALL.md`](INSTALL.md), runs `setup.cmd` on the local machine (ins
 
 Checks the 16-day forecast, sets up the plan on the nearest sunny day and writes a forecast summary into `meta.forecast`; `init --gear` lists all four devices. SNS research runs one round of searches per device, posts shot on the same device are reproduced first, and each shot records its `device`. For a city site, one overview map is used for the route and several district maps for the top views. See [`examples/tokyotower-1003`](examples/tokyotower-1003) (case study 2).
 
+**13. Several spots in one day, one phone, no limit on camera spots**
+
+> (With a screenshot of a Xiaohongshu route map) Shoot these four spots tomorrow in one day with an iPhone 16 Pro Max. Do every camera spot you can find, but remove duplicates.
+
+Each spot gets its own plan and the four plans share one `trip.json`, with the order and travel times taken from the route map. `init --gear` lists only the iPhone, focal lengths are written as lens settings, and clips use three modes: 4K 24 fps, 4K 60 fps and Slo-mo 4K 120 fps. All SNS material is collected first, then each plan's `dedupe.md` applies four rules to merge duplicates, turn them into Live Photos or clips, or make them optional. See [`examples/hengyang-1003`](examples/hengyang-1003) (case study 3).
+
 ## Directory layout
 
 ```
@@ -366,7 +439,7 @@ setup.cmd run_job.cmd run_shots.cmd   Windows double-click entry points
 skill/                 Workflow skill shared by Codex / Claude, and stage overview
 INSTALL.md             Setup guide for a new computer (Windows / macOS / Linux, codex-imagegen, skill, updates, FAQ)
 docs/                  WORKFLOW (SOP), SNS_NOTES (shots driven by SNS material), SHOT_DESIGN (shot design rules), OUTFIT_GUIDE (outfit), VIDEO_NOTES (bursts/clips/Live Photos), ROUTE_NOTES (itinerary and in-park route), CAMERA_NOTES (α7 V layout, flash, clip presets), CARD_SPEC (cheat sheet layout), WINDOWS_SETUP (deployment and known pitfalls), CHANGELOG
-examples/              tokyotower-1003 (27 shots, sunny city site, four devices, 37 pages), hakone-0928-v5 (38 shots, SNS-driven, 47 pages), hakone-0928-v3 (v3.5, 43 pages), asakusa-0928 (12 shots, two base maps), hakone-0928-v2 (13 shots)
+examples/              hengyang-1003 (four spots in one day, 103 shots, iPhone only, 4 PDFs, 139 pages), tokyotower-1003 (27 shots, sunny city site, four devices, 37 pages), hakone-0928-v5 (38 shots, SNS-driven, 47 pages), hakone-0928-v3 (v3.5, 43 pages), asakusa-0928 (12 shots, two base maps), hakone-0928-v2 (13 shots)
 plans/ inbox/ out/ refs/   Runtime directories (not committed; copy plans you want to keep into examples/)
 ```
 

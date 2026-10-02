@@ -1,0 +1,1197 @@
+{
+ "plan": "hy-baoweili-1003",
+ "browsed": "2026-10-02 18:10–19:50，Chrome 已登录账号人工级浏览；只记链接与观察，不保存图片",
+ "fields_note": "cam_bearing 指从人物到相机的方位；cam_dist 为相机到人物的距离；frame 为竖幅构图里人物的位置（x 为人物中心的横向占比，top/feet 为头顶与脚底的纵向占比）。",
+ "refs": [
+  {
+   "id": "S01",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "站台 · 抱花半身（图 1）",
+   "spot": "山顶复古站台雨棚下",
+   "stop": "山顶站台",
+   "latlon": [
+    26.88585,
+    112.64
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 2.2,
+   "cam_h": "胸口",
+   "lens_est": "约 50mm",
+   "kind": "半身",
+   "pose": "stand",
+   "gaze": "camera",
+   "pose_note": "双手把一小束黄色雏菊抱在胸前，头微歪，看镜头",
+   "fg_bg": "左上雨棚下挂着「到达」黄底站牌，右侧墨绿车厢斜向远处，背景站台纵深虚化",
+   "outfit": "深棕无袖长裙",
+   "visual": {
+    "light": "雨棚下的柔光",
+    "tone": "墨绿 + 奶黄 + 深棕，FL 复古",
+    "composition": "人物居中偏左，站牌压左上，车厢压右侧"
+   },
+   "frame": {
+    "x": 0.45,
+    "top": 0.25,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "站台与车厢不变；原帖 a6700 中焦，本组用 iPhone 人像模式 2× 48mm 同站位"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "19"
+   ],
+   "use_by_shot": {
+    "19": "机位、景别、构图与姿势：站牌压左上、车厢在右、抱花看镜头；按点点 iPhone 汇总用人像模式"
+   }
+  },
+  {
+   "id": "S02",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "站台 · 抱花走（图 2）",
+   "spot": "山顶站台",
+   "stop": "山顶站台",
+   "latlon": [
+    26.88585,
+    112.64
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 6,
+   "cam_h": "胸口",
+   "lens_est": "约 35mm",
+   "kind": "全身",
+   "pose": "walk",
+   "gaze": "away",
+   "pose_note": "抱花沿站台中线走向镜头，低头看花",
+   "fg_bg": "雨棚柱与站牌一路排向远处，右侧车厢",
+   "outfit": "深棕无袖长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "复古",
+    "composition": "站台纵深居中，人物在中景"
+   },
+   "frame": {
+    "x": 0.4,
+    "top": 0.4,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "改成短片（前跟），避免与 S01 同地同景别重复"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "20"
+   ],
+   "use_by_shot": {
+    "20": "构图与动作：站台纵深、抱花走向镜头；改成短片"
+   }
+  },
+  {
+   "id": "S03",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "湖蓝涂鸦电线杆 · 倚杆笑（图 3）",
+   "spot": "坡道边的湖蓝涂鸦电线杆与酒红栏杆",
+   "stop": "上坡小巷",
+   "latlon": [
+    26.88515,
+    112.64035
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 3.5,
+   "cam_h": "胸口",
+   "lens_est": "约 35mm",
+   "kind": "全身",
+   "pose": "lean",
+   "gaze": "camera",
+   "pose_note": "侧身倚着电线杆，一手抱花，笑着看镜头",
+   "fg_bg": "右侧湖蓝电线杆与红色涂鸦字、酒红栏杆，背后奶黄老楼与坡道",
+   "outfit": "深棕无袖长裙",
+   "visual": {
+    "light": "阴天柔光",
+    "tone": "湖蓝 + 奶黄",
+    "composition": "电线杆压右三分线，人物贴着杆"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.25,
+    "feet": 0.95
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "涂鸦杆不变"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "12"
+   ],
+   "use_by_shot": {
+    "12": "机位、景别、构图与姿势：倚杆抱花看镜头"
+   }
+  },
+  {
+   "id": "S04",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "奶黄墙弯道 · 俯身（图 5）",
+   "spot": "奶黄矮墙沿线的弯道",
+   "stop": "黄墙弯道",
+   "latlon": [
+    26.8856,
+    112.64015
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 4,
+   "cam_h": "胸口",
+   "lens_est": "约 35mm",
+   "kind": "全身",
+   "pose": "crouch",
+   "gaze": "down",
+   "pose_note": "在路边俯身弯腰，头发垂下，花束快碰到地面",
+   "fg_bg": "背后弯曲的奶黄矮墙与两层小楼，路面柏油",
+   "outfit": "深棕无袖长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "奶黄 + 深棕",
+    "composition": "人物在画面中下，弯道从左向右上"
+   },
+   "frame": {
+    "x": 0.45,
+    "top": 0.4,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "长裙俯身的动作本组改成「蹲下理裙摆闻花」，裙长到小腿中段更安全"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "18"
+   ],
+   "use_by_shot": {
+    "18": "背景与构图：奶黄墙弯道、人物在中下；俯身改成蹲下闻花"
+   }
+  },
+  {
+   "id": "S05",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "雏菊墙绘 · 举花（图 6、图 7）",
+   "spot": "画着白色雏菊的奶黄矮墙",
+   "stop": "上坡小巷",
+   "latlon": [
+    26.8853,
+    112.64033
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 3,
+   "cam_h": "胸口",
+   "lens_est": "约 35mm",
+   "kind": "七分",
+   "pose": "stand",
+   "gaze": "away",
+   "pose_note": "背靠雏菊墙绘，把花束举到头顶，仰头看花",
+   "fg_bg": "背后奶黄墙上的白色雏菊墙绘与镂空花窗",
+   "outfit": "深棕无袖长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "奶黄 + 白",
+    "composition": "人物居中，花在上三分线"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.15,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "图 6 三联与图 7 举花仰望是同一面墙，合并为一张连拍"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "13"
+   ],
+   "use_by_shot": {
+    "13": "背景与姿势：雏菊墙绘前举花仰望（图 6、图 7 合并）"
+   }
+  },
+  {
+   "id": "S06",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "怪兽涂鸦柱 · 黄巷全身（图 8）",
+   "spot": "奶黄小巷里的怪兽涂鸦柱",
+   "stop": "上坡小巷",
+   "latlon": [
+    26.8852,
+    112.6404
+   ],
+   "cam_bearing": 190,
+   "cam_dist": 5,
+   "cam_h": "胸口",
+   "lens_est": "约 28mm",
+   "kind": "全身",
+   "pose": "stand",
+   "gaze": "camera",
+   "pose_note": "站在涂鸦柱旁，一手抬起打招呼",
+   "fg_bg": "右侧画满彩色怪兽的柱子，左侧奶黄老楼，小巷向远处延伸",
+   "outfit": "深棕无袖长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "多巴胺撞色",
+    "composition": "柱子压右，人物在左三分线"
+   },
+   "frame": {
+    "x": 0.35,
+    "top": 0.35,
+    "feet": 0.92
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "与 S03 同为「人与涂鸦柱」，本组列为备选"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "27"
+   ],
+   "use_by_shot": {
+    "27": "构图：柱子压右、人物在左三分线"
+   }
+  },
+  {
+   "id": "S07",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "红墙「衡陽」 · 侧身闻花（图 9）",
+   "spot": "入口附近的红墙大字与铁轨",
+   "stop": "入口红墙",
+   "latlon": [
+    26.88432,
+    112.64
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 6,
+   "cam_h": "胸口",
+   "lens_est": "约 35mm",
+   "kind": "全身",
+   "pose": "stand",
+   "gaze": "down",
+   "pose_note": "侧身站在铁轨边，低头闻花",
+   "fg_bg": "整面红墙与两个巨大白字，墙脚铁轨与黄黑警示条",
+   "outfit": "深棕无袖长裙 + 草编包",
+   "visual": {
+    "light": "柔光",
+    "tone": "红 + 白 + 黄黑",
+    "composition": "人物在右侧大字下方，大字占画面上半"
+   },
+   "frame": {
+    "x": 0.55,
+    "top": 0.5,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "是小亿图 1 / 图 20 的红墙黄字「Heng Yang City」是另一面墙，同为「红墙衡阳大字前全身」，合并到这一张：两面墙哪面人少拍哪面"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "04"
+   ],
+   "use_by_shot": {
+    "04": "机位、景别与构图：红墙大字占上半、人物侧身闻花在右下；两面红墙大字合并"
+   }
+  },
+  {
+   "id": "S08",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "绿门藤蔓拱 · 挥手（图 10）",
+   "spot": "藤蔓覆盖的深绿木门",
+   "stop": "上坡小巷",
+   "latlon": [
+    26.8855,
+    112.6402
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 4,
+   "cam_h": "胸口",
+   "lens_est": "约 35mm",
+   "kind": "全身",
+   "pose": "stand",
+   "gaze": "camera",
+   "pose_note": "站在绿门前，一手抱花，一手抬起挥手，笑",
+   "fg_bg": "头顶垂下的爬藤绿叶形成拱门，深绿木门作底，左右奶黄墙",
+   "outfit": "深棕无袖长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "绿 + 奶黄",
+    "composition": "门洞居中，藤蔓压上缘，人物在门前正中"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.35,
+    "feet": 0.92
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "绿门不变"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "17"
+   ],
+   "use_by_shot": {
+    "17": "机位、景别与构图：门洞居中、藤蔓作框、挥手"
+   }
+  },
+  {
+   "id": "S09",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "绿墙「衡阳」站名牌 · 七分（图 11）",
+   "spot": "墨绿色大字墙与白色站名牌",
+   "stop": "入口绿墙",
+   "latlon": [
+    26.8844,
+    112.6402
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 3,
+   "cam_h": "胸口",
+   "lens_est": "约 35mm",
+   "kind": "七分",
+   "pose": "stand",
+   "gaze": "camera",
+   "pose_note": "站在站名牌旁，双手拿着相机放在腰前，看镜头",
+   "fg_bg": "上半是墨绿墙与白色大字，下方站名牌在人物左侧",
+   "outfit": "深棕无袖长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "墨绿 + 白",
+    "composition": "大字占上半，人物在右下"
+   },
+   "frame": {
+    "x": 0.55,
+    "top": 0.5,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "是小亿图 4 同一面墙（侧脸仰头）合并到这里；本组手里拿的是花束与手机"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "05"
+   ],
+   "use_by_shot": {
+    "05": "机位与构图：大字占上半、站名牌在左、人物在右下；动作取是小亿图 4 的侧脸仰头"
+   }
+  },
+  {
+   "id": "S10",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68c8f822000000001202eb53",
+   "posted": "2025-09-16",
+   "post_title": "🌻衡阳宝藏拍摄地！保卫里拍照攻略～（绿里绿qi，559 赞，14 图）",
+   "device": "Sony a6700 + SEL18135（帖文），创意外观 FL",
+   "title": "绿长椅静物 · 相机草帽雏菊（图 12）",
+   "spot": "翠绿长椅",
+   "stop": "入口绿墙",
+   "latlon": [
+    26.8845,
+    112.6401
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 0.6,
+   "cam_h": "俯视",
+   "lens_est": "约 50mm",
+   "kind": "特写",
+   "pose": "",
+   "gaze": "",
+   "pose_note": "没有人物：椅面上放着相机、草帽与一束黄雏菊",
+   "fg_bg": "翠绿斑驳的木条椅面",
+   "outfit": "—",
+   "visual": {
+    "light": "柔光",
+    "tone": "翠绿 + 黄",
+    "composition": "物件斜放，雏菊压右下"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.1,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "本组换成雏菊、折扇与深棕小包，加一只伸进画面的手"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "06"
+   ],
+   "use_by_shot": {
+    "06": "构图：翠绿椅面上的静物俯拍；相机草帽换成折扇与小包，加一只手"
+   }
+  },
+  {
+   "id": "S11",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69f6bb67000000002301d9e6",
+   "posted": "2026-05-03",
+   "post_title": "人均0元逛衡阳✨保卫里拍照巨出片（是小亿，269 赞，20 图）",
+   "title": "站台绿柱「PLATFORM」 · 倚柱（图 2）",
+   "spot": "站台上的绿色方柱",
+   "stop": "山顶站台",
+   "latlon": [
+    26.88583,
+    112.63998
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 3,
+   "cam_h": "胸口",
+   "lens_est": "约 28mm",
+   "kind": "全身",
+   "pose": "lean",
+   "gaze": "away",
+   "pose_note": "靠着绿色方柱侧站，看向站台远处",
+   "fg_bg": "左侧绿柱上有竖排英文，头顶「到达」站牌",
+   "outfit": "橙色上衣 + 牛仔背带裤 + 棒球帽",
+   "visual": {
+    "light": "柔光",
+    "tone": "绿 + 黄",
+    "composition": "柱子居左，人物贴柱"
+   },
+   "frame": {
+    "x": 0.6,
+    "top": 0.35,
+    "feet": 0.95
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "与 S01、S20 同在站台，改成实况避免同地重复"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "22"
+   ],
+   "use_by_shot": {
+    "22": "构图：倚绿柱；改成实况"
+   }
+  },
+  {
+   "id": "S12",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69f6bb67000000002301d9e6",
+   "posted": "2026-05-03",
+   "post_title": "人均0元逛衡阳✨保卫里拍照巨出片（是小亿，269 赞，20 图）",
+   "title": "奶黄墙手写诗句 · 侧站（图 5）",
+   "spot": "写着手写诗句的奶黄墙",
+   "stop": "上坡小巷",
+   "latlon": [
+    26.88475,
+    112.64028
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 2.5,
+   "cam_h": "胸口",
+   "lens_est": "约 35mm",
+   "kind": "七分",
+   "pose": "stand",
+   "gaze": "away",
+   "pose_note": "侧站在诗句右侧，看远处",
+   "fg_bg": "奶黄墙上三行黑色手写诗句（文字模糊）",
+   "outfit": "橙色上衣 + 牛仔裤",
+   "visual": {
+    "light": "柔光",
+    "tone": "奶黄",
+    "composition": "诗句在左，人物在右"
+   },
+   "frame": {
+    "x": 0.7,
+    "top": 0.35,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "改成实况"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "10"
+   ],
+   "use_by_shot": {
+    "10": "构图：诗句在左、人物在右"
+   }
+  },
+  {
+   "id": "S13",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69f6bb67000000002301d9e6",
+   "posted": "2026-05-03",
+   "post_title": "人均0元逛衡阳✨保卫里拍照巨出片（是小亿，269 赞，20 图）",
+   "title": "站名牌墙 · 走过（图 8）",
+   "spot": "钉满站名牌的奶黄长挡墙",
+   "stop": "站名牌墙",
+   "latlon": [
+    26.88495,
+    112.6403
+   ],
+   "cam_bearing": 10,
+   "cam_dist": 14,
+   "cam_h": "坡上俯视",
+   "lens_est": "约 35mm",
+   "kind": "全身",
+   "pose": "walk",
+   "gaze": "away",
+   "pose_note": "沿墙走过，侧脸",
+   "fg_bg": "整面墙的彩色边框站名牌占满背景，脚下柏油路",
+   "outfit": "橙色上衣 + 牛仔裤",
+   "visual": {
+    "light": "柔光",
+    "tone": "奶黄 + 彩色",
+    "composition": "墙面占满画面上三分之二，人物在中下"
+   },
+   "frame": {
+    "x": 0.45,
+    "top": 0.5,
+    "feet": 0.85
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "点点 iPhone 汇总建议「用长焦从坡道上方俯拍车牌墙，压缩空间」，本组用 5× 120mm 从坡上拍"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "09"
+   ],
+   "use_by_shot": {
+    "09": "机位与构图：站名牌墙占满背景、人物沿墙走；按点点 iPhone 汇总改成坡上 5× 俯拍"
+   }
+  },
+  {
+   "id": "S14",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69f6bb67000000002301d9e6",
+   "posted": "2026-05-03",
+   "post_title": "人均0元逛衡阳✨保卫里拍照巨出片（是小亿，269 赞，20 图）",
+   "title": "绿皮车厢 · 倚车（图 9、图 12）",
+   "spot": "站台边的墨绿车厢",
+   "stop": "山顶站台",
+   "latlon": [
+    26.88588,
+    112.64003
+   ],
+   "cam_bearing": 220,
+   "cam_dist": 3,
+   "cam_h": "胸口",
+   "lens_est": "约 28mm",
+   "kind": "七分",
+   "pose": "lean",
+   "gaze": "down",
+   "pose_note": "背靠车厢，手指理头发，低头",
+   "fg_bg": "墨绿车厢的车窗与白色腰线斜向远处",
+   "outfit": "橙色上衣 + 牛仔裤",
+   "visual": {
+    "light": "柔光",
+    "tone": "墨绿",
+    "composition": "车厢斜线从左上到右下"
+   },
+   "frame": {
+    "x": 0.45,
+    "top": 0.3,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "与 S01、S20 同在站台，列为备选"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "28"
+   ],
+   "use_by_shot": {
+    "28": "构图：背靠车厢、车厢斜线"
+   }
+  },
+  {
+   "id": "S15",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69f6bb67000000002301d9e6",
+   "posted": "2026-05-03",
+   "post_title": "人均0元逛衡阳✨保卫里拍照巨出片（是小亿，269 赞，20 图）",
+   "title": "马赛克「衡阳」大字墙 · 长椅（图 10）",
+   "spot": "米色墙上用小红字拼成的「衡阳」大字与绿长椅",
+   "stop": "上坡小巷",
+   "latlon": [
+    26.8846,
+    112.6403
+   ],
+   "cam_bearing": 180,
+   "cam_dist": 8,
+   "cam_h": "胸口",
+   "lens_est": "约 24mm",
+   "kind": "环境远景",
+   "pose": "sit",
+   "gaze": "camera",
+   "pose_note": "坐在绿长椅上，人很小",
+   "fg_bg": "整面米色墙的巨大字形占满画面",
+   "outfit": "橙色上衣 + 牛仔裤",
+   "visual": {
+    "light": "柔光",
+    "tone": "米色 + 红",
+    "composition": "大字居中，长椅在下方"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.75,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "与 S19 屋顶都是坐姿，列为备选"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "29"
+   ],
+   "use_by_shot": {
+    "29": "构图：大字居中、长椅在下方"
+   }
+  },
+  {
+   "id": "S16",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69f6bb67000000002301d9e6",
+   "posted": "2026-05-03",
+   "post_title": "人均0元逛衡阳✨保卫里拍照巨出片（是小亿，269 赞，20 图）",
+   "title": "铁路道口信号牌（图 14）",
+   "spot": "入口的道口信号装置与指示牌",
+   "stop": "入口",
+   "latlon": [
+    26.88425,
+    112.64012
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 10,
+   "cam_h": "略仰",
+   "lens_est": "约 24mm",
+   "kind": "环境远景",
+   "pose": "",
+   "gaze": "",
+   "pose_note": "原图没有人物",
+   "fg_bg": "黄黑条纹立柱、交叉警示牌、信号灯与黄底指示牌，一棵大樟树在上方",
+   "outfit": "—",
+   "visual": {
+    "light": "阴天",
+    "tone": "黄黑 + 绿",
+    "composition": "信号装置居中偏左，樟树压上缘"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.6,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "本组加入她走进街区的背影，作为开场"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "01"
+   ],
+   "use_by_shot": {
+    "01": "机位与构图：道口信号装置居中偏左、樟树压上缘；原图无人，本组加入走进街区的背影"
+   }
+  },
+  {
+   "id": "S17",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69f6bb67000000002301d9e6",
+   "posted": "2026-05-03",
+   "post_title": "人均0元逛衡阳✨保卫里拍照巨出片（是小亿，269 赞，20 图）",
+   "title": "阶梯弯道 · 俯拍（帖文第 2 条）",
+   "spot": "彩色台阶与酒红栏杆",
+   "stop": "彩色台阶",
+   "latlon": [
+    26.88535,
+    112.64028
+   ],
+   "cam_bearing": 20,
+   "cam_dist": 4,
+   "cam_h": "台阶顶端俯拍",
+   "lens_est": "广角",
+   "kind": "全身",
+   "pose": "stand",
+   "gaze": "camera",
+   "pose_note": "帖文只写「阶梯弯道，俯拍构图超级绝」",
+   "fg_bg": "彩色台阶与酒红栏杆（图 16 无人物）",
+   "outfit": "—",
+   "visual": {
+    "light": "柔光",
+    "tone": "彩色台阶",
+    "composition": "俯拍台阶斜线"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.5,
+    "feet": 0.8
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "与暴躁小辣椒图 3 的红栏杆台阶是同一处，合并"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "15"
+   ],
+   "use_by_shot": {
+    "15": "也参考：阶梯弯道 · 俯拍（帖文第 2 条）"
+   }
+  },
+  {
+   "id": "S18",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69f6bb67000000002301d9e6",
+   "posted": "2026-05-03",
+   "post_title": "人均0元逛衡阳✨保卫里拍照巨出片（是小亿，269 赞，20 图）",
+   "title": "山顶观景台 · 俯瞰衡阳城（帖文第 4 条）",
+   "spot": "保卫里山顶观景台",
+   "stop": "山顶观景台",
+   "latlon": [
+    26.88605,
+    112.63995
+   ],
+   "cam_bearing": 110,
+   "cam_dist": 8,
+   "cam_h": "胸口",
+   "lens_est": "广角",
+   "kind": "环境远景",
+   "pose": "back",
+   "gaze": "back",
+   "pose_note": "帖文只写「山顶观景台，可以俯瞰整片衡阳城」",
+   "fg_bg": "—",
+   "outfit": "—",
+   "visual": {
+    "light": "—",
+    "tone": "—",
+    "composition": "城景占画面"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.6,
+    "feet": 0.85
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "没有原图，按帖文描述设计收尾背影；观景台位置现场核实"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "25"
+   ],
+   "use_by_shot": {
+    "25": "地点：帖文「山顶观景台可俯瞰整片衡阳城」；按描述设计背影"
+   }
+  },
+  {
+   "id": "S19",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69894541000000001b015eeb",
+   "posted": "2026-02-09",
+   "post_title": "衡阳保卫里📸| 这个老街区比想象中更好拍（暴躁小辣椒_，144 赞，10 图）",
+   "title": "SMILE 撞色墙 · 走过（图 1）",
+   "spot": "明黄草绿撞色墙与凸面镜",
+   "stop": "SMILE 墙",
+   "latlon": [
+    26.8847,
+    112.64025
+   ],
+   "cam_bearing": 110,
+   "cam_dist": 5,
+   "cam_h": "胸口",
+   "lens_est": "约 28mm",
+   "kind": "全身",
+   "pose": "walk",
+   "gaze": "away",
+   "pose_note": "从墙前横着走过，侧身",
+   "fg_bg": "背后撞色墙、三面凸面镜与笑脸涂鸦，右侧蓝门",
+   "outfit": "灰色毛绒外套 + 深灰长裙 + 鸭舌帽",
+   "visual": {
+    "light": "柔光",
+    "tone": "明黄 + 草绿",
+    "composition": "墙面占满背景，人物在右三分线"
+   },
+   "frame": {
+    "x": 0.6,
+    "top": 0.35,
+    "feet": 0.92
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "点点也写「站在镜子前走抓拍」；本组用连拍"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "07"
+   ],
+   "use_by_shot": {
+    "07": "机位与构图：撞色墙作满底、人物横着走过；点点「镜子前走抓拍」"
+   }
+  },
+  {
+   "id": "S20",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69894541000000001b015eeb",
+   "posted": "2026-02-09",
+   "post_title": "衡阳保卫里📸| 这个老街区比想象中更好拍（暴躁小辣椒_，144 赞，10 图）",
+   "title": "站台 · 坐红砖矮墙（图 2）",
+   "spot": "站台边的红砖矮墙",
+   "stop": "山顶站台",
+   "latlon": [
+    26.8858,
+    112.63995
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 4,
+   "cam_h": "胸口",
+   "lens_est": "约 28mm",
+   "kind": "全身",
+   "pose": "sit",
+   "gaze": "away",
+   "pose_note": "坐在红砖矮墙上，身体微侧看镜头外",
+   "fg_bg": "身后站台栏杆与 A02/A03 绿色站牌、雨棚",
+   "outfit": "灰色毛绒外套 + 深灰长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "红砖 + 墨绿",
+    "composition": "人物居中，矮墙横过画面下部"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.35,
+    "feet": 0.92
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "点点汇总原话「坐在红砖矮墙上侧身看镜头外，利用栏杆做前景」与本帖同机位"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "21"
+   ],
+   "use_by_shot": {
+    "21": "机位、景别与姿势：坐红砖矮墙侧身看镜头外、栏杆作前景（点点原话同）"
+   }
+  },
+  {
+   "id": "S21",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69894541000000001b015eeb",
+   "posted": "2026-02-09",
+   "post_title": "衡阳保卫里📸| 这个老街区比想象中更好拍（暴躁小辣椒_，144 赞，10 图）",
+   "title": "酒红栏杆台阶 · 背影看黄墙（图 3、图 4）",
+   "spot": "彩色台阶与酒红栏杆",
+   "stop": "彩色台阶",
+   "latlon": [
+    26.88535,
+    112.64028
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 3,
+   "cam_h": "胸口",
+   "lens_est": "约 28mm",
+   "kind": "全身",
+   "pose": "back",
+   "gaze": "back",
+   "pose_note": "站在台阶上背对镜头，看身前的黄墙",
+   "fg_bg": "左下酒红栏杆斜上，背景高高的奶黄墙与绿植",
+   "outfit": "灰色毛绒外套 + 深灰长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "奶黄 + 酒红",
+    "composition": "栏杆从左下斜向右上，人物在中线"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.3,
+    "feet": 0.9
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "点点写「站在台阶上回头望」，是小亿写「阶梯弯道俯拍」：三条合并为一张，从台阶顶端俯拍她回头"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "15"
+   ],
+   "use_by_shot": {
+    "15": "地点与姿势：酒红栏杆台阶上回头；俯拍构图取是小亿「阶梯弯道俯拍」"
+   }
+  },
+  {
+   "id": "S22",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69894541000000001b015eeb",
+   "posted": "2026-02-09",
+   "post_title": "衡阳保卫里📸| 这个老街区比想象中更好拍（暴躁小辣椒_，144 赞，10 图）",
+   "title": "奶黄墙红色涂鸦圈 · 走过（图 5）",
+   "spot": "奶黄矮墙上的红色圆形涂鸦",
+   "stop": "上坡小巷",
+   "latlon": [
+    26.8851,
+    112.6403
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 4,
+   "cam_h": "胸口",
+   "lens_est": "约 28mm",
+   "kind": "全身",
+   "pose": "walk",
+   "gaze": "down",
+   "pose_note": "沿墙走过，低头",
+   "fg_bg": "奶黄墙、红色圆形涂鸦字",
+   "outfit": "灰色毛绒外套 + 深灰长裙",
+   "visual": {
+    "light": "柔光",
+    "tone": "奶黄 + 红",
+    "composition": "涂鸦在右上"
+   },
+   "frame": {
+    "x": 0.4,
+    "top": 0.35,
+    "feet": 0.95
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "与 S19 同为「沿墙走过」，改成实况"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "11"
+   ],
+   "use_by_shot": {
+    "11": "构图：沿墙走过、涂鸦在右上"
+   }
+  },
+  {
+   "id": "S23",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69894541000000001b015eeb",
+   "posted": "2026-02-09",
+   "post_title": "衡阳保卫里📸| 这个老街区比想象中更好拍（暴躁小辣椒_，144 赞，10 图）",
+   "title": "彩色标语红砖墙 · 走过（图 7）",
+   "spot": "钉着彩色小木牌的红砖墙",
+   "stop": "上坡小巷",
+   "latlon": [
+    26.8852,
+    112.64042
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 4,
+   "cam_h": "蹲低",
+   "lens_est": "约 28mm",
+   "kind": "全身",
+   "pose": "walk",
+   "gaze": "away",
+   "pose_note": "从红砖墙前走过，侧身",
+   "fg_bg": "红砖墙上一片彩色小木牌，头顶树荫",
+   "outfit": "灰色毛绒外套 + 深灰长裙",
+   "visual": {
+    "light": "树荫柔光",
+    "tone": "红砖 + 彩色",
+    "composition": "木牌在画面中央"
+   },
+   "frame": {
+    "x": 0.4,
+    "top": 0.4,
+    "feet": 0.93
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "点点写「走过去的背影抓拍，同行者蹲低」；与 S19 同为走过，列为备选"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "30"
+   ],
+   "use_by_shot": {
+    "30": "构图：蹲低、木牌在画面中央、人物走过"
+   }
+  },
+  {
+   "id": "S24",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69894541000000001b015eeb",
+   "posted": "2026-02-09",
+   "post_title": "衡阳保卫里📸| 这个老街区比想象中更好拍（暴躁小辣椒_，144 赞，10 图）",
+   "title": "屋顶「月亮」 · 坐木台（图 8–10）",
+   "spot": "屋顶观景台的木平台与月亮装置",
+   "stop": "屋顶观景台",
+   "latlon": [
+    26.886,
+    112.6401
+   ],
+   "cam_bearing": 220,
+   "cam_dist": 4,
+   "cam_h": "胸口",
+   "lens_est": "约 28mm",
+   "kind": "全身",
+   "pose": "sit",
+   "gaze": "away",
+   "pose_note": "坐在木台上，双手放膝上，看镜头外",
+   "fg_bg": "身后深灰瓦屋顶，右上米黄色月亮球，左上樟树与天空",
+   "outfit": "灰色毛绒外套 + 深灰长裙",
+   "visual": {
+    "light": "天空柔光",
+    "tone": "灰瓦 + 米黄 + 天空",
+    "composition": "人物居中，月亮球在右上"
+   },
+   "frame": {
+    "x": 0.45,
+    "top": 0.45,
+    "feet": 0.82
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "点点写「抬手扶帽子的侧脸」，星禾写屋顶举手：合并成一张，本组没有帽子改成抬手扶发"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "23"
+   ],
+   "use_by_shot": {
+    "23": "机位、景别与构图：木台坐姿、月亮球在右上；点点「抬手扶帽侧脸」改成扶发"
+   }
+  },
+  {
+   "id": "S25",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69d0e7f7000000001e00cb92",
+   "posted": "2026-04-04",
+   "post_title": "get到屋顶的拍照了！（星禾，4 赞）",
+   "title": "屋顶 · 举手仰拍",
+   "spot": "屋顶观景台",
+   "stop": "屋顶观景台",
+   "latlon": [
+    26.886,
+    112.6401
+   ],
+   "cam_bearing": 200,
+   "cam_dist": 3,
+   "cam_h": "低机位仰拍",
+   "lens_est": "广角",
+   "kind": "全身",
+   "pose": "sit",
+   "gaze": "away",
+   "pose_note": "坐在屋脊的黑色方块上，一手举高指向天空",
+   "fg_bg": "灰瓦屋顶，背后大片蓝天与樟树枝",
+   "outfit": "白衬衫 + 黑短裙",
+   "visual": {
+    "light": "晴天",
+    "tone": "蓝天",
+    "composition": "低机位，人物在右上"
+   },
+   "frame": {
+    "x": 0.6,
+    "top": 0.3,
+    "feet": 0.75
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "与 S24 同处，改成实况"
+   },
+   "weather": "阴或多云",
+   "time_light": "白天",
+   "shots": [
+    "24"
+   ],
+   "use_by_shot": {
+    "24": "构图与动作：低机位仰拍、举手；改成实况"
+   }
+  },
+  {
+   "id": "Q1",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/search_result?keyword=%E4%BF%9D%E5%8D%AB%E9%87%8C%20%E6%8B%8D%E7%85%A7%E6%9C%BA%E4%BD%8D",
+   "posted": "2026-10-02",
+   "title": "小红书「点点」汇总：保卫里 拍照机位（39 篇笔记）",
+   "summary": "复古火车站台（坐红砖矮墙侧身看镜头外，栏杆前景）；火车车牌墙（鹅黄底，走抓拍）；SMILE 涂鸦墙（镜子前抓拍）；拾芳巷漫画坡道（七彩阶梯）；屋顶观景台（青瓦 + 巨型月亮装置，坐木台阶抬手扶帽侧脸，蓝天作底，可俯拍）；红栏杆黄墙转角（台阶上回头望）；彩色标语红墙（走过的背影，蹲低）。路线：入口「保卫里」大字墙 → 沿小路向上（火车涂鸦、交通灯、心形墙、涂鸦柱）→ 山顶站台与观景台，约 1 小时。居民区，保持安静；下午 3–5 点光柔、人少。",
+   "shots": [
+    "01",
+    "05",
+    "07",
+    "09",
+    "15",
+    "21",
+    "23",
+    "30"
+   ]
+  },
+  {
+   "id": "Q2",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/search_result?keyword=%E8%A1%A1%E9%98%B3%20iPhone%20%E6%8B%8D%E7%85%A7%20%E4%BF%9D%E5%8D%AB%E9%87%8C%20%E4%B8%9C%E6%B4%B2%E5%B2%9B",
+   "posted": "2026-10-02",
+   "title": "小红书「点点」汇总：衡阳 iPhone 拍照 保卫里 东洲岛（59 篇笔记）",
+   "summary": "站台用 iPhone 人像模式把站牌虚化；车牌墙用长焦从坡道上方俯拍压缩空间；漫画坡道站在镜子前抓拍动态；屋顶可用广角俯拍建筑层次；开网格线三分构图；日落夜景把曝光滑块往下拉保天空。",
+   "shots": [
+    "09",
+    "19"
+   ]
+  }
+ ]
+}
