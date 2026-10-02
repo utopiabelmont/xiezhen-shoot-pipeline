@@ -435,7 +435,8 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     d.line([(118, 34), (118, 84)], fill=GREEN, width=3)
     medium = shot.get("medium", "still")
     badge = MEDIUM_BADGE.get(medium)
-    sub = f"{meta['place'].split('（')[0]}　{meta['date']}　{meta['gear'].split('+')[-1].strip().split('，')[0]}"
+    dev = meta.get("body", "") if PHONE else meta['gear'].split('+')[-1].strip().split('，')[0]
+    sub = f"{meta['place'].split('（')[0]}　{meta['date']}　{dev}"
     room = W - 40 - d.textlength(sub, font=f_s) - 24 - 136 - ((d.textlength(badge, font=f_h) + 42) if badge else 0)
     for sz in (46, 42, 38, 34, 30):                  # 标题放不下（译文较长）时缩小字号
         f_title = font(sz, True)
@@ -527,7 +528,7 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
                 yb += 19
     # 右栏
     rx0, rx1 = 970, W - 40
-    y = panel(d, (rx0, 110, rx1, 318), SETTINGS_TITLE.get(medium, "相机设置"), f_h)
+    y = panel(d, (rx0, 110, rx1, 318), (SETTINGS_TITLE_PHONE if PHONE else SETTINGS_TITLE).get(medium, "手机设置" if PHONE else "相机设置"), f_h)
     rows = settings_rows(shot, medium)
     kw = max([86] + [d.textlength(k, font=f_t) + 10 for k, _ in rows])   # 标签列按最长标签加宽（译文）
     for k, v in rows:
@@ -549,7 +550,7 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     y = panel(d, (rx0, 924, rx1, H - 22), "时段 · 地点 · 注意", f_h)
     ref_txt = ""                                   # SNS 参考已在左侧对照显示，这里不重复
     fit_block(d, (rx0 + 14, y), f"{shot['time']}　{shot['spot']}　注意：{shot['note']}{ref_txt}", rx1 - rx0 - 28, H - 30)
-    foot = FOOT.get(medium, "AI 拍摄示意，非现场实拍；布局与站位以现场条件为准。光向按 sun.md 计算。")
+    foot = (FOOT_PHONE.get(medium) if PHONE else None) or FOOT.get(medium, "AI 拍摄示意，非现场实拍；布局与站位以现场条件为准。光向按 sun.md 计算。")
     d.text((40, H - 42), foot, font=f_t, fill=MUTED)
     img.save(out_path, quality=92)
 
@@ -789,6 +790,19 @@ FOOT = {"video": "关键帧 AI 示意，非现场实拍；运镜轨迹与三帧�
         "burst": "AI 示意为连拍中要选的那一帧；连拍与预拍设置见 docs/VIDEO_NOTES.md。",
         "live": "AI 示意，非现场实拍；手机实况图用于过渡与小红书，不占相机时间。"}
 CLIP_MODE = {"24p": "動画位 4K 24p（实时，≤5 s）", "sq60": "S&Q 60→24p（2.5 倍慢）", "sq120": "S&Q 120→24p（5 倍慢，裁 1.52×）"}
+# 机身是手机（meta.body 含 iPhone 等）时，设置块、页眉与页脚换成手机的写法（docs/VIDEO_NOTES.md 第 8 节）
+PHONE_WORDS = ("iPhone", "手机", "Pixel", "Galaxy", "Xperia")
+PHONE = False
+
+
+def is_phone(body) -> bool:
+    return any(k in (body or "") for k in PHONE_WORDS)
+
+
+CLIP_MODE_PHONE = {"24p": "录像 4K 24 fps（实时，≤5 s）", "sq60": "录像 4K 60 fps（放 24p 慢 2.5 倍）", "sq120": "慢动作 4K 120 fps（5 倍慢）"}
+SETTINGS_TITLE_PHONE = {"burst": "手机设置（连拍）", "video": "手机设置（短片）", "live": "手机设置（实况）"}
+FOOT_PHONE = {"video": "关键帧 AI 示意，非现场实拍；运镜轨迹与三帧画面变化见下一页。",
+              "burst": "AI 示意为连拍中要选的那一帧，非现场实拍。"}
 
 
 def settings_rows(shot, medium):
@@ -801,7 +815,37 @@ def settings_rows(shot, medium):
     return rows
 
 
+def _phone_rows(shot, medium):
+    if medium == "video":
+        c = shot.get("clip", {})
+        mode = CLIP_MODE_PHONE.get(c.get("mode", "24p"), c.get("mode", "")) + (" · 运动模式" if "运动模式" in shot.get("shutter", "") else "")
+        return [("镜头", shot["lens"]), ("模式", mode), ("曝光", c.get("exposure", "长按锁 AE/AF，滑块按脸")),
+                ("运镜", f"{c.get('move', '')}　{c.get('dur_s', 5)} s"), ("起 / 止", f"{c.get('start', '')} → {c.get('end', '')}"),
+                ("机位", shot["camera"])]
+    if medium == "burst":
+        b = shot.get("burst", {})
+        return [("镜头", shot["lens"]), ("连拍", f"快门键向左滑住连拍 · 约 {b.get('fps', 10)} 张/秒 · 选 1 张"),
+                ("曝光", shot.get("shutter", "")), ("动作", b.get("action", shot.get("action", ""))),
+                ("景别", shot["kind"]), ("机位", shot["camera"])]
+    if medium == "live":
+        return None
+    return [("镜头", shot["lens"]), ("拍法曝光", shot["shutter"]), ("摄影风格", _phone_style(shot.get("look", ""))),
+            ("闪光灯", shot.get("flash", "")), ("景别", shot["kind"]), ("机位", shot["camera"])]
+
+
+def _phone_style(look: str) -> str:
+    """从 look 里取摄影风格与格式，例「iPhone 原相机，摄影风格「标准」全天固定，HEIF 最大 48MP」→「标准（全组固定）· HEIF 最大 48MP」。"""
+    m = re.search(r"摄影风格「([^」]+)」", look or "")
+    style = f"{m.group(1)}（全组固定）" if m else "全组固定"
+    fmt = re.search(r"(HEIF|ProRAW|JPEG)[^，；。]*", look or "")
+    return style + (f" · {fmt.group(0).strip()}" if fmt else "")
+
+
 def _settings_rows(shot, medium):
+    if PHONE:
+        rows = _phone_rows(shot, medium)
+        if rows:
+            return rows
     if medium == "video":
         c = shot.get("clip", {})
         return [("焦段光圈", shot["lens"]),
@@ -871,6 +915,8 @@ def main():
             for sid in p.get("shots", []):
                 POSES_BY_SHOT.setdefault(sid, []).append(p)
     meta = plan["meta"]
+    global PHONE
+    PHONE = is_phone(meta.get("body"))
     global BASEMAPS
     BASEMAPS = load_basemaps(a.plan)
     for name, (im, _) in BASEMAPS.items():

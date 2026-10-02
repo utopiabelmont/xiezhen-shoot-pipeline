@@ -26,6 +26,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MEDIUM = {"still": "静态", "burst": "连拍", "video": "短片", "live": "实况"}
 CLIP = {"24p": "24p 实时", "sq60": "S&Q 60→24", "sq120": "S&Q 120→24"}
+CLIP_PHONE = {"24p": "4K 24 fps 实时", "sq60": "4K 60 fps（放 24p 慢 2.5 倍）", "sq120": "慢动作 4K 120 fps"}
+PHONE = [False]          # 机身是手机时（plan.json 的 body 含 iPhone 等）器材、连拍、短片、防雨的写法换成手机版
+PHONE_WORDS = ("iPhone", "手机", "Pixel", "Galaxy", "Xperia")   # 与 make_cards.PHONE_WORDS 一致
 KIND_ORDER = ["still", "burst", "video", "live"]
 
 
@@ -116,20 +119,42 @@ def gear_items(plan: dict, shots: list[dict], meta: dict) -> list[tuple[str, str
     rain = "雨" in (meta.get("forecast") or "") or "雨" in json.dumps(meta.get("weather", ""), ensure_ascii=False)
     items = []
     body = plan.get("body") or ""
-    items.append((f"{body} {plan.get('gear', '')}".strip() or "机身与镜头", "用到的焦段：" + "、".join(lenses) if lenses else ""))
+    if PHONE[0]:                                      # 手机：设备一行写全，不列电池、外闪
+        def zoom(x):                                  # 「0.5× 超广角 13mm」「人像模式 2× 48mm」按倍率排序
+            m = re.search(r"([\d.]+)×", x)
+            return float(m.group(1)) if m else 0
+        lz = sorted({s.get("lens", "") for s in shots if s.get("lens")}, key=lambda x: (zoom(x), x))
+        items.append((plan.get("gear") or body, "用到的镜头：" + "、".join(lz) if lz else ""))
+        if look:
+            items.append((f"摄影风格：{look}", "全组固定，现场不改"))
+        items.append(("手机充满电、充电宝与线", "短片与实况耗电多，过半就充"))
+    else:
+        items.append((f"{body} {plan.get('gear', '')}".strip() or "机身与镜头", "用到的焦段：" + "、".join(lenses) if lenses else ""))
     devs = {}
-    for s in shots:
+    for s in shots if not PHONE[0] else []:
         d = (s.get("device") or "").strip()
         if d:
             devs.setdefault(d, []).append(s.get("id", ""))
     for d, ids in devs.items():
         items.append((f"{d}（充电、存储卡）", "用在：" + "、".join(i for i in ids if i)))
-    items.append(("电池 2 块以上、存储卡清空", "短片与连拍耗电和卡容量都比静态多" if media & {"video", "burst"} else ""))
-    if look:
-        items.append((f"外观与白平衡：{look}", "全组固定，现场不改"))
-    fl = [s.get("flash", "") for s in shots if s.get("flash") and s.get("flash") != "关"]
-    if plan.get("flash") and fl:
+    if not PHONE[0]:
+        items.append(("电池 2 块以上、存储卡清空", "短片与连拍耗电和卡容量都比静态多" if media & {"video", "burst"} else ""))
+        if look:
+            items.append((f"外观与白平衡：{look}", "全组固定，现场不改"))
+    fl = [s.get("flash", "") for s in shots if s.get("flash") and not s.get("flash", "").startswith(("关", "不用", "无"))]
+    if plan.get("flash") and fl and not PHONE[0]:
         items.append((f"{plan['flash']}（柔光罩、电池）", f"{len(fl)} 张用闪光"))
+    if PHONE[0]:
+        if "burst" in media:
+            items.append(("连拍：快门键向左滑住（或设置 › 相机里开「用调高音量键连拍」）", "每段 2 秒左右，回家每段选 1 张"))
+        if "video" in media:
+            items.append(("短片：录像 4K 24 fps、慢动作 4K 120 fps、录像 4K 60 fps 三档", "全部竖持；长按锁 AE/AF；跟拍开运动模式；可选 Apple Log"))
+            items.append(("存储空间留 30 GB 以上", "4K 60 / 120 与 Apple Log 文件大"))
+        if "live" in media:
+            items.append(("实况开、网格开", "长按锁 AE/AF 在脸上"))
+        if rain:
+            items.append(("透明长柄伞、手机防水袋、镜头布两块", "每条短片前擦一次镜头"))
+        return items
     if "burst" in media:
         items.append(("连拍：电子快门 30 张/秒，预拍 0.5 秒，AF-C 人物识别", "快门 1/500 以上"))
     if "video" in media:
@@ -165,12 +190,15 @@ def shot_detail(s: dict) -> list[tuple[str, str]]:
     m = s.get("medium", "still")
     if m == "video" and s.get("clip"):
         c = s["clip"]
-        rows.insert(0, ("短片", f"{CLIP.get(c.get('mode'), c.get('mode', ''))} · {c.get('move', '')} · 实录 {c.get('dur_s', '?')} 秒"))
+        cm = CLIP_PHONE if PHONE[0] else CLIP
+        rows.insert(0, ("短片", f"{cm.get(c.get('mode'), c.get('mode', ''))} · {c.get('move', '')} · 实录 {c.get('dur_s', '?')} 秒"))
         rows.insert(1, ("起止", f"{c.get('start', '')} → {c.get('end', '')}"))
-        rows.insert(2, ("曝光", f"{c.get('exposure', '')}；ND {c.get('nd', '')}"))
+        nd = c.get("nd", "")
+        rows.insert(2, ("曝光", c.get("exposure", "") + (f"；ND {nd}" if nd and nd not in ("—", "-") else "")))
     elif m == "burst" and s.get("burst"):
         b = s["burst"]
-        rows.insert(0, ("连拍", f"{b.get('fps', 30)} 张/秒，预拍 {b.get('precap_s', 0.5)} 秒；{b.get('action', '')}"))
+        rows.insert(0, ("连拍", (f"快门键向左滑住连拍；{b.get('action', '')}" if PHONE[0] else
+                               f"{b.get('fps', 30)} 张/秒，预拍 {b.get('precap_s', 0.5)} 秒；{b.get('action', '')}")))
     elif m == "live" and s.get("live"):
         lv = s["live"]
         rows.insert(0, ("实况", f"{lv.get('device', 'iPhone')} {lv.get('lens', '')}；{lv.get('exposure', '')}；{lv.get('action', '')}"))
@@ -359,6 +387,7 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
     meta, shots = SL["meta"], SL["shots"]
     byid = {s["id"]: s for s in shots}
     P = load(plan_dir / "plan.json", {}) or {}
+    PHONE[0] = any(k in (P.get("body") or meta.get("body") or "") for k in PHONE_WORDS)
     R = load(plan_dir / "route.json")
     T = load(plan_dir / "trip.json")
     S = load(plan_dir / "sun.json", {}) or {}
@@ -417,7 +446,7 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
         if s.get("hero"):
             chips.append('<span class="chip c-hero">主图</span>')
         if m == "video":
-            chips.append(f'<span class="chip c-video">短片 {esc(CLIP.get(s.get("clip", {}).get("mode"), ""))}</span>')
+            chips.append(f'<span class="chip c-video">短片 {esc((CLIP_PHONE if PHONE[0] else CLIP).get(s.get("clip", {}).get("mode"), ""))}</span>')
         elif m != "still":
             chips.append(f'<span class="chip c-{m}">{MEDIUM[m]}</span>')
         if s.get("optional"):

@@ -23,7 +23,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
-from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, font, panel, text_block, page_header  # noqa: E402
+from make_cards import W, H, BG, GREEN, INK, MUTED, PANEL, LINE, font, panel, text_block, page_header, is_phone  # noqa: E402
 from i18n import tr  # noqa: E402
 
 CAM = (176, 98, 40)          # 相机轨迹
@@ -121,7 +121,7 @@ def params(shot: dict) -> dict:
             break
     f = float(re.search(r"(\d+)\s*mm", shot.get("lens", "35mm")).group(1))
     mode = c.get("mode", "24p")
-    if mode == "sq120":
+    if mode == "sq120" and not PHONE[0]:
         f *= 1.52
     dur = float(c.get("dur_s", 5))
     hold = 1.0 if mode == "24p" else 0.5
@@ -592,7 +592,7 @@ def draw_timeline(d, x, y, w, P):
         d.line([(tx, y + 26), (tx, y + 32)], fill=MUTED, width=1)
         d.text((tx - 4, y + 33), f"{k}", font=font(12), fill=MUTED)
     slow = {"24p": 1, "sq60": 2.5, "sq120": 5}.get(P["mode"], 1)
-    note = f"实录 {total:g} 秒" + (f"，S&Q 慢放 {slow:g} 倍，成片约 {total * slow:g} 秒" if slow > 1 else "，实时")
+    note = f"实录 {total:g} 秒" + (f"，{'回家' if PHONE[0] else 'S&Q '}慢放 {slow:g} 倍，成片约 {total * slow:g} 秒" if slow > 1 else "，实时")
     d.text((x, y + 52), note, font=font(15), fill=INK)
 
 
@@ -616,7 +616,7 @@ def render_page(shot, meta, outfit, out_path):
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
     title = f"{tr('运镜示意')} · {tr(P['move'])}"
-    sub = f"{tr(shot.get('title', ''))}　{shot.get('lens', '')}　{tr({'24p': '24p 实时', 'sq60': 'S&Q 60→24', 'sq120': 'S&Q 120→24（裁 1.52×）'}.get(P['mode'], P['mode']))}"
+    sub = f"{tr(shot.get('title', ''))}　{shot.get('lens', '')}　{tr(mode_label(P['mode']))}"
     page_header(d, shot["id"], title, sub, badge=tr("短片"), badge_fill=VIDEO, title_size=40)
 
     photos = frame_images(shot["id"])
@@ -642,7 +642,7 @@ def render_page(shot, meta, outfit, out_path):
     labw = max(56, 12 + max(d.textlength(tr(x), font=font(16, True)) for x in ("起幅", "落幅", "画面", "曝光")))   # 标签列按译文加宽
     for lab, val in (("起幅", P["start"]), ("落幅", P["end"]), ("画面", FRAME_NOTE[P["type"]]), ("曝光", shot.get("clip", {}).get("exposure", "")),
                      ("ND", shot.get("clip", {}).get("nd", ""))):
-        if not val:
+        if not val or val in ("—", "-"):
             continue
         d.text((rx, yy), lab, font=font(16, True), fill=GREEN)
         yy = text_block(d, (rx + labw, yy), val, font(16), W - 70 - rx - labw, spacing=3) + 6
@@ -738,7 +738,7 @@ def render_overview(shots, outfit, out_dir, prefix="moves_overview"):
     for sh in shots:
         P = params(sh)
         c = sh.get("clip", {})
-        mode = {"24p": "24p 实时", "sq60": "S&Q 60→24", "sq120": "S&Q 120→24"}.get(P["mode"], P["mode"])
+        mode = mode_label(P["mode"], short=True)
         items.append((f"{sh['id']}  {P['move']}", f"{sh.get('lens', '').split()[0]} · {mode} · 实录 {P['dur']:g} s · {sh.get('title', '')}", P))
     per = 5
     tw, th = 750, 300
@@ -775,6 +775,15 @@ def render_overview(shots, outfit, out_dir, prefix="moves_overview"):
     return made
 
 
+PHONE = [False]   # 机身是手机时：慢动作 120 不裁切，模式写法换成手机的（docs/VIDEO_NOTES.md 第 8 节）
+
+
+def mode_label(mode, short=False):
+    if PHONE[0]:
+        return {"24p": "4K 24 实时", "sq60": "4K 60 → 24p", "sq120": "慢动作 4K 120"}.get(mode, mode)
+    return {"24p": "24p 实时", "sq60": "S&Q 60→24", "sq120": "S&Q 120→24" + ("" if short else "（裁 1.52×）")}.get(mode, mode)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--plan")
@@ -791,6 +800,7 @@ def main():
         FRAME_DIR = plan.resolve().parent.parent / "out" / f"{plan.name}-moves"
     out = Path(a.out or plan / "cards"); out.mkdir(parents=True, exist_ok=True)
     SL = json.loads((plan / "shotlist.json").read_text(encoding="utf-8"))
+    PHONE[0] = is_phone(SL.get("meta", {}).get("body"))
     outfit = {}
     if (plan / "outfit.json").exists():
         outfit = json.loads((plan / "outfit.json").read_text(encoding="utf-8"))
