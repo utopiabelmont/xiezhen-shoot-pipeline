@@ -103,7 +103,7 @@ def page_main(o, pal, meta, out):
     y = panel(d, (rx0, 714, rx1, 850), "避免", f_h)
     text_block(d, (rx0 + 14, y), "、".join(o.get("avoid", [])), f_t, rx1 - rx0 - 28, spacing=3)
     y = panel(d, (rx0, 864, rx1, H - 22), "SNS 与场地观察", f_h)
-    text_block(d, (rx0 + 14, y), o.get("sns_notes", "（spots_social.md 的穿搭栏）"), f_t, rx1 - rx0 - 28, spacing=3)
+    text_block(d, (rx0 + 14, y), o.get("sns_notes") or o.get("sns") or "（spots_social.md 的穿搭栏）", f_t, rx1 - rx0 - 28, spacing=3)
     y = H
     d.text((40, H - 42), "穿搭依据：docs/OUTFIT_GUIDE.md；场地色来自公开照片抽样，现场以实景为准。", font=f_t, fill=MUTED)
     img.save(out / "outfit_01.png", quality=92)

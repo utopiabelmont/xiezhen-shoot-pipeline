@@ -27,5 +27,5 @@ skill 覆盖的流程（1.7.0）：
 | 6b 路线 | `meta.route_stops` + `trip.json` → `pipeline.py route` / `trip`：园内步道最短路与时刻、一日行程页；`pipeline.py renumber` 编号改成游览顺序 | Codex / Claude + 脚本 |
 | 7 prompt | `scene_bible.md` + nuyoah-xiezhen-prompt 系列母版 + 变体，取景段用对原帖构图的文字描述；短片/实况写关键帧，`move_prompts.md` 写起中止三帧 | Codex / Claude |
 | 8–9 出图与检查 | `jobs [--missing]` → `shots`，`jobs --moves` → `shots --moves` → 逐张检查 | 脚本 + codex-imagegen + Codex / Claude |
-| 10 拍摄脚本 | `pipeline.py cards`：行程 → 穿搭 → 路线 → 分镜（每页一张示意图 + SNS 来源栏与二维码，短片卡后接运镜页），`<日期>_<地点>_拍摄脚本.pdf` + `<日期>_<地点>_拍摄核对表.html` | 脚本 |
+| 10 拍摄脚本 | `pipeline.py cards`：行程 → 穿搭 → 路线 → 分镜（每页一张示意图 + SNS 来源栏与二维码 + 站位的谷歌地图步行导航，短片卡后接运镜页），`<日期>_<地点>_拍摄脚本.pdf` + `<日期>_<地点>_拍摄核对表.html` | 脚本 |
 | 11 当天资料 | 时间线、模特页、到场清单、剪辑单 | Codex / Claude |

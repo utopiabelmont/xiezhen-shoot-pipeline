@@ -101,13 +101,13 @@ def wrap_words(draw, text, f, width):
             cand = (cur + " " + w) if cur else w
             if draw.textlength(cand, font=f) <= width or not cur:
                 cur = cand
-                while draw.textlength(cur, font=f) > width and len(cur) > 1:   # 单词本身过长
-                    k = len(cur)
-                    while k > 1 and draw.textlength(cur[:k], font=f) > width:
-                        k -= 1
-                    out.append(cur[:k]); cur = cur[k:]
             else:
                 out.append(cur); cur = w
+            while draw.textlength(cur, font=f) > width and len(cur) > 1:       # 单词本身过长（含换到新行的无空格中文）
+                k = len(cur)
+                while k > 1 and draw.textlength(cur[:k], font=f) > width:
+                    k -= 1
+                out.append(cur[:k]); cur = cur[k:]
         out.append(cur)
     return out
 

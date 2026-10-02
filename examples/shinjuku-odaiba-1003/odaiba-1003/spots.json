@@ -1,0 +1,1110 @@
+{
+ "place": "お台場海浜公園・海の灯まつり",
+ "geocode": "",
+ "lat": 35.63,
+ "lon": 139.7755,
+ "radius_m": 900,
+ "pois": [
+  {
+   "name": "球体展望室",
+   "name_en": "",
+   "cat": "观景点",
+   "lat": 35.6270652,
+   "lon": 139.7745922,
+   "dist_m": 336,
+   "bearing": 194,
+   "osm": "node/11669259008"
+  },
+  {
+   "name": "LOVE sign, Statue of Liberty, and Rainbow Bridge view",
+   "name_en": "LOVE sign, Statue of Liberty, and Rainbow Bridge view",
+   "cat": "观景点",
+   "lat": 35.6274004,
+   "lon": 139.7722442,
+   "dist_m": 412,
+   "bearing": 226,
+   "osm": "node/6281985231"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "观景点",
+   "lat": 35.6284367,
+   "lon": 139.7712015,
+   "dist_m": 426,
+   "bearing": 246,
+   "osm": "node/12596431911"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "观景点",
+   "lat": 35.627714,
+   "lon": 139.7713504,
+   "dist_m": 453,
+   "bearing": 236,
+   "osm": "node/4283577691"
+  },
+  {
+   "name": "夢の大橋",
+   "name_en": "Dream Bridge",
+   "cat": "观景点",
+   "lat": 35.6287177,
+   "lon": 139.78439,
+   "dist_m": 816,
+   "bearing": 100,
+   "osm": "node/13165479601"
+  },
+  {
+   "name": "続日本100名城スタンプ124・品川台場",
+   "name_en": "",
+   "cat": "景点",
+   "lat": 35.6299889,
+   "lon": 139.7754534,
+   "dist_m": 4,
+   "bearing": 254,
+   "osm": "node/11062761596"
+  },
+  {
+   "name": "お台場",
+   "name_en": "Odaiba",
+   "cat": "景点",
+   "lat": 35.6275347,
+   "lon": 139.7714719,
+   "dist_m": 456,
+   "bearing": 233,
+   "osm": "node/5337040199"
+  },
+  {
+   "name": "レインボーブリッジ遊歩道 台場側",
+   "name_en": "",
+   "cat": "景点",
+   "lat": 35.6351556,
+   "lon": 139.7755265,
+   "dist_m": 573,
+   "bearing": 0,
+   "osm": "node/14110791701"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "公共艺术",
+   "lat": 35.6292609,
+   "lon": 139.7760452,
+   "dist_m": 96,
+   "bearing": 149,
+   "osm": "node/10857669606"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "公共艺术",
+   "lat": 35.6292535,
+   "lon": 139.7760381,
+   "dist_m": 96,
+   "bearing": 150,
+   "osm": "node/10857669607"
+  },
+  {
+   "name": "l♡you",
+   "name_en": "",
+   "cat": "公共艺术",
+   "lat": 35.6280449,
+   "lon": 139.7733417,
+   "dist_m": 292,
+   "bearing": 222,
+   "osm": "node/14128976630"
+  },
+  {
+   "name": "FCGビル",
+   "name_en": "FCG Building",
+   "cat": "公共艺术",
+   "lat": 35.6267596,
+   "lon": 139.774251,
+   "dist_m": 378,
+   "bearing": 197,
+   "osm": "way/287770734"
+  },
+  {
+   "name": "LOVE Sign",
+   "name_en": "LOVE Sign",
+   "cat": "公共艺术",
+   "lat": 35.6274357,
+   "lon": 139.7722071,
+   "dist_m": 412,
+   "bearing": 226,
+   "osm": "node/12596385882"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "公共艺术",
+   "lat": 35.6328697,
+   "lon": 139.7723123,
+   "dist_m": 430,
+   "bearing": 318,
+   "osm": "node/8520145039"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "公共艺术",
+   "lat": 35.6265917,
+   "lon": 139.7732253,
+   "dist_m": 431,
+   "bearing": 208,
+   "osm": "node/12900472088"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "公共艺术",
+   "lat": 35.6328948,
+   "lon": 139.7722144,
+   "dist_m": 438,
+   "bearing": 317,
+   "osm": "node/8520145040"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "公共艺术",
+   "lat": 35.6261841,
+   "lon": 139.7727662,
+   "dist_m": 491,
+   "bearing": 210,
+   "osm": "node/5747489888"
+  },
+  {
+   "name": "TOKYOワードマークモニュメント",
+   "name_en": "TOKYO monument",
+   "cat": "公共艺术",
+   "lat": 35.6265969,
+   "lon": 139.7800051,
+   "dist_m": 556,
+   "bearing": 133,
+   "osm": "node/3673808235"
+  },
+  {
+   "name": "gallery 21 - grand Nikki Tokyo daiba",
+   "name_en": "gallery 21 - grand Nikki Tokyo daiba",
+   "cat": "公共艺术",
+   "lat": 35.6254773,
+   "lon": 139.7721391,
+   "dist_m": 588,
+   "bearing": 211,
+   "osm": "node/4849389032"
+  },
+  {
+   "name": "RX-0 ユニコーンガンダム Version Tokyo Water Front City",
+   "name_en": "The Life-Sized Unicorn Gundam Statue Version Tokyo Water Front City",
+   "cat": "公共艺术",
+   "lat": 35.6244371,
+   "lon": 139.7754897,
+   "dist_m": 619,
+   "bearing": 180,
+   "osm": "way/328166155"
+  },
+  {
+   "name": "自由の炎",
+   "name_en": "Flame of Freedom",
+   "cat": "公共艺术",
+   "lat": 35.6241491,
+   "lon": 139.7739592,
+   "dist_m": 665,
+   "bearing": 192,
+   "osm": "node/2534517787"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "庭园",
+   "lat": 35.6347335,
+   "lon": 139.7761903,
+   "dist_m": 530,
+   "bearing": 7,
+   "osm": "way/198113758"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "庭园",
+   "lat": 35.6347347,
+   "lon": 139.7764649,
+   "dist_m": 534,
+   "bearing": 9,
+   "osm": "way/198113756"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "庭园",
+   "lat": 35.6346714,
+   "lon": 139.7770082,
+   "dist_m": 537,
+   "bearing": 15,
+   "osm": "way/198113766"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "庭园",
+   "lat": 35.6348191,
+   "lon": 139.7760652,
+   "dist_m": 538,
+   "bearing": 5,
+   "osm": "way/198113769"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "庭园",
+   "lat": 35.6352994,
+   "lon": 139.7762855,
+   "dist_m": 594,
+   "bearing": 7,
+   "osm": "way/198113763"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "庭园",
+   "lat": 35.6273665,
+   "lon": 139.7818878,
+   "dist_m": 647,
+   "bearing": 117,
+   "osm": "way/507953322"
+  },
+  {
+   "name": "お台場レインボー公園",
+   "name_en": "Odaiba Rainbow Park",
+   "cat": "公园",
+   "lat": 35.6331072,
+   "lon": 139.7780027,
+   "dist_m": 413,
+   "bearing": 33,
+   "osm": "way/198113752"
+  },
+  {
+   "name": "有明北緑道公園",
+   "name_en": "Ariake Kita Greenway",
+   "cat": "公园",
+   "lat": 35.6351109,
+   "lon": 139.7813883,
+   "dist_m": 779,
+   "bearing": 43,
+   "osm": "way/1117832731"
+  },
+  {
+   "name": "有明ミッドクロス 四季の広場",
+   "name_en": "",
+   "cat": "公园",
+   "lat": 35.634073,
+   "lon": 139.7829228,
+   "dist_m": 809,
+   "bearing": 56,
+   "osm": "way/1112420051"
+  },
+  {
+   "name": "有明ミッドクロス 交流広場",
+   "name_en": "",
+   "cat": "公园",
+   "lat": 35.6344163,
+   "lon": 139.7834423,
+   "dist_m": 870,
+   "bearing": 56,
+   "osm": "way/1112420472"
+  },
+  {
+   "name": "マダム・タッソー東京",
+   "name_en": "Madame Tussauds Wax Museum",
+   "cat": "美术馆/博物馆",
+   "lat": 35.6291304,
+   "lon": 139.7760685,
+   "dist_m": 109,
+   "bearing": 152,
+   "osm": "node/4666511790"
+  },
+  {
+   "name": "東京トリックアート迷宮館",
+   "name_en": "Tokyo Trick Art Museum",
+   "cat": "美术馆/博物馆",
+   "lat": 35.6293861,
+   "lon": 139.7766516,
+   "dist_m": 124,
+   "bearing": 123,
+   "osm": "node/4551139394"
+  },
+  {
+   "name": "Kawasaki Robostage",
+   "name_en": "",
+   "cat": "美术馆/博物馆",
+   "lat": 35.6278413,
+   "lon": 139.7761001,
+   "dist_m": 246,
+   "bearing": 167,
+   "osm": "node/13282997155"
+  },
+  {
+   "name": "うんこミュージアム TOKYO",
+   "name_en": "Unko Museum Tokyo",
+   "cat": "美术馆/博物馆",
+   "lat": 35.6254933,
+   "lon": 139.776392,
+   "dist_m": 508,
+   "bearing": 171,
+   "osm": "node/7021226324"
+  },
+  {
+   "name": "うんこミュージアム TOKYO",
+   "name_en": "",
+   "cat": "美术馆/博物馆",
+   "lat": 35.6248999,
+   "lon": 139.7751648,
+   "dist_m": 568,
+   "bearing": 183,
+   "osm": "node/14128976638"
+  },
+  {
+   "name": "水の科学館",
+   "name_en": "Water Science Museum",
+   "cat": "美术馆/博物馆",
+   "lat": 35.6308222,
+   "lon": 139.7855108,
+   "dist_m": 909,
+   "bearing": 84,
+   "osm": "way/149126754"
+  },
+  {
+   "name": "ウエストプロムナード",
+   "name_en": "",
+   "cat": "桥",
+   "lat": 35.6266596,
+   "lon": 139.7723242,
+   "dist_m": 469,
+   "bearing": 218,
+   "osm": "way/164410014"
+  },
+  {
+   "name": "出会い橋",
+   "name_en": "Deaibashi bridge",
+   "cat": "桥",
+   "lat": 35.6250184,
+   "lon": 139.7775576,
+   "dist_m": 584,
+   "bearing": 161,
+   "osm": "way/233577441"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "桥",
+   "lat": 35.6236628,
+   "lon": 139.7713211,
+   "dist_m": 800,
+   "bearing": 208,
+   "osm": "way/1046141524"
+  },
+  {
+   "name": "夢の大橋",
+   "name_en": "Odaiba Dream Bridge",
+   "cat": "桥",
+   "lat": 35.6286839,
+   "lon": 139.7843414,
+   "dist_m": 812,
+   "bearing": 100,
+   "osm": "way/171300279"
+  },
+  {
+   "name": "あけみ橋",
+   "name_en": "",
+   "cat": "桥",
+   "lat": 35.6272,
+   "lon": 139.78584,
+   "dist_m": 985,
+   "bearing": 108,
+   "osm": "way/1030683399"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "桥",
+   "lat": 35.6363364,
+   "lon": 139.7678462,
+   "dist_m": 987,
+   "bearing": 316,
+   "osm": "way/508040808"
+  },
+  {
+   "name": "東京恋テラス",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.6294829,
+   "lon": 139.775947,
+   "dist_m": 70,
+   "bearing": 145,
+   "osm": "node/9275680701"
+  },
+  {
+   "name": "Maru no Ki",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.62857,
+   "lon": 139.775736,
+   "dist_m": 160,
+   "bearing": 172,
+   "osm": "node/2031661314"
+  },
+  {
+   "name": "Crux Kafeo",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.6287388,
+   "lon": 139.7776851,
+   "dist_m": 242,
+   "bearing": 125,
+   "osm": "node/12976321909"
+  },
+  {
+   "name": "スターバックス",
+   "name_en": "Starbucks",
+   "cat": "咖啡馆",
+   "lat": 35.627809,
+   "lon": 139.773002,
+   "dist_m": 332,
+   "bearing": 223,
+   "osm": "node/1856747833"
+  },
+  {
+   "name": "サンマルクカフェ",
+   "name_en": "Saint Marc Cafe",
+   "cat": "咖啡馆",
+   "lat": 35.6275655,
+   "lon": 139.7731339,
+   "dist_m": 345,
+   "bearing": 218,
+   "osm": "node/3661737140"
+  },
+  {
+   "name": "タリーズコーヒー",
+   "name_en": "Tully's Coffee",
+   "cat": "咖啡馆",
+   "lat": 35.6268007,
+   "lon": 139.7742086,
+   "dist_m": 374,
+   "bearing": 198,
+   "osm": "node/7707342082"
+  },
+  {
+   "name": "タリーズコーヒー 東京テレポート駅店",
+   "name_en": "Tully's Coffee",
+   "cat": "咖啡馆",
+   "lat": 35.6275446,
+   "lon": 139.778768,
+   "dist_m": 402,
+   "bearing": 133,
+   "osm": "node/14110780202"
+  },
+  {
+   "name": "ホノルルコーヒー",
+   "name_en": "Honolulu Coffee",
+   "cat": "咖啡馆",
+   "lat": 35.6258983,
+   "lon": 139.776289,
+   "dist_m": 462,
+   "bearing": 171,
+   "osm": "node/1948955262"
+  },
+  {
+   "name": "スターバックス",
+   "name_en": "Starbucks",
+   "cat": "咖啡馆",
+   "lat": 35.6258108,
+   "lon": 139.7761566,
+   "dist_m": 470,
+   "bearing": 173,
+   "osm": "node/3612269942"
+  },
+  {
+   "name": "Creperie Kenny's",
+   "name_en": "",
+   "cat": "咖啡馆",
+   "lat": 35.624887,
+   "lon": 139.775286,
+   "dist_m": 569,
+   "bearing": 182,
+   "osm": "node/14057540648"
+  },
+  {
+   "name": "タリーズコーヒー ダイバーシティ東京プラザ店",
+   "name_en": "Tully's Coffee",
+   "cat": "咖啡馆",
+   "lat": 35.6248383,
+   "lon": 139.7756512,
+   "dist_m": 574,
+   "bearing": 179,
+   "osm": "node/2546423041"
+  },
+  {
+   "name": "Gundam Café",
+   "name_en": "The Gundam Base Tokyo Annex",
+   "cat": "咖啡馆",
+   "lat": 35.6247023,
+   "lon": 139.7756258,
+   "dist_m": 589,
+   "bearing": 179,
+   "osm": "node/3187970962"
+  },
+  {
+   "name": "第三台場",
+   "name_en": "Daiba 3",
+   "cat": "历史建筑",
+   "lat": 35.6335524,
+   "lon": 139.7720303,
+   "dist_m": 504,
+   "bearing": 322,
+   "osm": "node/2805871803"
+  },
+  {
+   "name": "関東大震災・東京大空襲 犠牲者慰霊碑",
+   "name_en": "",
+   "cat": "历史建筑",
+   "lat": 35.63477,
+   "lon": 139.77438,
+   "dist_m": 540,
+   "bearing": 349,
+   "osm": "node/8462979266"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "历史建筑",
+   "lat": 35.6343238,
+   "lon": 139.7714661,
+   "dist_m": 603,
+   "bearing": 323,
+   "osm": "node/8515979632"
+  },
+  {
+   "name": "夢の大橋　平成7年度土木学会　田中賞受賞記念",
+   "name_en": "",
+   "cat": "历史建筑",
+   "lat": 35.6275612,
+   "lon": 139.7822305,
+   "dist_m": 666,
+   "bearing": 114,
+   "osm": "node/6089901180"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "历史建筑",
+   "lat": 35.6251329,
+   "lon": 139.7678182,
+   "dist_m": 880,
+   "bearing": 232,
+   "osm": "node/2082979670"
+  },
+  {
+   "name": "第六台場",
+   "name_en": "Daiba 6",
+   "cat": "历史建筑",
+   "lat": 35.6336591,
+   "lon": 139.7665537,
+   "dist_m": 905,
+   "bearing": 297,
+   "osm": "way/130974582"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6299331,
+   "lon": 139.7755625,
+   "dist_m": 9,
+   "bearing": 143,
+   "osm": "node/6633683399"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6298197,
+   "lon": 139.7755732,
+   "dist_m": 21,
+   "bearing": 162,
+   "osm": "node/6633683400"
+  },
+  {
+   "name": "台場一丁目商店街",
+   "name_en": "Daiba 1-chōme Shōtengai",
+   "cat": "theme_park",
+   "lat": 35.6292846,
+   "lon": 139.7762176,
+   "dist_m": 103,
+   "bearing": 141,
+   "osm": "node/13473346996"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6297179,
+   "lon": 139.7742544,
+   "dist_m": 117,
+   "bearing": 254,
+   "osm": "node/6616871494"
+  },
+  {
+   "name": "レゴランド・ディスカバリー・センター",
+   "name_en": "Legoland Discovery Center",
+   "cat": "theme_park",
+   "lat": 35.6288171,
+   "lon": 139.775669,
+   "dist_m": 132,
+   "bearing": 173,
+   "osm": "node/5158749023"
+  },
+  {
+   "name": "ジョイポリス",
+   "name_en": "Joypolis",
+   "cat": "theme_park",
+   "lat": 35.6286805,
+   "lon": 139.7753412,
+   "dist_m": 147,
+   "bearing": 186,
+   "osm": "way/328162162"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6294835,
+   "lon": 139.7774192,
+   "dist_m": 183,
+   "bearing": 108,
+   "osm": "node/1784620091"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6293804,
+   "lon": 139.777417,
+   "dist_m": 186,
+   "bearing": 112,
+   "osm": "node/1784620090"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6262958,
+   "lon": 139.7762454,
+   "dist_m": 417,
+   "bearing": 171,
+   "osm": "node/2512519095"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6272659,
+   "lon": 139.7787109,
+   "dist_m": 420,
+   "bearing": 136,
+   "osm": "node/10287512120"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6262269,
+   "lon": 139.7763652,
+   "dist_m": 427,
+   "bearing": 169,
+   "osm": "node/5912818395"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.626782,
+   "lon": 139.7722694,
+   "dist_m": 462,
+   "bearing": 219,
+   "osm": "node/5747489889"
+  },
+  {
+   "name": "台場公園案内",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6339052,
+   "lon": 139.7729695,
+   "dist_m": 491,
+   "bearing": 332,
+   "osm": "node/8515979631"
+  },
+  {
+   "name": "～国指定史跡～ 台場公園（第三台場）",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6343641,
+   "lon": 139.7737178,
+   "dist_m": 511,
+   "bearing": 342,
+   "osm": "node/8515979624"
+  },
+  {
+   "name": "The Life-Sized Unicorn Gundam Statue",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6243811,
+   "lon": 139.7756001,
+   "dist_m": 625,
+   "bearing": 179,
+   "osm": "node/14128976635"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6242247,
+   "lon": 139.7758062,
+   "dist_m": 643,
+   "bearing": 178,
+   "osm": "node/5747489886"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "chalet",
+   "lat": 35.6250341,
+   "lon": 139.771819,
+   "dist_m": 645,
+   "bearing": 211,
+   "osm": "node/10859138312"
+  },
+  {
+   "name": "(无名)",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6242655,
+   "lon": 139.7742897,
+   "dist_m": 647,
+   "bearing": 190,
+   "osm": "node/5747489887"
+  },
+  {
+   "name": "潮風公園",
+   "name_en": "",
+   "cat": "information",
+   "lat": 35.6258647,
+   "lon": 139.769314,
+   "dist_m": 724,
+   "bearing": 231,
+   "osm": "node/6817231205"
+  }
+ ],
+ "commons_photos": [
+  {
+   "title": "海浜公園 - panoramio.jpg",
+   "dist_m": 1,
+   "lat": 35.630012,
+   "lon": 139.775501,
+   "bearing": 4,
+   "url": "https://commons.wikimedia.org/wiki/File%3A%E6%B5%B7%E6%B5%9C%E5%85%AC%E5%9C%92%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/%E6%B5%B7%E6%B5%9C%E5%85%AC%E5%9C%92%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "Japan 142 - Flickr - mat walker.jpg",
+   "dist_m": 4,
+   "lat": 35.63003,
+   "lon": 139.77552,
+   "bearing": 28,
+   "url": "https://commons.wikimedia.org/wiki/File%3AJapan%20142%20-%20Flickr%20-%20mat%20walker.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Japan%20142%20-%20Flickr%20-%20mat%20walker.jpg&width=800"
+  },
+  {
+   "title": "ボード格納庫 - panoramio.jpg",
+   "dist_m": 7,
+   "lat": 35.629956,
+   "lon": 139.775449,
+   "bearing": 223,
+   "url": "https://commons.wikimedia.org/wiki/File%3A%E3%83%9C%E3%83%BC%E3%83%89%E6%A0%BC%E7%B4%8D%E5%BA%AB%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/%E3%83%9C%E3%83%BC%E3%83%89%E6%A0%BC%E7%B4%8D%E5%BA%AB%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "デックス東京ビーチ - panoramio.jpg",
+   "dist_m": 7,
+   "lat": 35.629936,
+   "lon": 139.775523,
+   "bearing": 164,
+   "url": "https://commons.wikimedia.org/wiki/File%3A%E3%83%87%E3%83%83%E3%82%AF%E3%82%B9%E6%9D%B1%E4%BA%AC%E3%83%93%E3%83%BC%E3%83%81%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/%E3%83%87%E3%83%83%E3%82%AF%E3%82%B9%E6%9D%B1%E4%BA%AC%E3%83%93%E3%83%BC%E3%83%81%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "レインボーブリッジ - panoramio (3).jpg",
+   "dist_m": 10,
+   "lat": 35.63005,
+   "lon": 139.775405,
+   "bearing": 303,
+   "url": "https://commons.wikimedia.org/wiki/File%3A%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%96%E3%83%AA%E3%83%83%E3%82%B8%20-%20panoramio%20%283%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%96%E3%83%AA%E3%83%83%E3%82%B8%20-%20panoramio%20%283%29.jpg&width=800"
+  },
+  {
+   "title": "Odaiba - panoramio - Boonchai C.jpg",
+   "dist_m": 42,
+   "lat": 35.629954,
+   "lon": 139.775963,
+   "bearing": 97,
+   "url": "https://commons.wikimedia.org/wiki/File%3AOdaiba%20-%20panoramio%20-%20Boonchai%20C.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Odaiba%20-%20panoramio%20-%20Boonchai%20C.jpg&width=800"
+  },
+  {
+   "title": "Winter Beach - panoramio.jpg",
+   "dist_m": 45,
+   "lat": 35.630407,
+   "lon": 139.775523,
+   "bearing": 3,
+   "url": "https://commons.wikimedia.org/wiki/File%3AWinter%20Beach%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Winter%20Beach%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "Rainbow bridge, seen from the beach at Odaiba (6155473457).jpg",
+   "dist_m": 52,
+   "lat": 35.630285,
+   "lon": 139.775962,
+   "bearing": 53,
+   "url": "https://commons.wikimedia.org/wiki/File%3ARainbow%20bridge%2C%20seen%20from%20the%20beach%20at%20Odaiba%20%286155473457%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Rainbow%20bridge%2C%20seen%20from%20the%20beach%20at%20Odaiba%20%286155473457%29.jpg&width=800"
+  },
+  {
+   "title": "Lantern festival in Odaiba on Marine Day.jpg",
+   "dist_m": 55,
+   "lat": 35.629722222222,
+   "lon": 139.775,
+   "bearing": 236,
+   "url": "https://commons.wikimedia.org/wiki/File%3ALantern%20festival%20in%20Odaiba%20on%20Marine%20Day.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Lantern%20festival%20in%20Odaiba%20on%20Marine%20Day.jpg&width=800"
+  },
+  {
+   "title": "お台場の夜 - panoramio.jpg",
+   "dist_m": 63,
+   "lat": 35.629581,
+   "lon": 139.77503,
+   "bearing": 222,
+   "url": "https://commons.wikimedia.org/wiki/File%3A%E3%81%8A%E5%8F%B0%E5%A0%B4%E3%81%AE%E5%A4%9C%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/%E3%81%8A%E5%8F%B0%E5%A0%B4%E3%81%AE%E5%A4%9C%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "Tokyo Bay and Rainbow Bridge from Odaiba.jpg",
+   "dist_m": 64,
+   "lat": 35.629459,
+   "lon": 139.775734,
+   "bearing": 161,
+   "url": "https://commons.wikimedia.org/wiki/File%3ATokyo%20Bay%20and%20Rainbow%20Bridge%20from%20Odaiba.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Tokyo%20Bay%20and%20Rainbow%20Bridge%20from%20Odaiba.jpg&width=800"
+  },
+  {
+   "title": "Rainbow Bridge, Tokyo, South view from Odaiba 20190419 1.jpg",
+   "dist_m": 65,
+   "lat": 35.630580431453,
+   "lon": 139.77540871964,
+   "bearing": 353,
+   "url": "https://commons.wikimedia.org/wiki/File%3ARainbow%20Bridge%2C%20Tokyo%2C%20South%20view%20from%20Odaiba%2020190419%201.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Rainbow%20Bridge%2C%20Tokyo%2C%20South%20view%20from%20Odaiba%2020190419%201.jpg&width=800"
+  },
+  {
+   "title": "Japan 142 - Flickr - mat walker.jpg",
+   "dist_m": 72,
+   "lat": 35.62962,
+   "lon": 139.77614,
+   "bearing": 126,
+   "url": "https://commons.wikimedia.org/wiki/File%3AJapan%20142%20-%20Flickr%20-%20mat%20walker.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Japan%20142%20-%20Flickr%20-%20mat%20walker.jpg&width=800"
+  },
+  {
+   "title": "Daiba, Minato -09.jpg",
+   "dist_m": 74,
+   "lat": 35.629335,
+   "lon": 139.775563,
+   "bearing": 176,
+   "url": "https://commons.wikimedia.org/wiki/File%3ADaiba%2C%20Minato%20-09.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Daiba%2C%20Minato%20-09.jpg&width=800"
+  },
+  {
+   "title": "Daiba, Minato -06.jpg",
+   "dist_m": 74,
+   "lat": 35.629404,
+   "lon": 139.775877,
+   "bearing": 153,
+   "url": "https://commons.wikimedia.org/wiki/File%3ADaiba%2C%20Minato%20-06.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Daiba%2C%20Minato%20-06.jpg&width=800"
+  },
+  {
+   "title": "Daiba.jpg",
+   "dist_m": 78,
+   "lat": 35.6293057,
+   "lon": 139.77541229972,
+   "bearing": 186,
+   "url": "https://commons.wikimedia.org/wiki/File%3ADaiba.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Daiba.jpg&width=800"
+  },
+  {
+   "title": "1 Chome-4 Daiba, Minato-ku, Tōkyō-to 135-0091, Japan - panoramio (5).jpg",
+   "dist_m": 82,
+   "lat": 35.6305,
+   "lon": 139.776166667,
+   "bearing": 47,
+   "url": "https://commons.wikimedia.org/wiki/File%3A1%20Chome-4%20Daiba%2C%20Minato-ku%2C%20T%C5%8Dky%C5%8D-to%20135-0091%2C%20Japan%20-%20panoramio%20%285%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/1%20Chome-4%20Daiba%2C%20Minato-ku%2C%20T%C5%8Dky%C5%8D-to%20135-0091%2C%20Japan%20-%20panoramio%20%285%29.jpg&width=800"
+  },
+  {
+   "title": "レインボーブリッジ - panoramio (67).jpg",
+   "dist_m": 91,
+   "lat": 35.629904,
+   "lon": 139.774496,
+   "bearing": 263,
+   "url": "https://commons.wikimedia.org/wiki/File%3A%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%96%E3%83%AA%E3%83%83%E3%82%B8%20-%20panoramio%20%2867%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%96%E3%83%AA%E3%83%83%E3%82%B8%20-%20panoramio%20%2867%29.jpg&width=800"
+  },
+  {
+   "title": "Kadomatsu in Tokyo area - Jan 2020 various 01 16 00 281000.jpeg",
+   "dist_m": 98,
+   "lat": 35.629117,
+   "lon": 139.775436,
+   "bearing": 183,
+   "url": "https://commons.wikimedia.org/wiki/File%3AKadomatsu%20in%20Tokyo%20area%20-%20Jan%202020%20various%2001%2016%2000%20281000.jpeg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Kadomatsu%20in%20Tokyo%20area%20-%20Jan%202020%20various%2001%2016%2000%20281000.jpeg&width=800"
+  },
+  {
+   "title": "Laika ac Odaiba Statue of Liberty (7641171238).jpg",
+   "dist_m": 99,
+   "lat": 35.629116,
+   "lon": 139.775619,
+   "bearing": 174,
+   "url": "https://commons.wikimedia.org/wiki/File%3ALaika%20ac%20Odaiba%20Statue%20of%20Liberty%20%287641171238%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Laika%20ac%20Odaiba%20Statue%20of%20Liberty%20%287641171238%29.jpg&width=800"
+  },
+  {
+   "title": "Laika ac Himiko and Rainbow Bridge (7641172134).jpg",
+   "dist_m": 99,
+   "lat": 35.629116,
+   "lon": 139.775619,
+   "bearing": 174,
+   "url": "https://commons.wikimedia.org/wiki/File%3ALaika%20ac%20Himiko%20and%20Rainbow%20Bridge%20%287641172134%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Laika%20ac%20Himiko%20and%20Rainbow%20Bridge%20%287641172134%29.jpg&width=800"
+  },
+  {
+   "title": "海浜公園 - panoramio - hasano jp.jpg",
+   "dist_m": 101,
+   "lat": 35.630452,
+   "lon": 139.776468,
+   "bearing": 60,
+   "url": "https://commons.wikimedia.org/wiki/File%3A%E6%B5%B7%E6%B5%9C%E5%85%AC%E5%9C%92%20-%20panoramio%20-%20hasano%20jp.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/%E6%B5%B7%E6%B5%9C%E5%85%AC%E5%9C%92%20-%20panoramio%20-%20hasano%20jp.jpg&width=800"
+  },
+  {
+   "title": "Fukubukuro for sake in Odaiba Jan 07 2020 02-15PM.jpeg",
+   "dist_m": 102,
+   "lat": 35.629081,
+   "lon": 139.775483,
+   "bearing": 181,
+   "url": "https://commons.wikimedia.org/wiki/File%3AFukubukuro%20for%20sake%20in%20Odaiba%20Jan%2007%202020%2002-15PM.jpeg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Fukubukuro%20for%20sake%20in%20Odaiba%20Jan%2007%202020%2002-15PM.jpeg&width=800"
+  },
+  {
+   "title": "Evening of Tokyo Odaiba - panoramio.jpg",
+   "dist_m": 106,
+   "lat": 35.629256,
+   "lon": 139.774761,
+   "bearing": 219,
+   "url": "https://commons.wikimedia.org/wiki/File%3AEvening%20of%20Tokyo%20Odaiba%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Evening%20of%20Tokyo%20Odaiba%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "Decks Odaiba, Minato, Japan (Unsplash).jpg",
+   "dist_m": 111,
+   "lat": 35.6290051,
+   "lon": 139.7754403,
+   "bearing": 183,
+   "url": "https://commons.wikimedia.org/wiki/File%3ADecks%20Odaiba%2C%20Minato%2C%20Japan%20%28Unsplash%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Decks%20Odaiba%2C%20Minato%2C%20Japan%20%28Unsplash%29.jpg&width=800"
+  },
+  {
+   "title": "Liberate Hong Kong on a Japanese emma in Odaiba Jan 07 2020 02-31PM.jpeg",
+   "dist_m": 111,
+   "lat": 35.629222,
+   "lon": 139.776275,
+   "bearing": 141,
+   "url": "https://commons.wikimedia.org/wiki/File%3ALiberate%20Hong%20Kong%20on%20a%20Japanese%20emma%20in%20Odaiba%20Jan%2007%202020%2002-31PM.jpeg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Liberate%20Hong%20Kong%20on%20a%20Japanese%20emma%20in%20Odaiba%20Jan%2007%202020%2002-31PM.jpeg&width=800"
+  },
+  {
+   "title": "Rainbow bridge from Decks beach - panoramio.jpg",
+   "dist_m": 114,
+   "lat": 35.6289771,
+   "lon": 139.7754049,
+   "bearing": 184,
+   "url": "https://commons.wikimedia.org/wiki/File%3ARainbow%20bridge%20from%20Decks%20beach%20-%20panoramio.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Rainbow%20bridge%20from%20Decks%20beach%20-%20panoramio.jpg&width=800"
+  },
+  {
+   "title": "Kadomatsu in Tokyo area - Jan 2020 various 01 15 45 947000.jpeg",
+   "dist_m": 115,
+   "lat": 35.628986,
+   "lon": 139.775756,
+   "bearing": 168,
+   "url": "https://commons.wikimedia.org/wiki/File%3AKadomatsu%20in%20Tokyo%20area%20-%20Jan%202020%20various%2001%2015%2045%20947000.jpeg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Kadomatsu%20in%20Tokyo%20area%20-%20Jan%202020%20various%2001%2015%2045%20947000.jpeg&width=800"
+  },
+  {
+   "title": "Legoland Tokyo (29651834592).jpg",
+   "dist_m": 115,
+   "lat": 35.629025,
+   "lon": 139.775938,
+   "bearing": 160,
+   "url": "https://commons.wikimedia.org/wiki/File%3ALegoland%20Tokyo%20%2829651834592%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Legoland%20Tokyo%20%2829651834592%29.jpg&width=800"
+  },
+  {
+   "title": "Legoland Tokyo (29651829572).jpg",
+   "dist_m": 118,
+   "lat": 35.628983,
+   "lon": 139.775877,
+   "bearing": 163,
+   "url": "https://commons.wikimedia.org/wiki/File%3ALegoland%20Tokyo%20%2829651829572%29.jpg",
+   "thumb": "https://commons.wikimedia.org/w/index.php?title=Special:FilePath/Legoland%20Tokyo%20%2829651829572%29.jpg&width=800"
+  }
+ ],
+ "research_queries": {
+  "日文": [
+   "お台場海浜公園・海の灯まつり 撮影スポット",
+   "お台場海浜公園・海の灯まつり 写真映え",
+   "お台場海浜公園・海の灯まつり 見どころ 庭園",
+   "お台場海浜公園・海の灯まつり 紅葉 見頃 OR ススキ 見頃",
+   "お台場海浜公園・海の灯まつり ポートレート 撮影 許可"
+  ],
+  "中文": [
+   "お台場海浜公園・海の灯まつり 拍照 机位",
+   "お台場海浜公園・海の灯まつり 出片 攻略",
+   "お台場海浜公園・海の灯まつり 人像 写真 小红书"
+  ],
+  "英文": [
+   "お台場海浜公園・海の灯まつり photo spots",
+   "お台場海浜公園・海の灯まつり best time to visit photography",
+   "お台場海浜公園・海の灯まつり instagram spots"
+  ],
+  "官方与规则": [
+   "お台場海浜公園・海の灯まつり 公式サイト（見どころ／庭園／撮影に関する注意）",
+   "お台場海浜公園・海の灯まつり 三脚 禁止 OR 撮影 禁止"
+  ],
+  "地图": [
+   "https://www.google.com/maps/search/?api=1&query=35.63,139.7755",
+   "https://www.openstreetmap.org/#map=17/35.63/139.7755"
+  ]
+ },
+ "generated": "2026-10-02T23:00:50",
+ "fixture": false
+}

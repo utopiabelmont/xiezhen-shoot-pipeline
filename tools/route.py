@@ -14,6 +14,9 @@ route.py　园内游览路线：把分镜按停留点顺序串起来，沿底图
   plans/<plan>/route.md    同上，给人读
   cards/route_01.png       底图上画路线与编号站点 + 右侧时间表（1600×1067，与小抄同版式）
 停留时间按介质：still 8 分钟、burst 4、video 4、live 1（每站再加 2 分钟机动）；步行速度默认 1.0 m/s，雨天 --speed 0.85。
+  meta.route_basemap 指定路线页用哪张底图（分镜分在 main / west 等几张底图上时，另做一张覆盖全程的总览底图）。
+  meta.route_timing = "shots" 时改用分镜自己的 time 窗口：每站停留 = 本站最后一条结束 − 第一条开始，离开时刻不早于最后一条结束；
+  停留点可写 dwell_min 单独指定；meta.route_start 是第一站的到达时刻（出站后还要步行时用，缺省用 meta.arrive）。
 分镜的 subject_latlon 会吸附到最近的步道；两站之间在步道图上找最短路，找不到就画直线并标「概略」。
 """
 from __future__ import annotations
@@ -156,6 +159,16 @@ def parse_hhmm(s):
     return int(m.group(1)) * 60 + int(m.group(2)) if m else 13 * 60
 
 
+def shot_window(s):
+    """「14:08–14:25」→ (848, 865)；只有一个时刻时返回 None。"""
+    import re
+    m = re.findall(r"(\d{1,2}):(\d{2})", s or "")
+    if len(m) < 2:
+        return None
+    (h1, m1), (h2, m2) = m[0], m[1]
+    return int(h1) * 60 + int(m1), int(h2) * 60 + int(m2)
+
+
 def auto_stops(shots):
     """没有 route_stops 时：按 time 起点排序，同一 spot 合并成一站。"""
     order = sorted(shots, key=lambda s: parse_hhmm(s.get("time", "")))
@@ -173,11 +186,12 @@ def main():
     ap.add_argument("--plan", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--speed", type=float, default=1.0, help="步行 m/s")
-    ap.add_argument("--basemap", default="main")
+    ap.add_argument("--basemap", default=None, help="缺省用 meta.route_basemap，再缺省 main")
     a = ap.parse_args()
     plan = Path(a.plan); out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     data = json.loads((plan / "shotlist.json").read_text(encoding="utf-8"))
     meta, shots = data["meta"], {s["id"]: s for s in data["shots"]}
+    a.basemap = a.basemap or meta.get("route_basemap", "main")     # 分镜跨两张底图时，路线页用一张覆盖全程的总览底图
     bm = plan / "basemaps"
     geo = json.loads((bm / f"{a.basemap}_geometry.json").read_text(encoding="utf-8"))
     bmeta = json.loads((bm / f"{a.basemap}_meta.json").read_text(encoding="utf-8"))
@@ -187,7 +201,8 @@ def main():
     stops = meta.get("route_stops") or auto_stops([s for s in shots.values() if s.get("basemap", "main") == a.basemap and not s.get("optional")])
     G = Graph(polylines_from_geometry(geo))
     # 每站取第一条分镜的 subject_latlon 作站点位置
-    t = parse_hhmm(meta.get("arrive", "13:00"))
+    t = parse_hhmm(meta.get("route_start") or meta.get("arrive", "13:00"))
+    by_shots = meta.get("route_timing") == "shots"
     rows = []; polylines = []; total_walk = 0.0; prev_node = None; prev_pt = None; prev_snap = 0.0
     for k, st in enumerate(stops):
         ids = [i for i in st["shots"] if i in shots]
@@ -211,13 +226,21 @@ def main():
         arrive = t + walk_min
         dwell = sum(DWELL.get(shots[i].get("medium", "still"), 8) for i in ids) + STOP_EXTRA
         leave = arrive + dwell
+        win = [shot_window(shots[i].get("time", "")) for i in ids]
+        win = [w for w in win if w]
+        if st.get("dwell_min") is not None:
+            dwell = st["dwell_min"]; leave = arrive + dwell
+        elif by_shots and win:
+            dwell = max(e for _, e in win) - min(b for b, _ in win)
+            leave = max(arrive + dwell, max(e for _, e in win))
+            dwell = round(leave - arrive)
         rows.append({"seq": k + 1, "name": st["name"], "shots": ids, "note": st.get("note", ""), "latlon": list(pt),
                      "walk_m": round(walk_m), "walk_min": round(walk_min, 1), "approx": approx,
                      "arrive": hhmm(arrive), "leave": hhmm(leave), "dwell_min": dwell})
         if line:
             polylines.append((line, approx))
         total_walk += walk_m; t = leave; prev_node, prev_pt, prev_snap = node, pt, snapd
-    result = {"basemap": a.basemap, "speed_mps": a.speed, "source": meta.get("route_source", ""), "start": meta.get("arrive", ""),
+    result = {"basemap": a.basemap, "speed_mps": a.speed, "source": meta.get("route_source", ""), "start": meta.get("route_start") or meta.get("arrive", ""),
               "end": rows[-1]["leave"] if rows else "", "total_walk_m": round(total_walk), "stops": rows,
               "order": [i for r in rows for i in r["shots"]]}
     (plan / "route.json").write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")

@@ -69,6 +69,7 @@ Codex 直接在当前终端运行脚本；安装与能力边界见 `INSTALL.md` 
 - 执行：Codex / Claude 按 `templates/shotlist_template.md` 与 `templates/shotlist_schema.json` 写 `shotlist.json`，再导出 `shotlist.md`。
 - 硬性要求：≥ 9 条；景别覆盖特写、近景、半身、全身、环境远景中至少 4 种；焦段只从器材里选；每条写太阳方位、光型、人物朝向、机位距离；每条给晴天/阴天/雨天备选；同组内动作、视线、机位不重复。
 - 俯视图字段：`subject_latlon`、`cam_bearing`、`cam_dist`、`face_bearing`、`bg_bearing`、`bg_label`；园外点加 `basemap`，室内点加 `indoor: true`；`alt_time` 指晴天版时刻；`meta.sun` 从 `sun.json` 取整点与半点。
+- 步行导航字段（1.9.0）：`subject_latlon` 要精确到站位（5 位小数约 1 m），用 OSM 节点、Google 地图或底图核对；长焦远机位写 `walk_to: {"to": "camera"}`，室内写 `walk_to: {"place_id": "...", "label": "<店名> <楼层>"}`，终点巴士站等写 `walk_to: {"latlon": [...], "label": "..."}`。每页分镜卡与核对表据此生成谷歌地图步行导航链接与二维码（见 `docs/CARD_SPEC.md`）。
 - SNS 驱动：分镜从 `sns_refs.json` 的素材出发，每条机位帖、每个姿势各设计一张同款（机位、焦段、构图、姿势照原帖），每张写 `src`（来源、照搬了什么、同款姿势）；素材覆盖不到的开场、过渡、细节、连拍、短片、实况再补，`src.kind` 写「无 SNS 素材」。`meta.sns` 一句话记录素材的使用情况。细则见 `docs/SNS_NOTES.md`。
 - 基本法：每条写 `role`（opening/context/interaction/portrait/detail/closing）、`pose`、`gaze`，主图 `hero: true`，备选 `optional: true`；景别配比、节奏、姿态视线规则见 `docs/SHOT_DESIGN.md`。
 - 动态素材：每条可写 `medium`（still / burst / video / live，缺省 still），规则与字段见 `docs/VIDEO_NOTES.md`。连拍出的照片计入组图；短片与实况不计入张数与景别配比。作为补充加在静态分镜之后的条目标 `supplement: true`（不参与首尾与相邻检查）。一组要求 ≥ 2 张 burst、≥ 5 条 video、≥ 6 条 live（lint 提示项）。
@@ -110,6 +111,7 @@ Codex 直接在当前终端运行脚本；安装与能力边界见 `INSTALL.md` 
 - 执行：`python pipeline.py cards <plan> [--images out/<plan>]`（`make_cards.py`；图片按文件名前两位 = 分镜 id 匹配）
 - 输出：`cards/card_<id>.png`（1600×1067）、`<出行日期>_<地点>_拍摄脚本.pdf`（例：`2026-09-28_浅草寺_拍摄脚本.pdf`；改版加 `_v2`）
 - PDF 顺序：行程页（有 `trip.json`）→ 穿搭页（有 `outfit.json`）→ 路线页（有 `route_stops`）→ 分镜按路线顺序（静态与动态穿插，短片卡后接运镜页）；没有路线时静态在前、动态在后。短片与实况的示意图是关键帧，页脚会注明。
+- 每张分镜卡右下「时段 · 地点 · 步行导航」：坐标、谷歌地图步行导航链接与二维码；PDF 里二维码与导航行可直接点按（需要 pypdf）。
 - 分镜卡：有 `src` 时左侧一张示意图，中间一栏 SNS 来源（素材类型与可复现度、平台日期、原帖标题、二维码、照搬了什么、同款姿势、现场差异、链接），补充分镜写「无 SNS 素材」；分镜都带 `src` 时不再出 SNS 汇总页与姿势参考页。没有 `src` 的旧企划仍是示意图与原帖对照的版式。
 - 有短片时，每条短片的分镜卡后面插一页运镜示意（`tools/moves.py`，`cards/move_<id>.png`：俯视轨迹、侧视高度与俯仰、操作要点、起中止三帧、时间条），另出手机竖版 `cards/movem_<id>.png` 给核对表用。起中止三帧优先用 `move_frames/` 里 Codex 按文字画的三张（缺一张就退回按焦段与距离推算的线稿），此时画面变化区放大。全部短片的「短片一览」只放进核对表（`moves_overview_m.png`），不进 PDF。有 `move_frames/` 时同时出每条短片的运镜动图 `cards/move_<id>.gif`（`tools/move_gif.py`：俯视图上相机与人物同步移动，右侧三帧交叉淡化），可直接发给同伴看。
 - 同时生成 `<出行日期>_<地点>_拍摄核对表.html`（`tools/checklist.py`，也可单独 `pipeline.py checklist <plan>`）：器材（按分镜的焦段与介质自动列）、服装道具妆发（`outfit.json`）、行程（`trip.json`）、到场核对（`arrival_checklist.md` 第一个二级标题之前的列表）、分镜按路线停留点分组（缩略图取 `out/<plan>/`，`--no-thumbs` 不嵌；有 `src` 时每条下面一行来源，点开原帖）、短片运镜一览、收尾。单文件，手机离线可用，勾选状态存在浏览器本地。

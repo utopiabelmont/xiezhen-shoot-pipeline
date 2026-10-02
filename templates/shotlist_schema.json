@@ -525,6 +525,34 @@
         "description": "同一张还参考的其它素材，如「X1 P05 撑伞侧身看镜头」"
        }
       }
+     },
+     "walk_to": {
+      "type": "object",
+      "description": "步行导航目标（1.9.0）：缺省导航到 subject_latlon；{to: camera} 导航到机位；{latlon, label} 指定点；{place_id, label} 带 Google 地点 ID（室内分镜导航到建筑，楼层写 label）",
+      "properties": {
+       "to": {
+        "type": "string",
+        "enum": [
+         "subject",
+         "camera"
+        ]
+       },
+       "latlon": {
+        "type": "array",
+        "items": {
+         "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 2
+       },
+       "place_id": {
+        "type": "string"
+       },
+       "label": {
+        "type": "string"
+       }
+      },
+      "additionalProperties": false
      }
     }
    }

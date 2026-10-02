@@ -1,0 +1,1190 @@
+{
+ "meta": {
+  "place": "新宿東口・Alpen TOKYO（新宿駅東口広場・Alpen TOKYO 店内・歌舞伎町一番街・新宿大ガード）",
+  "date": "2026-10-03",
+  "arrive": "13:39",
+  "close": "Alpen TOKYO 土日祝 10:00–22:00；广场与街道全天",
+  "gear": "α7 V + 24-105mm F4 / iPhone 14 Pro（不带闪光灯与三脚架）",
+  "body": "Sony α7 V",
+  "flash_unit": "本次不带闪光灯",
+  "look_policy": "α7 V 全天固定创意外观 FL，WB 5600K 固定，RAW+JPEG；短片 S-Gamut3/S-Log3；iPhone 实况用原相机标准风格。",
+  "video_policy": "短片 S-Log3，ISO 800，斑马 52%/95%，竖幅；本次没带 ND，日光下用 1/500、F11（顿挫可接受），店内与阴影里照常 180° 快门。",
+  "forecast": "Open-Meteo（10/2 23:00 拉取）：10/3 13–16 时晴，云量 1–2%，直射比 0.68–0.73，23 °C，风 1.3 m/s，降水 0 mm → 按晴天版执行。",
+  "terrain_note": "13:45–15:15 太阳高度 42°→24°，方位从西南转到西南西；高楼会大面积遮挡低角度阳光，广场树荫与楼影是近景的首选。",
+  "layout": "东口站前广场在南；クロス新宿ビル（3D 猫大屏）在广场西北角；Alpen TOKYO（新宿ユニカビル）在广场北约 130 m、靖国通り南侧；歌舞伎町一番街拱门在靖国通り对面；新宿大ガード在 Alpen 西侧约 60 m。",
+  "outfit": "本白色无袖长连衣裙，雾霾蓝薄针织开衫，焦糖色平底凉鞋与小斜挎包",
+  "rules": "店内拍摄先征得店员同意，不拍其他顾客与店员的脸、不拍价签特写、不挡通道、不进试衣间；靖国通り只在绿灯时过街拍摄，不在车道停留；歌舞伎町揽客多，不搭话不停留。",
+  "version": "v1（2026-10-02，SNS 驱动分镜，编号按游览路线；1.9.0 起每页带谷歌地图步行导航）",
+  "sns": "机位帖 S01（小红书「九个经典机位」歌舞伎町拱门）复刻为 14、15；平台汇总 Q1（3D 猫搜索）给出 02 的观看位置，Q2（Alpen 攻略帖）给出 05、08、10、12 的楼层与场景；其余为补充分镜。小红书在第 4 次打开笔记时触发 300031 风控，已停止。",
+  "transport": "去程：新宿三丁目 13:39 到，沿新宿通り步行约 8 分钟到东口广场；离开：15:17 进 JR 东改札，埼京線快速 新木場行 15:27（1 番線）→ 東京テレポート 15:50。",
+  "topview_note": "预报晴：金色箭头为该时刻的太阳方位",
+  "route_source": "时间与光线（先拍广场的硬光近景放树荫，店内躲过 14 时硬光，15 时逆光留给大ガード）+ 地理顺路（广场 → Alpen → 靖国通り对面拱门 → 西侧大ガード → 回东口进站）+ 小红书 Alpen 攻略的楼层（4F 户外服装、5F 露营区）",
+  "route_speed_mps": 1.0,
+  "route_timing": "shots",
+  "route_start": "13:45",
+  "route_stops": [
+   {
+    "name": "东口站前广场",
+    "shots": [
+     "01",
+     "02",
+     "03",
+     "04"
+    ],
+    "note": "3D 猫是轮播广告，等 2–3 分钟；近景进树荫"
+   },
+   {
+    "name": "Alpen TOKYO 正门",
+    "shots": [
+     "05",
+     "06"
+    ],
+    "note": "入口方位以现场为准，不挡门"
+   },
+   {
+    "name": "Alpen 4F 户外服装",
+    "shots": [
+     "07",
+     "08",
+     "09"
+    ],
+    "note": "买裤子；先跟店员打招呼再拍"
+   },
+   {
+    "name": "Alpen 5F 露营区",
+    "shots": [
+     "10",
+     "11",
+     "12",
+     "13"
+    ],
+    "note": "帐篷与椅子能不能用先问"
+   },
+   {
+    "name": "歌舞伎町一番街拱门",
+    "shots": [
+     "14",
+     "15"
+    ],
+    "note": "只在绿灯时过街"
+   },
+   {
+    "name": "新宿大ガード",
+    "shots": [
+     "16",
+     "17"
+    ],
+    "note": "逆光张，听到电车提前准备"
+   },
+   {
+    "name": "东口进站",
+    "shots": [
+     "18",
+     "19",
+     "20"
+    ],
+    "note": "15:17 进东改札，15:27 埼京線 1 番線"
+   }
+  ],
+  "sun": {
+   "13:00": [
+    212.6,
+    45.2
+   ],
+   "13:30": [
+    221.6,
+    41.5
+   ],
+   "14:00": [
+    229.5,
+    37.1
+   ],
+   "14:30": [
+    236.4,
+    32.3
+   ],
+   "15:00": [
+    242.5,
+    27.0
+   ],
+   "15:30": [
+    248.0,
+    21.5
+   ],
+   "16:00": [
+    253.1,
+    15.7
+   ]
+  }
+ },
+ "shots": [
+  {
+   "id": "01",
+   "title": "东口广场 · 出站看见三花猫（实况）",
+   "time": "13:45–13:46",
+   "spot": "JR 新宿站东口站前广场（从新宿三丁目沿新宿通り走来，约 8 分钟）",
+   "bg_dir": "西北偏北的クロス新宿ビル屋顶大屏",
+   "kind": "全身",
+   "lens": "iPhone 主摄 24mm",
+   "device": "iPhone 14 Pro",
+   "shutter": "实况 3 秒 · 自动",
+   "camera": "手机竖持，在她右前方 3 m、胸口高度略仰",
+   "subject": "走到广场中间，抬头看到转角大屏上的三花猫，停一下回头笑",
+   "light": "13:45 太阳在西南（约 219°），高度约 42°，晴天硬光；锁 AE/AF 在脸上，滑块 −0.3 保住天空和大屏",
+   "fg_bg": "前景广场地砖与行人，背景クロス新宿ビル转角的弧形大屏",
+   "action": "「抬头看大屏，猫出来了就回头看我。」",
+   "alt": "猫没出来就先拍别的广告，等下一轮",
+   "note": "广场人多，站在树池旁不挡通道",
+   "cam_bearing": 150,
+   "cam_dist": 3,
+   "face_bearing": 330,
+   "bg_bearing": 340,
+   "bg_label": "3D 猫大屏",
+   "subject_latlon": [
+    35.69213,
+    139.70108
+   ],
+   "role": "opening",
+   "pose": "walk",
+   "gaze": "camera",
+   "medium": "live",
+   "supplement": true,
+   "look": "iPhone 原相机，摄影风格「标准」，实况开",
+   "live": {
+    "device": "iPhone 14 Pro 实况（3 s）",
+    "lens": "主摄 24mm",
+    "exposure": "锁 AE/AF 在脸上，滑块 −0.3",
+    "action": "抬头看大屏再回头"
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：到达过渡，SNS 帖子都只拍大屏，这里把人和大屏的相遇记下来"
+   },
+   "alt_time": "13:45",
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "02",
+   "title": "东口广场 · 仰望三花猫大屏",
+   "time": "13:46–13:50",
+   "spot": "东口站前广场北侧，树池旁",
+   "bg_dir": "西北偏北的クロス新宿ビル转角大屏（约 65 m）",
+   "kind": "环境远景",
+   "lens": "24mm F8",
+   "shutter": "1/500 秒 · ISO 100",
+   "camera": "低机位（膝盖高）仰拍，在她左后方 3 m，镜头朝北北西把大屏放进上半画面",
+   "subject": "背对镜头三分之二侧身，抬头看大屏，一只手搭在帽檐位置挡光",
+   "light": "13:45 太阳在西南（约 219°），高度约 42°，晴天硬光从画面左侧打来，她是侧光；大屏亮度高，按她的衣服测光 +0.3",
+   "fg_bg": "前景树池边缘与地砖，中景她，背景大楼与转角大屏、蓝天",
+   "action": "「抬手挡一下太阳，看猫。」",
+   "alt": "转阴：同机位，大屏会更亮，曝光按脸 +0.7；人太多：往树池内侧退一步，让行人从她身后走过",
+   "note": "大屏是轮播广告，猫不是一直在；等 2–3 分钟",
+   "cam_bearing": 160,
+   "cam_dist": 3,
+   "face_bearing": 340,
+   "bg_bearing": 340,
+   "bg_label": "クロス新宿ビジョン",
+   "subject_latlon": [
+    35.69213,
+    139.70108
+   ],
+   "role": "opening",
+   "pose": "stand",
+   "gaze": "away",
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "alt_time": "13:46",
+   "map_window_m": 110,
+   "src": {
+    "ref": "Q1",
+    "kind": "平台汇总",
+    "platform": "小红书",
+    "title": "搜索「新宿 3D猫 拍照机位」：结果几乎全是只拍大屏的帖子",
+    "url": "https://www.xiaohongshu.com/search_result?keyword=%E6%96%B0%E5%AE%BF%203D%E7%8C%AB%20%E6%8B%8D%E7%85%A7%E6%9C%BA%E4%BD%8D",
+    "posted": "2026-10-02（浏览）",
+    "what": "取了这批帖子的观看位置（东口广场仰看转角大屏）；帖子里没有人，这张加上她背对镜头仰望，做开场"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "03",
+   "title": "东口广场 · 下摇揭示开场（短片）",
+   "time": "13:50–13:53",
+   "spot": "与 02 同一站位，相机在她正前方",
+   "bg_dir": "西北偏北的转角大屏",
+   "kind": "全身",
+   "lens": "24mm F11",
+   "shutter": "1/500 秒（无 ND）· ISO 800",
+   "camera": "竖幅，从屏幕上的三花猫起，匀速下摇到她的全身，距离 5 m，Dynamic Active",
+   "subject": "她看大屏，镜头下摇到位时转头看镜头",
+   "light": "同 02，晴天硬光；斑马 52% 看脸，大屏允许接近 95%",
+   "fg_bg": "起幅是大屏与蓝天，落幅是广场与人物",
+   "action": "「看猫，我说好再看我。」",
+   "alt": "猫不出现就从楼顶天线起摇",
+   "note": "实时 5 秒，起止各留 1 秒；本次未带 ND：日光下改 1/500、F11，接受轻微顿挫；能进阴影就进阴影",
+   "cam_bearing": 160,
+   "cam_dist": 5,
+   "face_bearing": 340,
+   "bg_bearing": 340,
+   "bg_label": "3D 猫大屏",
+   "subject_latlon": [
+    35.69213,
+    139.70108
+   ],
+   "role": "opening",
+   "pose": "stand",
+   "gaze": "away",
+   "medium": "video",
+   "supplement": true,
+   "look": "S-Gamut3/S-Log3，WB 5600K",
+   "alt_time": "13:50",
+   "clip": {
+    "mode": "24p",
+    "move": "下摇揭示",
+    "move_type": "tilt_down_reveal",
+    "dur_s": 5,
+    "start": "大屏上的三花猫与蓝天",
+    "end": "她的全身，转头看镜头",
+    "nd": "无 ND：1/500、F11",
+    "exposure": "脸放斑马 52%，大屏允许 95%",
+    "tilt_start": 38
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：开场短片，SNS 只有拍大屏的照片；与 02 同机位紧接着拍"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "04",
+   "title": "东口广场 · 树荫下近景",
+   "time": "13:53–13:58",
+   "spot": "东口广场的行道树荫下（树池南侧）",
+   "bg_dir": "西北的クロス新宿ビル与アルタ楼面，压成灰色与玻璃光斑",
+   "kind": "近景",
+   "lens": "85mm F4",
+   "shutter": "1/320 秒 · 自动 ISO",
+   "camera": "眼平，在她东南 2 m，前景放几片失焦的树叶",
+   "subject": "侧靠在树干旁，转头看镜头，手指轻碰耳边碎发",
+   "light": "13:55 太阳在西南（约 222°），高度约 41°；人在树荫里是开阔阴影的柔光，背景楼面被阳光照亮，按脸测光 +0.3",
+   "fg_bg": "前景虚化的树叶一角，背景楼面与玻璃反光变成柔和光斑",
+   "action": "「靠着树，把碎发拨到耳后，看我。」",
+   "alt": "转阴：直接在广场中间拍，背景换成大屏；人多：改 105mm 再退半步",
+   "note": "不要站在出入口正前方",
+   "cam_bearing": 135,
+   "cam_dist": 2,
+   "face_bearing": 135,
+   "bg_bearing": 315,
+   "bg_label": "楼面光斑",
+   "subject_latlon": [
+    35.69218,
+    139.70098
+   ],
+   "role": "portrait",
+   "pose": "lean",
+   "gaze": "camera",
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "alt_time": "13:53",
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：新宿正午后的硬光里先拿下一张干净的脸，树荫柔光"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "05",
+   "title": "Alpen TOKYO 正门 · 走进去（连拍）",
+   "time": "14:00–14:03",
+   "spot": "Alpen TOKYO（新宿ユニカビル）西南角正门前人行道",
+   "bg_dir": "东北方向的入口与上方蓝底店招、大屏",
+   "kind": "全身",
+   "lens": "24mm F8",
+   "shutter": "1/1000 秒 · 连拍 30 张/秒",
+   "camera": "低机位腰部高度，在她西南 6 m 跟着她的背影",
+   "subject": "背影走向入口，走到一半回头看一眼",
+   "light": "14:00 太阳在西南（约 230°），高度约 37°，阳光从相机身后照向楼面，店招与她的背部都被照亮",
+   "fg_bg": "前景人行道，背景入口玻璃门、店招与楼上大屏",
+   "action": "「直接走进去，走到门口回头看我一眼。」",
+   "alt": "入口人多：改在入口侧面，用 50mm 拍她站在店招下",
+   "note": "入口方位以现场为准；不挡出入口，拍完立刻进店",
+   "cam_bearing": 250,
+   "cam_dist": 6,
+   "face_bearing": 70,
+   "bg_bearing": 60,
+   "bg_label": "Alpen TOKYO 入口",
+   "subject_latlon": [
+    35.6932,
+    139.70054
+   ],
+   "walk_to": {
+    "latlon": [
+     35.6932,
+     139.70054
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 正门（店铺地点）"
+   },
+   "role": "context",
+   "pose": "walk",
+   "gaze": "back",
+   "medium": "burst",
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "alt_time": "14:00",
+   "burst": {
+    "fps": 30,
+    "precap_s": 0.5,
+    "action": "走向入口时回头"
+   },
+   "src": {
+    "ref": "Q2",
+    "kind": "平台汇总",
+    "platform": "小红书",
+    "title": "东京运动户外圣地AlpenTokyo，怎么逛更省钱？（楼层与体验区）",
+    "url": "https://www.xiaohongshu.com/explore/6a48bced000000002100935d",
+    "posted": "2026-07-04",
+    "likes": "174",
+    "what": "攻略帖第一张是这栋楼的外立面与店招（前身 Yamada LABI1、《你的名字。》取景地之一）；这张让她背影走进去，交代地点"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "06",
+   "title": "Alpen TOKYO 正门 · 侧跟进店（短片）",
+   "time": "14:03–14:05",
+   "spot": "正门前人行道，沿楼面侧跟",
+   "bg_dir": "她身旁的楼面与橱窗",
+   "kind": "全身",
+   "lens": "28mm F11",
+   "shutter": "1/500 秒（无 ND）· ISO 800",
+   "camera": "S&Q 60→24，相机在她左侧 3 m 与她同速平移，人保持在左三分线",
+   "subject": "她沿楼面走向入口，最后一步推门",
+   "light": "同 05，晴天，楼面受光",
+   "fg_bg": "前景行人可能穿过，背景橱窗与入口",
+   "action": "「正常速度走，到门口推门进去。」",
+   "alt": "人太多：改固定机位，让她从画面右侧走进入口",
+   "note": "升格实录 3 秒；本次未带 ND：日光下改 1/500、F11，接受轻微顿挫；能进阴影就进阴影",
+   "cam_bearing": 160,
+   "cam_dist": 3,
+   "face_bearing": 70,
+   "bg_bearing": 60,
+   "bg_label": "入口",
+   "subject_latlon": [
+    35.6932,
+    139.70054
+   ],
+   "walk_to": {
+    "latlon": [
+     35.6932,
+     139.70054
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 正门（店铺地点）"
+   },
+   "role": "context",
+   "pose": "walk",
+   "gaze": "away",
+   "medium": "video",
+   "supplement": true,
+   "look": "S-Gamut3/S-Log3，WB 5600K",
+   "alt_time": "14:03",
+   "clip": {
+    "mode": "sq60",
+    "move": "侧跟",
+    "move_type": "track_side",
+    "dur_s": 3,
+    "start": "她在画面右侧起步",
+    "end": "她推开入口的门",
+    "nd": "无 ND：1/500、F11",
+    "exposure": "脸放斑马 52%"
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：环境短片，交代她从广场走进店里"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "indoor": true,
+   "topview_note": "室内：店内顶灯，不画太阳",
+   "subject_latlon": [
+    35.69336,
+    139.70077
+   ],
+   "map_window_m": 110,
+   "id": "07",
+   "title": "Alpen 店内 · 扶梯上楼（实况）",
+   "time": "14:06–14:07",
+   "spot": "Alpen TOKYO 店内扶梯（1F → 4F）",
+   "bg_dir": "扶梯上方的楼层与货架",
+   "kind": "半身",
+   "lens": "iPhone 主摄 24mm",
+   "device": "iPhone 14 Pro",
+   "shutter": "实况 3 秒 · 自动",
+   "camera": "手机竖持，站在她下一级台阶仰拍",
+   "subject": "她扶着扶手回头看镜头",
+   "light": "店内顶部 LED 筒灯，均匀柔和；锁 AE/AF 在脸上",
+   "fg_bg": "前景扶手，背景上一层的天花板灯带",
+   "action": "「扶着扶手，回头看我一下。」",
+   "alt": "扶梯人多就跳过",
+   "note": "店内拍摄先跟店员打招呼；不拍其他顾客与店员的脸",
+   "cam_bearing": 200,
+   "cam_dist": 1.5,
+   "face_bearing": 200,
+   "bg_bearing": 20,
+   "bg_label": "扶梯上方",
+   "role": "context",
+   "pose": "stand",
+   "gaze": "camera",
+   "walk_to": {
+    "latlon": [
+     35.69336,
+     139.70077
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 店内（1F 扶梯）"
+   },
+   "medium": "live",
+   "supplement": true,
+   "look": "iPhone 原相机，摄影风格「标准」，实况开",
+   "live": {
+    "device": "iPhone 14 Pro 实况（3 s）",
+    "lens": "主摄 24mm",
+    "exposure": "锁 AE/AF 在脸上",
+    "action": "扶梯上回头"
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：店内过渡"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "alt_time": "14:06"
+  },
+  {
+   "indoor": true,
+   "topview_note": "室内：店内顶灯，不画太阳",
+   "subject_latlon": [
+    35.69336,
+    139.70077
+   ],
+   "map_window_m": 110,
+   "id": "08",
+   "title": "Alpen 4F · 对身比裤长",
+   "time": "14:08–14:25",
+   "spot": "Alpen TOKYO 4F トレッキング / アウトドアウェア 货架通道",
+   "bg_dir": "通道两侧的户外服装货架",
+   "kind": "半身",
+   "lens": "50mm F4",
+   "shutter": "1/160 秒 · 自动 ISO（上限 6400）",
+   "camera": "眼平，在通道里正对她 2.5 m，货架在两侧形成纵深",
+   "subject": "拿着一条户外长裤贴在腰前比长度，低头看裤脚",
+   "light": "店内顶部 LED 筒灯与侧面货架灯，色温约 4500–5000K，WB 固定 5600K 会略偏暖",
+   "fg_bg": "前景虚化的衣架边缘，背景通道纵深与货架色块",
+   "action": "「拿裤子在腰上比一下，低头看裤脚到哪。」",
+   "alt": "店员不方便拍：改用 iPhone 实况拍一张手和裤子的特写",
+   "note": "先问「写真を撮ってもいいですか」；不挡通道，商品放回原位",
+   "cam_bearing": 180,
+   "cam_dist": 2.5,
+   "face_bearing": 0,
+   "bg_bearing": 0,
+   "bg_label": "户外服装货架",
+   "role": "interaction",
+   "pose": "stand",
+   "gaze": "down",
+   "walk_to": {
+    "latlon": [
+     35.69336,
+     139.70077
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 4F（导航到店铺）"
+   },
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "src": {
+    "ref": "Q2",
+    "kind": "平台汇总",
+    "platform": "小红书",
+    "title": "东京运动户外圣地AlpenTokyo，怎么逛更省钱？（楼层与体验区）",
+    "url": "https://www.xiaohongshu.com/explore/6a48bced000000002100935d",
+    "posted": "2026-07-04",
+    "likes": "174",
+    "what": "帖子写明 3F–5F 是户外区（4F 户外服装与露营实景）；这张把「来买裤子」本身拍下来"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "alt_time": "14:08"
+  },
+  {
+   "indoor": true,
+   "topview_note": "室内：店内顶灯，不画太阳",
+   "subject_latlon": [
+    35.69336,
+    139.70077
+   ],
+   "map_window_m": 110,
+   "id": "09",
+   "title": "Alpen 4F · 镜前转身（实况）",
+   "time": "14:25–14:26",
+   "spot": "4F 货架旁的穿衣镜（不是试衣间）",
+   "bg_dir": "镜子与货架",
+   "kind": "全身",
+   "lens": "iPhone 主摄 24mm",
+   "device": "iPhone 14 Pro",
+   "shutter": "实况 3 秒 · 自动",
+   "camera": "手机竖持，在镜子斜后方，只拍镜中她的全身",
+   "subject": "拿着选好的裤子在镜前转半圈",
+   "light": "店内顶灯，柔和",
+   "fg_bg": "镜框作为画框，镜中是她与货架",
+   "action": "「在镜子前转半圈看看。」",
+   "alt": "镜子前有人就跳过",
+   "note": "不拍试衣间内部，不拍其他顾客",
+   "cam_bearing": 200,
+   "cam_dist": 2,
+   "face_bearing": 20,
+   "bg_bearing": 20,
+   "bg_label": "穿衣镜",
+   "role": "interaction",
+   "pose": "stand",
+   "gaze": "away",
+   "walk_to": {
+    "latlon": [
+     35.69336,
+     139.70077
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 4F（导航到店铺）"
+   },
+   "medium": "live",
+   "supplement": true,
+   "look": "iPhone 原相机，摄影风格「标准」，实况开",
+   "live": {
+    "device": "iPhone 14 Pro 实况（3 s）",
+    "lens": "主摄 24mm",
+    "exposure": "锁 AE/AF 在镜中人脸",
+    "action": "镜前转半圈"
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：购物过程的实况"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "alt_time": "14:25"
+  },
+  {
+   "indoor": true,
+   "topview_note": "室内：店内顶灯，不画太阳",
+   "subject_latlon": [
+    35.69336,
+    139.70077
+   ],
+   "map_window_m": 110,
+   "id": "10",
+   "title": "Alpen 5F · 帐篷门口坐露营椅",
+   "time": "14:28–14:36",
+   "spot": "Alpen TOKYO 5F キャンプ区帐篷展示 / 试搭区",
+   "bg_dir": "她身后撑开的帐篷与露营灯",
+   "kind": "七分",
+   "lens": "35mm F4",
+   "shutter": "1/125 秒 · 自动 ISO（上限 6400）",
+   "camera": "腰部高度，在她正前方 3 m，帐篷门帘边缘作为右侧前景",
+   "subject": "坐在帐篷门口的露营椅上，双手捧着一只露营杯，抬头看镜头",
+   "light": "店内顶部筒灯与展示区射灯；帐篷内挂的露营灯在她身后给一点暖色",
+   "fg_bg": "右侧前景是失焦的帐篷门帘，背景帐篷内部与露营灯",
+   "action": "「坐下，捧着杯子，抬头看我，像刚扎好营。」",
+   "alt": "试搭区有人在搭帐篷：只拍外侧展示帐篷，不坐椅子改站在门口",
+   "note": "椅子与杯子是展示品，先问店员能否坐、能否拿；不能就只站在旁边拍",
+   "cam_bearing": 180,
+   "cam_dist": 3,
+   "face_bearing": 180,
+   "bg_bearing": 0,
+   "bg_label": "展示帐篷",
+   "role": "interaction",
+   "pose": "sit",
+   "gaze": "camera",
+   "walk_to": {
+    "latlon": [
+     35.69336,
+     139.70077
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 5F（导航到店铺）"
+   },
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "src": {
+    "ref": "Q2",
+    "kind": "平台汇总",
+    "platform": "小红书",
+    "title": "东京运动户外圣地AlpenTokyo，怎么逛更省钱？（楼层与体验区）",
+    "url": "https://www.xiaohongshu.com/explore/6a48bced000000002100935d",
+    "posted": "2026-07-04",
+    "likes": "174",
+    "what": "帖子写 5F 有帐篷试搭区、4F/5F 把帐篷炊具布置成露营实景；这张借这个场景让她「在城市里露营」"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "alt_time": "14:28"
+  },
+  {
+   "indoor": true,
+   "topview_note": "室内：店内顶灯，不画太阳",
+   "subject_latlon": [
+    35.69336,
+    139.70077
+   ],
+   "map_window_m": 110,
+   "id": "11",
+   "title": "Alpen 5F · 拉开帐篷门（短片）",
+   "time": "14:36–14:39",
+   "spot": "5F 展示帐篷门口",
+   "bg_dir": "帐篷内部",
+   "kind": "半身",
+   "lens": "70mm F4",
+   "shutter": "1/250 秒（S&Q 120）· ISO 800–3200",
+   "camera": "S&Q 120→24，机位固定在帐篷外 2.5 m，肘部抵身，拉链拉开时轻推 10 cm",
+   "subject": "她从帐篷里拉开门帘拉链，探出头",
+   "light": "店内顶灯 + 帐篷内露营灯",
+   "fg_bg": "前景帐篷布面，门帘拉开后露出她",
+   "action": "「从里面慢慢拉开拉链，拉开就探头看我。」",
+   "alt": "不能进帐篷就改成她在外面掀开门帘往里看",
+   "note": "升格实录 2 秒；只用开放给顾客试的帐篷",
+   "cam_bearing": 180,
+   "cam_dist": 2.5,
+   "face_bearing": 180,
+   "bg_bearing": 0,
+   "bg_label": "展示帐篷",
+   "role": "interaction",
+   "pose": "crouch",
+   "gaze": "camera",
+   "walk_to": {
+    "latlon": [
+     35.69336,
+     139.70077
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 5F（导航到店铺）"
+   },
+   "medium": "video",
+   "supplement": true,
+   "look": "S-Gamut3/S-Log3，WB 5600K",
+   "clip": {
+    "mode": "sq120",
+    "move": "固定机位微推",
+    "move_type": "push_in",
+    "dur_s": 2,
+    "start": "闭合的帐篷门帘",
+    "end": "门帘拉开，她探头看镜头",
+    "nd": "室内不需要 ND",
+    "exposure": "脸放斑马 52%，室内 ISO 可到 3200",
+    "cam_dist_start": 2.6,
+    "cam_dist_end": 2.5
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：互动短片"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "alt_time": "14:36"
+  },
+  {
+   "indoor": true,
+   "topview_note": "室内：店内顶灯，不画太阳",
+   "subject_latlon": [
+    35.69336,
+    139.70077
+   ],
+   "map_window_m": 110,
+   "id": "12",
+   "title": "Alpen 5F · 彩色地钉特写",
+   "time": "14:39–14:43",
+   "spot": "5F 帐篷配件墙（地钉、登山扣）",
+   "bg_dir": "配件墙",
+   "kind": "特写",
+   "lens": "105mm F4",
+   "shutter": "1/200 秒 · 自动 ISO",
+   "camera": "近距离 0.8 m，镜头略俯，焦点在她指尖与一排彩色地钉",
+   "subject": "手指轻轻拨过一排彩色铝合金地钉",
+   "light": "店内射灯，金属表面有细小高光",
+   "fg_bg": "前景失焦的地钉，背景虚化的配件墙色块",
+   "action": "「用手指慢慢拨一下这排地钉。」",
+   "alt": "配件墙在别的楼层就跟着去；没有地钉就拍登山扣",
+   "note": "不拆包装，不取下商品",
+   "cam_bearing": 160,
+   "cam_dist": 0.8,
+   "face_bearing": 340,
+   "bg_bearing": 340,
+   "bg_label": "配件墙",
+   "role": "detail",
+   "pose": "stand",
+   "gaze": "down",
+   "walk_to": {
+    "latlon": [
+     35.69336,
+     139.70077
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 5F（导航到店铺）"
+   },
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "src": {
+    "ref": "Q2",
+    "kind": "平台汇总",
+    "platform": "小红书",
+    "title": "东京运动户外圣地AlpenTokyo，怎么逛更省钱？（楼层与体验区）",
+    "url": "https://www.xiaohongshu.com/explore/6a48bced000000002100935d",
+    "posted": "2026-07-04",
+    "likes": "174",
+    "what": "帖子写「连帐篷地钉都有十几种颜色可选」；这张把它拍成特写换气"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "alt_time": "14:39"
+  },
+  {
+   "indoor": true,
+   "topview_note": "室内：店内顶灯，不画太阳",
+   "subject_latlon": [
+    35.69336,
+    139.70077
+   ],
+   "map_window_m": 110,
+   "id": "13",
+   "title": "Alpen 5F · 登山扣晃动（短片）",
+   "time": "14:43–14:45",
+   "spot": "5F 配件墙",
+   "bg_dir": "配件墙",
+   "kind": "特写",
+   "lens": "105mm F4",
+   "shutter": "1/250 秒（S&Q 120）· ISO 800–3200",
+   "camera": "S&Q 120→24，固定机位，前景放一排失焦的登山扣",
+   "subject": "她用指尖拨一下挂着的登山扣，让它们轻轻晃",
+   "light": "店内射灯，金属高光闪动",
+   "fg_bg": "前景失焦的登山扣，焦点在晃动的那一排",
+   "action": "「拨一下，让它们晃起来。」",
+   "alt": "没有登山扣就拍地钉",
+   "note": "升格实录 2 秒",
+   "cam_bearing": 160,
+   "cam_dist": 0.8,
+   "face_bearing": 340,
+   "bg_bearing": 340,
+   "bg_label": "配件墙",
+   "role": "detail",
+   "pose": "stand",
+   "gaze": "down",
+   "walk_to": {
+    "latlon": [
+     35.69336,
+     139.70077
+    ],
+    "place_id": "ChIJ_VYfhdSNGGARpG4sfHX889w",
+    "label": "Alpen TOKYO 5F（导航到店铺）"
+   },
+   "medium": "video",
+   "supplement": true,
+   "look": "S-Gamut3/S-Log3，WB 5600K",
+   "clip": {
+    "mode": "sq120",
+    "move": "固定升格",
+    "move_type": "static",
+    "dur_s": 2,
+    "start": "静止的登山扣",
+    "end": "登山扣晃动、高光闪烁",
+    "nd": "室内不需要 ND",
+    "exposure": "金属高光允许 95%，手放斑马 52%"
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：细节短片"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "alt_time": "14:43"
+  },
+  {
+   "id": "14",
+   "title": "歌舞伎町一番街 · 拱门下过街（连拍）",
+   "time": "14:50–14:57",
+   "spot": "靖国通り过街斑马线（Alpen 北侧人行道 → 歌舞伎町一番街红色拱门）",
+   "bg_dir": "北面的红色拱门与一番街街景",
+   "kind": "全身",
+   "lens": "24mm F8",
+   "shutter": "1/1000 秒 · 连拍 30 张/秒",
+   "camera": "低机位腰部高度，站在南侧人行道路沿（Alpen 北侧），正对拱门，她在斑马线中间走向镜头时按下",
+   "subject": "绿灯时随人流走过斑马线，看着镜头",
+   "light": "14:55 太阳在西南西（约 242°），高度约 27°，从她右前方照来，是前侧光；拱门招牌白天不亮",
+   "fg_bg": "前景斑马线白条，中景她与过街人群，背景红色拱门与街两侧招牌",
+   "action": "「绿灯一亮就从对面走过来，看我，正常速度。」",
+   "alt": "人太多：等下一个绿灯；拱门在阴影里：曝光按脸 +0.3",
+   "note": "只在绿灯时拍，不站在马路中间停留；歌舞伎町揽客多，不搭话",
+   "cam_bearing": 190,
+   "cam_dist": 9,
+   "face_bearing": 190,
+   "bg_bearing": 5,
+   "bg_label": "歌舞伎町一番街拱门",
+   "subject_latlon": [
+    35.69366,
+    139.701
+   ],
+   "walk_to": {
+    "to": "camera",
+    "label": "机位：靖国通り南侧人行道（Alpen 北侧）"
+   },
+   "role": "interaction",
+   "hero": true,
+   "pose": "walk",
+   "gaze": "camera",
+   "medium": "burst",
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "alt_time": "14:50",
+   "burst": {
+    "fps": 30,
+    "precap_s": 0.5,
+    "action": "走向镜头的一步，裙摆扬起"
+   },
+   "src": {
+    "ref": "S01",
+    "kind": "机位帖",
+    "platform": "小红书",
+    "title": "来东京🇯🇵，必打卡的九个经典机位‼️（图 1 歌舞伎町一番街）",
+    "url": "https://www.xiaohongshu.com/explore/673d8b2b000000000702829a",
+    "posted": "2024-11-20",
+    "likes": "730",
+    "level": "中",
+    "why": "原帖是夜里站在斑马线中间、慢门拖出人流；今天 14:55 白天招牌不亮，靖国通り绿灯短，改成绿灯时她随人流走向镜头连拍，人流拖影交给 iPhone 实况的长曝光（15）",
+    "what": "照搬机位（正对拱门、广角低机位、人物在中线斑马线上、拱门压画面上部）与看镜头；把站定改成走向镜头的连拍"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "15",
+   "title": "歌舞伎町一番街 · 长曝光人流（实况）",
+   "time": "14:57–14:58",
+   "spot": "同 14，她站在南侧人行道路沿等绿灯",
+   "bg_dir": "北面拱门与过街人流",
+   "kind": "全身",
+   "lens": "iPhone 主摄 24mm",
+   "device": "iPhone 14 Pro",
+   "shutter": "实况 3 秒 → 相册里改「长曝光」",
+   "camera": "手机竖持，手肘抵身或靠在栏杆上稳住 3 秒",
+   "subject": "她站着不动，人流从她身边走过",
+   "light": "同 14，前侧光；锁 AE/AF 在脸上",
+   "fg_bg": "前景路沿，人流被拖成虚影，背景拱门",
+   "action": "「站着别动 3 秒。」",
+   "alt": "手抖糊了就多拍几条",
+   "note": "这条就是原帖慢门效果的手机版",
+   "cam_bearing": 190,
+   "cam_dist": 4,
+   "face_bearing": 190,
+   "bg_bearing": 5,
+   "bg_label": "拱门",
+   "subject_latlon": [
+    35.69356,
+    139.70098
+   ],
+   "role": "interaction",
+   "pose": "stand",
+   "gaze": "camera",
+   "medium": "live",
+   "supplement": true,
+   "look": "iPhone 原相机，摄影风格「标准」，实况开",
+   "alt_time": "14:57",
+   "live": {
+    "device": "iPhone 14 Pro 实况（3 s）",
+    "lens": "主摄 24mm",
+    "exposure": "锁 AE/AF 在脸上，滑块 −0.3",
+    "action": "站定 3 秒，事后选「长曝光」"
+   },
+   "src": {
+    "ref": "S01",
+    "kind": "机位帖",
+    "platform": "小红书",
+    "title": "来东京🇯🇵，必打卡的九个经典机位‼️（图 1 歌舞伎町一番街）",
+    "url": "https://www.xiaohongshu.com/explore/673d8b2b000000000702829a",
+    "posted": "2024-11-20",
+    "likes": "730",
+    "level": "中",
+    "why": "原帖是夜里站在斑马线中间、慢门拖出人流；今天 14:55 白天招牌不亮，靖国通り绿灯短，改成绿灯时她随人流走向镜头连拍，人流拖影交给 iPhone 实况的长曝光（15）",
+    "what": "原帖用相机慢门拖出人流；这里用 iPhone 实况的长曝光效果复现"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "16",
+   "title": "新宿大ガード · 逆光倚栏",
+   "time": "15:00–15:06",
+   "spot": "靖国通り北侧人行道，大ガード（JR 铁桥）东侧约 30 m 的护栏",
+   "bg_dir": "西面的 JR 铁桥（大ガード）与驶过的电车",
+   "kind": "半身",
+   "lens": "105mm F4",
+   "shutter": "1/500 秒 · 自动 ISO",
+   "camera": "眼平，在她东侧 10 m，长焦把铁桥与招牌压在她身后",
+   "subject": "背靠护栏，侧脸看向驶过铁桥的电车",
+   "light": "15:00 太阳在西南西（约 243°），高度约 27°，在她身后，是逆光：头发与肩膀一圈亮边，脸靠路面与楼面反光；曝光按脸 +0.7",
+   "fg_bg": "前景失焦的护栏一角，背景铁桥、桥上的黄色电车与招牌",
+   "action": "「靠着栏杆，听到电车来就转头看它。」",
+   "alt": "转阴：逆光没了，改让她面向镜头；人多：往东再退 5 m 用 105mm 端",
+   "note": "人行道窄，不挡行人；不站在车道上",
+   "cam_bearing": 80,
+   "cam_dist": 10,
+   "face_bearing": 290,
+   "bg_bearing": 265,
+   "bg_label": "新宿大ガード",
+   "subject_latlon": [
+    35.69388,
+    139.7004
+   ],
+   "role": "portrait",
+   "pose": "lean",
+   "gaze": "away",
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "alt_time": "15:00",
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：本组的逆光张；小红书「新宿街头」搜索里提到大ガード，但这次没打开原帖（页面风控），不照搬"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "17",
+   "title": "新宿大ガード · 电车驶过（实况）",
+   "time": "15:06–15:07",
+   "spot": "同 16",
+   "bg_dir": "西面铁桥",
+   "kind": "七分",
+   "lens": "iPhone 2× 48mm",
+   "device": "iPhone 14 Pro",
+   "shutter": "实况 3 秒 · 自动",
+   "camera": "手机竖持，2× 镜头，在她东侧 6 m",
+   "subject": "电车从她身后的铁桥驶过，她转头",
+   "light": "逆光，滑块 −0.3 保高光",
+   "fg_bg": "背景铁桥与电车",
+   "action": "「电车来了，转头看它。」",
+   "alt": "电车间隔长就等一班",
+   "note": "听到桥上声音提前按",
+   "cam_bearing": 80,
+   "cam_dist": 6,
+   "face_bearing": 290,
+   "bg_bearing": 265,
+   "bg_label": "大ガード",
+   "subject_latlon": [
+    35.69388,
+    139.7004
+   ],
+   "role": "portrait",
+   "pose": "lean",
+   "gaze": "away",
+   "medium": "live",
+   "supplement": true,
+   "look": "iPhone 原相机，摄影风格「标准」，实况开",
+   "alt_time": "15:06",
+   "live": {
+    "device": "iPhone 14 Pro 实况（3 s）",
+    "lens": "2× 48mm",
+    "exposure": "锁 AE/AF 在脸上，滑块 −0.3",
+    "action": "电车驶过时转头"
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：实况"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "18",
+   "title": "东口 · 背影走向车站",
+   "time": "15:10–15:14",
+   "spot": "JR 新宿站东口站前广场 → 东口地下入口",
+   "bg_dir": "西南方向的车站入口与人流",
+   "kind": "全身",
+   "lens": "50mm F5.6",
+   "shutter": "1/500 秒 · 自动 ISO",
+   "camera": "胸口高度，在她身后 7 m",
+   "subject": "拎着购物纸袋走向车站入口，背影，侧回头一点",
+   "light": "15:10 太阳在西南西（约 245°），高度约 25°，在画面右前方，侧逆光勾出她的轮廓",
+   "fg_bg": "前景广场地砖，背景车站入口与人流",
+   "action": "「拎着袋子往车站走，别回头，快到入口时稍微侧一下脸。」",
+   "alt": "人太多：改从广场边缘的树池旁 35mm 拍",
+   "note": "15:17 前进东改札，到埼京线 1 番線约 5 分钟（15:27 发）",
+   "cam_bearing": 20,
+   "cam_dist": 7,
+   "face_bearing": 200,
+   "bg_bearing": 200,
+   "bg_label": "车站东口",
+   "subject_latlon": [
+    35.692,
+    139.701
+   ],
+   "role": "closing",
+   "pose": "back",
+   "gaze": "back",
+   "look": "FL（全天固定，保住蓝天与暖色），WB 5600K 固定，RAW+JPEG",
+   "alt_time": "15:10",
+   "props": "浅色无字购物纸袋",
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：新宿段收尾"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "19",
+   "title": "东口 · 走出画面（短片）",
+   "time": "15:14–15:16",
+   "spot": "同 18",
+   "bg_dir": "车站入口",
+   "kind": "全身",
+   "lens": "24mm F11",
+   "shutter": "1/500 秒（无 ND）· ISO 800",
+   "camera": "固定机位，胸口高度，她从画面中间走进人流直到出画",
+   "subject": "背影走进车站人流",
+   "light": "同 18 侧逆光",
+   "fg_bg": "前景地砖，背景入口",
+   "action": "「一直往前走，不用回头。」",
+   "alt": "人太多就等人流小一点",
+   "note": "实时 5 秒；本次未带 ND：日光下改 1/500、F11，接受轻微顿挫；能进阴影就进阴影",
+   "cam_bearing": 20,
+   "cam_dist": 4,
+   "face_bearing": 200,
+   "bg_bearing": 200,
+   "bg_label": "车站东口",
+   "subject_latlon": [
+    35.692,
+    139.701
+   ],
+   "role": "closing",
+   "pose": "back",
+   "gaze": "back",
+   "medium": "video",
+   "supplement": true,
+   "look": "S-Gamut3/S-Log3，WB 5600K",
+   "alt_time": "15:14",
+   "clip": {
+    "mode": "24p",
+    "move": "固定机位人走远",
+    "move_type": "static_walk_out",
+    "dur_s": 5,
+    "start": "她背影在画面中间",
+    "end": "她走进人流出画",
+    "nd": "无 ND：1/500、F11",
+    "exposure": "按地面与她的背影，天空允许 95%"
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：收尾短片"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "topview_note": "预报晴：金色箭头为该时刻的太阳方位"
+  },
+  {
+   "id": "20",
+   "title": "JR 东改札 · 刷卡进站（实况）",
+   "time": "15:17–15:18",
+   "spot": "JR 新宿站东改札",
+   "bg_dir": "检票口",
+   "kind": "半身",
+   "lens": "iPhone 主摄 24mm",
+   "device": "iPhone 14 Pro",
+   "shutter": "实况 3 秒 · 自动",
+   "camera": "手机竖持，在检票口外侧斜后方",
+   "subject": "她刷 IC 卡过闸机，回头挥手",
+   "light": "站内灯光",
+   "fg_bg": "前景闸机",
+   "action": "「刷卡进去，回头挥一下手。」",
+   "alt": "人多就拍她手里的卡",
+   "note": "进站后跟着「埼京線・りんかい線」指示去 1 番線",
+   "cam_bearing": 30,
+   "cam_dist": 2,
+   "face_bearing": 30,
+   "bg_bearing": 210,
+   "bg_label": "东改札",
+   "subject_latlon": [
+    35.69168,
+    139.70078
+   ],
+   "indoor": true,
+   "walk_to": {
+    "latlon": [
+     35.69168,
+     139.70078
+    ],
+    "label": "JR 新宿站东口（东改札在地下一层）"
+   },
+   "topview_note": "站内：不画太阳",
+   "role": "closing",
+   "pose": "walk",
+   "gaze": "camera",
+   "medium": "live",
+   "supplement": true,
+   "look": "iPhone 原相机，摄影风格「标准」，实况开",
+   "live": {
+    "device": "iPhone 14 Pro 实况（3 s）",
+    "lens": "主摄 24mm",
+    "exposure": "自动",
+    "action": "过闸机回头挥手"
+   },
+   "src": {
+    "ref": "",
+    "kind": "无 SNS 素材",
+    "what": "补充分镜：转场到台场的实况"
+   },
+   "size": "1152x1536",
+   "flash": "不带闪光灯",
+   "basemap": "main",
+   "alt_time": "15:17"
+  }
+ ]
+}

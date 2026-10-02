@@ -2,7 +2,7 @@
 
 # xiezhen-shoot-pipeline
 
-**A pipeline for planning portrait photo shoots at a real location on a real date.** You give it one location (or several for one day) and a date. It produces a set of materials you can take to the site: an itinerary page with that day's weather, an outfit plan, an in-park route page, a shoot script PDF with one page per shot (preview image, SNS source post with QR code, camera settings, top-view position and light diagram, pose direction, notes), a phone checklist in HTML that you tick off item by item, and a timeline, a one-page model sheet, an arrival checklist and a clip edit list.
+**A pipeline for planning portrait photo shoots at a real location on a real date.** You give it one location (or several for one day) and a date. It produces a set of materials you can take to the site: an itinerary page with that day's weather, an outfit plan, an in-park route page, a shoot script PDF with one page per shot (preview image, SNS source post with QR code, camera settings, top-view position and light diagram, pose direction, notes, Google Maps walking directions to the position), a phone checklist in HTML that you tick off item by item, and a timeline, a one-page model sheet, an arrival checklist and a clip edit list.
 
 Shots are based on camera spots and poses that have actually produced photos at the location on social media. Codex or Claude opens the original posts on Xiaohongshu, Instagram, Douyin and TikTok in a browser and writes down the camera position, composition and pose as text. Each shot is designed to match one post, and extra shots fill in whatever the posts do not cover. Preview images are generated from that text alone: the original post images are not downloaded, not screenshotted, and never passed to the image model. Shots are numbered in walking-route order, so on site you shoot from 01 to the last one.
 
@@ -14,7 +14,7 @@ The detailed documentation ([INSTALL.md](INSTALL.md), [docs/](docs/), the templa
 
 ## Shoot script PDF and checklist
 
-Each plan produces two files for use on site: `<日期>_<地点>_拍摄脚本.pdf` (date, place, "shoot script"; for printing or a tablet) and `<日期>_<地点>_拍摄核对表.html` (date, place, "shoot checklist"; opened on a phone and ticked off item by item). Each of the two case studies below comes with the complete output; click a summary line to expand it.
+Each plan produces two files for use on site: `<日期>_<地点>_拍摄脚本.pdf` (date, place, "shoot script"; for printing or a tablet) and `<日期>_<地点>_拍摄核对表.html` (date, place, "shoot checklist"; opened on a phone and ticked off item by item). Each of the three case studies below comes with the complete output; click a summary line to expand it.
 
 ### Case study 1: Hakone Glass Forest Museum (rain, one camera body)
 
@@ -121,6 +121,60 @@ Generation log: the 21 stills and Live Photos and the 18 clip frames (three per 
 
 </details>
 
+### Case study 3: Shinjuku + the Odaiba lantern festival (two sites in one day, an event, walking directions)
+
+<details><summary><b>Shinjuku East Exit · Alpen TOKYO → Odaiba Marine Park · Umi no Akari Matsuri · 2026-10-03 · sunny · leave 13:15 · α7 V + 24-105mm F4 / iPhone 14 Pro, no tripod, no flash · 20 + 23 shots · 29 + 32 pages (click to expand)</b></summary>
+
+<br>
+
+The request gave three things: leave by train at 1 pm; bring only the camera and a phone, no tripod; stop on the way at Alpen TOKYO, a large outdoor store at Shinjuku East Exit, to pick a pair of trousers. The Odaiba lantern festival (海の灯まつり) was found while checking events in Tokyo's 23 wards for that day.
+
+The output is in [`examples/shinjuku-odaiba-1003/`](examples/shinjuku-odaiba-1003/), one plan and one shoot script per site. The pages of this example are in Chinese.
+
+- `shinjuku-1003/2026-10-03_新宿東口・AlpenTOKYO_拍摄脚本.pdf` (29 pages) and `2026-10-03_新宿東口・AlpenTOKYO_拍摄核对表.html`
+- `odaiba-1003/2026-10-03_お台場海浜公園・海の灯まつり_拍摄脚本.pdf` (32 pages) and `2026-10-03_お台場海浜公園・海の灯まつり_拍摄核对表.html`
+
+In the public copy the itinerary starts at Kiba Station and ends at the bus stop in Odaiba.
+
+![Preview images for 20 Shinjuku shots and 23 Odaiba shots](docs/img/so_contact.jpg)
+
+How it differs from case studies 1 and 2:
+
+- **Itinerary timed around the event.** The forecast and the day's events were checked first: sunny all day on 10/3, sunset 17:22, blue hour 17:38–17:48. At Odaiba Marine Park the lanterns are set out on the beach from 13:00, lit at 17:00, and the sand drawing is complete around 17:20. The Odaiba part runs from arrival at 15:50 to 18:42; Shinjuku takes 13:39–15:17, with the JR Saikyo Line running through onto the Rinkai Line between the two, no change needed.
+- **Route timed by the shots.** Both plans set `meta.route_timing: "shots"`, so the dwell at each stop comes from the time windows of its shots instead of an estimate by medium. Shinjuku: 7 stops, 631 m on foot (13:45 → 15:19). Odaiba: 9 stops, 1070 m on foot (15:57 → 18:31), waiting on the beach around 17:00 for the lighting and shooting the blue-hour hero shot around 17:30. The Odaiba shots sit on two base maps, so the route page uses a separate overview map that covers the whole walk (`meta.route_basemap`).
+- **Hard light and in-store shots in Shinjuku.** From 13:45 to 15:15 the sun drops from 42° to 24°. Close-ups go into the shade of trees and buildings on the East Exit plaza, the brightest hour around 14:00 is spent in the store, and the 15:00 backlight is kept for the Ōgādo railway bridge. The store shots follow the floors: holding trousers against the body on 4F, sitting at a tent door on 5F, and a close-up of coloured tent pegs last. The notes say to ask staff before shooting and to keep the aisles clear.
+- **Walking directions on every shot (1.9.0).** The lower-right panel of each page gives the position coordinates and a QR code for Google Maps walking directions; in the PDF the QR code and the directions line are clickable, 106 links across the two scripts. Telephoto shots navigate to where the photographer stands (computed from `cam_bearing` and `cam_dist`). The in-store shots carry a Google place ID, navigate to Alpen TOKYO and name the floor in the label; the last shot navigates to the bus stop for the trip home. In the checklist every shot has a walking-directions link and every stop has "navigate to this stop".
+- **SNS material.** 13 of the 23 Odaiba shots are designed from camera-spot posts (8 Xiaohongshu, 3 TikTok, 2 Instagram), and the platform summaries give the lighting time and on-site rules. In Shinjuku the Kabukicho arch reproduces a Xiaohongshu camera-spot post, and the store floors and scenes follow a Xiaohongshu guide post about Alpen; Xiaohongshu raised its 300031 risk control on the fourth note opened, research there stopped as the rules require, and the rest are supplementary shots.
+- **Outfit.** The sites are grey streets, clear sky and warm orange candlelight at night. The main plan is a sleeveless off-white maxi dress, a thin haze-blue knit cardigan and caramel leather accessories, with the cardigan on after sunset; the off-white is the brightest area among the lanterns.
+
+| Page | Shinjuku | Odaiba | Content |
+|---|---|---|---|
+| Itinerary page | 1 | 1 | Kiba Station → Shinjuku → Odaiba, hourly weather for 13–18h, trains between the two sites |
+| Outfit pages | 2 | 2 | ΔE between site colours and outfit colours, main plan, substitutes, reminders for each shot |
+| Route page | 1 | 1 | 7 stops in Shinjuku and 9 in Odaiba, with arrival and departure times |
+| Shots | 20 | 23 | Shinjuku: 7 stills, 2 bursts, 5 clips, 6 Live Photos; Odaiba: 10 stills, 2 bursts, 5 clips, 6 Live Photos; the numbers follow the walking order |
+| Camera-move pages | 5 | 5 | One page per clip |
+
+Four shot pages: Shinjuku 08, trousers against the body on Alpen 4F (in store, navigates to the store); Shinjuku 16, leaning on the rail in backlight at the Ōgādo bridge; Odaiba 02, the Statue of Liberty replica and Rainbow Bridge from the deck; Odaiba 17, looking back in a white dress among the lanterns (blue-hour hero shot).
+
+![Four Shinjuku and Odaiba shot pages](docs/img/so_cards_gallery.jpg)
+
+Left, the directions panels of two pages: Shinjuku 08 navigates to Alpen TOKYO 4F; Odaiba 11 is a telephoto shot and navigates to the beach about 18 m behind her. Right, the Odaiba checklist on a phone.
+
+![Walking directions on the shot pages and the phone checklist](docs/img/so_nav.jpg)
+
+![Odaiba route page](docs/img/so_route.jpg)
+
+![Shinjuku + Odaiba itinerary page](docs/img/so_trip.jpg)
+
+![Odaiba outfit page](docs/img/so_outfit.jpg)
+
+Generation log: the first round of 43 images was submitted in four parallel batches. Checking each image showed that 7 of the Odaiba images drew the sun next to Rainbow Bridge. Seen from the deck and the beach the bridge lies to the northwest, while at 16:00 the sun is at 253° and 16° high, about 55° apart. The light section was rewritten to put the sun outside the frame on the left, and the 7 images were regenerated in two batches. Below, round 1 on the left and round 2 on the right. Both rounds are recorded in `generation_log.jsonl`, and the replaced images are marked `superseded` with the reason.
+
+![Odaiba 02, round 1 and round 2](docs/img/so_sun_fix.jpg)
+
+</details>
+
 ### Camera-move library
 
 11 camera moves with the same original model, the same outfit and the same fictional garden museum, animated by `tools/move_gif.py`. On the left top view, the orange dot is the camera and the green dot is the subject; both move in sync with the frame. On the right is the vertical 9:16 frame. So that the background and subject change continuously along the path within a move, the frames are made in two ways:
@@ -178,7 +232,7 @@ flowchart LR
 | 6b Route | `meta.route_stops` → `route`: shortest path along footpaths, dwell times and clock times; `renumber` changes shot numbers to route order; multiple locations: `trip.json` → `trip` | Codex / Claude + script | [ROUTE_NOTES](docs/ROUTE_NOTES.md) |
 | 7 Prompts | Write `scene_bible.md` first (what the site really looks like and what is easy to get wrong); series master + same-series variants, with the framing section taken from the text description of the post's composition; clips get keyframes, plus a separate `move_prompts.md` with start / mid / end frames | Codex / Claude | [prompt_chains](templates/prompt_chains.md) |
 | 8–9 Generation and review | `jobs [--missing]` → `shots`; clip start/mid/end frames: `jobs --moves` → `shots --moves`; review each image with step 6 of the prompt rules and compare the composition with the post description; status test / failed | Script + codex-imagegen + Codex / Claude | |
-| 10 Shoot script | `cards`: itinerary → outfit → route → shots (in route order, with a camera-move page after each clip card) as `<日期>_<地点>_拍摄脚本.pdf`; also generates `<日期>_<地点>_拍摄核对表.html` | Script | [CARD_SPEC](docs/CARD_SPEC.md) |
+| 10 Shoot script | `cards`: itinerary → outfit → route → shots (in route order, with a camera-move page after each clip card and Google Maps walking directions on every page, clickable in the PDF) as `<日期>_<地点>_拍摄脚本.pdf`; also generates `<日期>_<地点>_拍摄核对表.html` | Script | [CARD_SPEC](docs/CARD_SPEC.md) |
 | 11 Shoot-day materials | Timeline, model sheet, arrival checklist, edit list | Codex / Claude | [templates/](templates/) |
 
 ## Quick start
@@ -214,6 +268,7 @@ python pipeline.py shots   hakone-1003 --moves   # → out/hakone-1003-moves/; p
 python pipeline.py sns-import hakone-1003        # Optional: post images you saved on your own phone go into sns_inbox/, then are archived to sns_private/ (not committed)
 python pipeline.py cards   hakone-1003           # → itinerary / outfit / route pages + shot cards + shoot script PDF + checklist HTML
 python pipeline.py checklist hakone-1003         # Rebuild only the checklist (--no-thumbs: no embedded thumbnails)
+python tools/nav.py --plan plans/hakone-1003      # List each shot's walking-directions target and link for checking
 python pipeline.py sun     hakone-1003 --weather-only   # Day before departure: refresh only the forecast, then run cards
 python pipeline.py status  hakone-1003
 ```
@@ -335,6 +390,12 @@ Following [`INSTALL.md`](INSTALL.md), runs `setup.cmd` on the local machine (ins
 
 Checks the 16-day forecast, sets up the plan on the nearest sunny day and writes a forecast summary into `meta.forecast`; `init --gear` lists all four devices. SNS research runs one round of searches per device, posts shot on the same device are reproduced first, and each shot records its `device`. For a city site, one overview map is used for the route and several district maps for the top views. See [`examples/tokyotower-1003`](examples/tokyotower-1003) (case study 2).
 
+**13. Two sites in one day, shopping on the way, timed around an event**
+
+> On October 3 I leave by train at 1 pm, first to Alpen TOKYO at Shinjuku East Exit to buy trousers, then to the Odaiba lantern festival. Only a camera and a phone, no tripod.
+
+Checks the forecast and the day's events in Tokyo's 23 wards and confirms the lighting time; sets up one plan per site and links them in `trip.json` with the `plan` field, so the itinerary page shows the trains between them. Once the shot times are set by the light and the lighting time, `meta.route_timing: "shots"` makes the route page use the shots' time windows for dwell. In-store shots get `walk_to.place_id` with a floor label, distant telephoto positions get `walk_to: {"to": "camera"}`, and `python tools/nav.py --plan plans/<plan>` lists every target for checking; the QR codes in the PDF from `cards` are clickable. See [`examples/shinjuku-odaiba-1003`](examples/shinjuku-odaiba-1003) (case study 3).
+
 ## Directory layout
 
 ```
@@ -358,7 +419,8 @@ tools/
   renumber.py          Renumbers shots in route order and syncs related files
   sns_import.py        Archives post images you saved yourself to sns_private/ by shot number
   sns_refs.py poses.py Legacy SNS summary page and pose reference page (only produced when shots have no src)
-  make_cards.py        Shot pages: SNS source panel and QR code, multiple base maps, indoor, off-site windows, half-hourly sun table, settings block switched by medium
+  make_cards.py        Shot pages: SNS source panel and QR code, multiple base maps, indoor, off-site windows, half-hourly sun table, settings block switched by medium, walking-directions panel
+  nav.py               Google Maps walking directions to each shot position: target, camera-position offset, PDF link annotations, --plan self-check
   fixtures/            Offline samples (Nominatim, Overpass, Commons, Open-Meteo, elevation)
 templates/             Shot template and JSON Schema, prompt chains, SNS research sheet, outfit / itinerary / edit list / timeline / arrival checklist / model sheet templates, base map style instruction, hand-written geometry example
 scripts/               install_skill.py (cross-platform Codex / Claude install); Windows: setup.ps1 (uv + venv + self-check + register), job.example.ps1 (one-off task template, UTF-8 BOM)
@@ -366,7 +428,7 @@ setup.cmd run_job.cmd run_shots.cmd   Windows double-click entry points
 skill/                 Workflow skill shared by Codex / Claude, and stage overview
 INSTALL.md             Setup guide for a new computer (Windows / macOS / Linux, codex-imagegen, skill, updates, FAQ)
 docs/                  WORKFLOW (SOP), SNS_NOTES (shots driven by SNS material), SHOT_DESIGN (shot design rules), OUTFIT_GUIDE (outfit), VIDEO_NOTES (bursts/clips/Live Photos), ROUTE_NOTES (itinerary and in-park route), CAMERA_NOTES (α7 V layout, flash, clip presets), CARD_SPEC (cheat sheet layout), WINDOWS_SETUP (deployment and known pitfalls), CHANGELOG
-examples/              tokyotower-1003 (27 shots, sunny city site, four devices, 37 pages), hakone-0928-v5 (38 shots, SNS-driven, 47 pages), hakone-0928-v3 (v3.5, 43 pages), asakusa-0928 (12 shots, two base maps), hakone-0928-v2 (13 shots)
+examples/              shinjuku-odaiba-1003 (20 Shinjuku + 23 Odaiba shots, event day, walking directions, 29 + 32 pages), tokyotower-1003 (27 shots, sunny city site, four devices, 37 pages), hakone-0928-v5 (38 shots, SNS-driven, 47 pages), hakone-0928-v3 (v3.5, 43 pages), asakusa-0928 (12 shots, two base maps), hakone-0928-v2 (13 shots)
 plans/ inbox/ out/ refs/   Runtime directories (not committed; copy plans you want to keep into examples/)
 ```
 
@@ -383,6 +445,7 @@ plans/ inbox/ out/ refs/   Runtime directories (not committed; copy plans you wa
 | Transport and route basis | NAVITIME / official timetables / official facility order / travel guides | Looked up by Codex / Claude and written into `trip.json` and `meta.route_source` with the query date |
 | Image generation | codex-imagegen-cli 0.2.0 (third-party tool that calls Codex's internal image endpoint) | Uses the ChatGPT sign-in of the Codex desktop app / CLI (plain-text `auth.json`) and the subscription quota; the model is chosen by the server; for pinning the version and storing credentials see INSTALL section 3 |
 | Prompt rules | nuyoah-xiezhen-prompt | Series master, same-series variants, step-6 review |
+| Walking directions | Google Maps URLs | Links only (`api=1`, `travelmode=walking`, optional `destination_place_id`); no API calls and no key. PDF link annotations use pypdf |
 
 Weather light quality: direct ratio ≥ 0.5 and cloud cover < 60% is sunny hard light; ≥ 0.5 otherwise is high cloud with sun through; 0.2–0.5 is thin cloud; < 0.2 is overcast. Shots are planned for the forecast by default, with the other weather as a backup.
 
@@ -395,6 +458,7 @@ Weather light quality: direct ratio ≥ 0.5 and cloud cover < 60% is sunny hard 
 - Connections between locations on the itinerary page are straight lines and do not represent roads. Check transport schedules on the day of departure.
 - The official in-park map (園内マップ) is used only to read the facility order and is not included in the cheat sheets. Site dominant colours are sampled from public photos and may differ from the actual scene in the current season.
 - Terrain occlusion is estimated from the DEM; occlusion by trees and buildings inside the park must be judged on site.
+- Walking directions are only as accurate as the position coordinates in the shot list (5 decimal places is about 1 m); check positions against OSM or a map. In-store shots can only navigate to the building, with the floor in the label. Google Maps is unavailable in some regions; the coordinates can still be entered in another map app.
 - Generated images are previews only; the cheat sheet footer always reads "AI shoot preview, not an on-site photo" (AI 拍摄示意，非现场实拍). Shot status is only test / failed, and becomes final only after the user confirms.
 - How closely a preview image matches the original post depends on the text description: the more specific the subject position and the foreground/background order, the closer the result. Action details (for example "only the top of the umbrella visible") may still be drawn as a full figure; such frames need to be rewritten separately or accepted as approximate.
 - Original post images are not scraped, not screenshotted and not used as image-generation input. To see the originals in a private copy, save them yourself on your phone and use `sns-import`.

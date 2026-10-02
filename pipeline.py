@@ -253,6 +253,11 @@ def cmd_cards(a):
                 name = pdf_name(meta)
                 ims = [Image.open(p).convert("RGB") for p in pngs]
                 ims[0].save(d / name, save_all=True, append_images=ims[1:], resolution=150)
+                sys.path.insert(0, str(TOOLS))
+                from nav import add_pdf_links                # 1.9.0：分镜页的导航与原帖二维码在 PDF 里可直接点按
+                nl = add_pdf_links(d / name, pngs, d / "cards" / "links.json")
+                if nl:
+                    print(f"PDF 可点击链接 {nl} 处（谷歌地图步行导航、原帖）")
                 for old in [*d.glob("*拍摄脚本*.pdf"), *d.glob("*拍摄脚本*.pdf")]:   # 只保留当前命名的一份（含 1.3 以前的旧名）
                     if old.name != name:
                         old.unlink()
@@ -289,7 +294,7 @@ def cmd_palette(a):
 
 def cmd_route(a):
     d = PLANS / a.plan
-    return run([PY, TOOLS / "route.py", "--plan", d, "--out", d / "cards", "--speed", str(a.speed), "--basemap", a.basemap])
+    return run([PY, TOOLS / "route.py", "--plan", d, "--out", d / "cards", "--speed", str(a.speed)] + (["--basemap", a.basemap] if a.basemap else []))
 
 
 def cmd_trip(a):
@@ -527,7 +532,7 @@ def main():
     s.add_argument("--public", action="store_true", help="公开版：不嵌 sns_private 原帖截图"); s.add_argument("--fragment", help="另存一份无外壳版本（发布页用）"); s.set_defaults(fn=cmd_checklist)
     s = sub.add_parser("palette"); s.add_argument("plan"); s.add_argument("--images"); s.add_argument("--n", type=int, default=12); s.add_argument("--offline", action="store_true"); s.set_defaults(fn=cmd_palette)
     s = sub.add_parser("outfit"); s.add_argument("plan"); s.set_defaults(fn=cmd_outfit)
-    s = sub.add_parser("route"); s.add_argument("plan"); s.add_argument("--speed", type=float, default=1.0); s.add_argument("--basemap", default="main"); s.set_defaults(fn=cmd_route)
+    s = sub.add_parser("route"); s.add_argument("plan"); s.add_argument("--speed", type=float, default=1.0); s.add_argument("--basemap", default=None); s.set_defaults(fn=cmd_route)
     s = sub.add_parser("trip"); s.add_argument("plan"); s.set_defaults(fn=cmd_trip)
     s = sub.add_parser("sns-import"); s.add_argument("plan"); s.add_argument("--list", action="store_true"); s.set_defaults(fn=cmd_sns_import)
     s = sub.add_parser("status"); s.add_argument("plan"); s.set_defaults(fn=cmd_status)

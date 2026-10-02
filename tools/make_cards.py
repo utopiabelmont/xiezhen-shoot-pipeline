@@ -20,8 +20,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 try:                                    # 作为 tools.make_cards 导入（测试）或直接运行脚本
     from .i18n import LANG, install_pil_hooks, mark_fragments, raw, tr, wrap_words
+    from .nav import nav_target
 except ImportError:
     from i18n import LANG, install_pil_hooks, mark_fragments, raw, tr, wrap_words
+    from nav import nav_target
 
 install_pil_hooks()   # XIEZHEN_LANG=en / ja 时，所有文字先查 locales/<语言>.json 再测量与绘制
 
@@ -443,12 +445,17 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
         if d.textlength(shot["title"], font=f_title) <= room:
             break
     d.text((136, 30 + (46 - f_title.size) // 2), shot["title"], font=f_title, fill=GREEN)
+    head_right = 136 + d.textlength(shot["title"], font=f_title)
     if badge:
         bx = 136 + d.textlength(shot["title"], font=f_title) + 18
         bw = d.textlength(badge, font=f_h) + 24
         d.rounded_rectangle((bx, 40, bx + bw, 76), radius=8, fill=MEDIUM_COLOR.get(medium, GOLD))
         d.text((bx + 12, 45), badge, font=f_h, fill=(255, 255, 255))
-    d.text((W - 40 - d.textlength(sub, font=f_s), 52), sub, font=f_s, fill=MUTED)
+        head_right = bx + bw
+    if W - 40 - d.textlength(sub, font=f_s) < head_right + 16:     # 标题加介质标签太长时：先去掉器材，仍放不下就挪到标题下方
+        sub = f"{meta['place'].split('（')[0]}　{meta['date']}"
+    sy = 52 if W - 40 - d.textlength(sub, font=f_s) >= head_right + 16 else 86
+    d.text((W - 40 - d.textlength(sub, font=f_s), sy), sub, font=f_s, fill=MUTED)
     # 照片：有 SNS 参考时左为 AI 示意、中为原帖，下方为对照说明；
     # AI 示意是横图时改为上下排：横图占满左两栏，下方左为原帖、右为对照说明
     src = shot.get("src")                           # v5 起：分镜从一条 SNS 素材出发，卡片只放一张 AI 示意 + 来源栏
@@ -539,23 +546,46 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     draw_topview(img, (rx0 + 10, 384, rx1 - 10, 680), shot, sun_for_shot, shot.get("topview_note") or meta_weather_note(meta), f_s, f_t)
     d = ImageDraw.Draw(img)
     split = rx0 + int((rx1 - rx0) * 0.4)
-    y = panel(d, (rx0, 702, split - 6, 912), "姿势与引导", f_h)
+    nav = nav_target(shot)                          # 1.9.0：站位的谷歌地图步行导航（底栏二维码 + PDF 可点击）
+    pb = 872 if nav else 912                       # 有导航时姿势 / 光线两栏让出高度给底栏
+    y = panel(d, (rx0, 702, split - 6, pb), "姿势与引导", f_h)
     pz = POSES_BY_SHOT.get(shot["id"], [])
     ptxt = ("\n参考姿势：" + "、".join(f"{p['id']} {p['name']}" for p in pz)) if pz else ""
     if src and src.get("pose_name"):
         ptxt = f"\n同款姿势：{src['pose_name']}"
-    fit_block(d, (rx0 + 12, y), shot["subject"] + "\n" + shot["action"] + ptxt, split - rx0 - 30, 904)
-    y = panel(d, (split + 6, 702, rx1, 912), "光线与备选", f_h)
-    fit_block(d, (split + 18, y), shot["light"] + "\n备选：" + shot["alt"], rx1 - split - 32, 904)
-    y = panel(d, (rx0, 924, rx1, H - 22), "时段 · 地点 · 注意", f_h)
+    fit_block(d, (rx0 + 12, y), shot["subject"] + "\n" + shot["action"] + ptxt, split - rx0 - 30, pb - 8)
+    y = panel(d, (split + 6, 702, rx1, pb), "光线与备选", f_h)
+    fit_block(d, (split + 18, y), shot["light"] + "\n备选：" + shot["alt"], rx1 - split - 32, pb - 8)
     ref_txt = ""                                   # SNS 参考已在左侧对照显示，这里不重复
-    fit_block(d, (rx0 + 14, y), f"{shot['time']}　{shot['spot']}　注意：{shot['note']}{ref_txt}", rx1 - rx0 - 28, H - 30)
+    if nav:
+        y = panel(d, (rx0, pb + 12, rx1, H - 22), "时段 · 地点 · 步行导航", f_h)
+        qs = (H - 26) - (pb + 12 + 46) - 18           # 二维码边长：底栏高度减去标题与说明
+        qx, qy = rx1 - 12 - qs, pb + 12 + 46
+        q = qr_image(nav["url"], qs)
+        if q:
+            img.paste(q, (qx, qy))
+            d = ImageDraw.Draw(img)
+            cap = "扫码 / 点按导航"
+            d.text((qx + (qs - d.textlength(cap, font=font(12))) / 2, qy + qs + 1), cap, font=font(12), fill=MUTED)
+            LINKS.setdefault(out_path.name, []).append([qx, qy, qx + qs, qy + qs, nav["url"]])
+        lat, lon = nav["latlon"]
+        tx1 = qx - 14
+        coord = f" ({lat:.5f}, {lon:.5f})" if LANG == "en" else f"（{lat:.5f}, {lon:.5f}）"
+        nav_line = f"{tr('谷歌地图步行导航')} → {tr(nav['label'])}{coord}"      # 分段翻译：标签与坐标不进对照表
+        yy = fit_block(d, (rx0 + 14, y), nav_line, tx1 - rx0 - 14, y + 40, sizes=(15, 14, 13), fill=GREEN)
+        LINKS.setdefault(out_path.name, []).append([rx0 + 10, y - 2, tx1, yy + 2, nav["url"]])
+        fit_block(d, (rx0 + 14, yy + 2), f"{shot['time']}　{shot['spot']}　注意：{shot['note']}{ref_txt}", tx1 - rx0 - 14, H - 30)
+    else:
+        y = panel(d, (rx0, 924, rx1, H - 22), "时段 · 地点 · 注意", f_h)
+        fit_block(d, (rx0 + 14, y), f"{shot['time']}　{shot['spot']}　注意：{shot['note']}{ref_txt}", rx1 - rx0 - 28, H - 30)
     foot = (FOOT_PHONE.get(medium) if PHONE else None) or FOOT.get(medium, "AI 拍摄示意，非现场实拍；布局与站位以现场条件为准。光向按 sun.md 计算。")
     d.text((40, H - 42), foot, font=f_t, fill=MUTED)
     img.save(out_path, quality=92)
 
 
 SNS_BY_SHOT: dict = {}
+LINKS: dict = {}                                      # 卡片文件名 → [[x0, y0, x1, y1, url]]，cards 阶段据此给 PDF 加可点击链接
+CUR_CARD: str | None = None
 POSES_BY_SHOT: dict = {}                              # pose_refs.json：分镜 id → 适用的小红书姿势
 SNS_REFS: dict = {}
 SNS_DIR: Path | None = None
@@ -754,6 +784,8 @@ def draw_src_column(img, box, src, shot=None):
     if q:
         qx = x0 + (w - qs) // 2
         img.paste(q, (qx, y))
+        if CUR_CARD:
+            LINKS.setdefault(CUR_CARD, []).append([qx, y, qx + qs, y + qs, src["url"]])
         d = ImageDraw.Draw(img)
         cap = "扫码打开搜索结果" if kind == "平台汇总" else "扫码打开原帖"
         y += qs + 2
@@ -875,21 +907,32 @@ def _settings_rows(shot, medium):
 
 
 def meta_weather_note(meta):
-    return "预报阴雨：散射光无方向；金色箭头为放晴时的太阳方位"
+    return meta.get("topview_note") or "预报阴雨：散射光无方向；金色箭头为放晴时的太阳方位"
 
 
 def sun_at(meta, time_str):
-    """取分镜起始时刻最近的整点/半点太阳数据。"""
+    """分镜时刻的太阳方位/高度：在 meta.sun 的整点、半点之间线性插值（超出范围取最近一档）。"""
     m = re.search(r"(\d{1,2}):(\d{2})", time_str or "")
     if not m:
         return None
-    hh, mm = int(m.group(1)), int(m.group(2))
-    key = f"{hh:02d}:{'30' if mm >= 30 else '00'}"
-    sun = meta.get("sun", {})
-    if key in sun:
-        return sun[key]
-    key2 = f"{hh:02d}:00"
-    return sun.get(key2)
+    t = int(m.group(1)) * 60 + int(m.group(2))
+    pts = []
+    for k, v in (meta.get("sun") or {}).items():
+        km = re.match(r"(\d{1,2}):(\d{2})", k)
+        if km and v:
+            pts.append((int(km.group(1)) * 60 + int(km.group(2)), v))
+    if not pts:
+        return None
+    pts.sort()
+    if t <= pts[0][0]:
+        return pts[0][1]
+    if t >= pts[-1][0]:
+        return pts[-1][1]
+    for (t0, v0), (t1, v1) in zip(pts, pts[1:]):
+        if t0 <= t <= t1:
+            r = (t - t0) / (t1 - t0) if t1 > t0 else 0
+            return [round(v0[0] + (v1[0] - v0[0]) * r, 1), round(v0[1] + (v1[1] - v0[1]) * r, 1)]
+    return pts[-1][1]
 
 
 def main():
@@ -924,12 +967,20 @@ def main():
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     imgs = {p.name[:2]: p for p in sorted(Path(a.images).glob("*.png"))}
     only = [x.strip() for x in os.environ.get("XIEZHEN_ONLY", "").split(",") if x.strip()]   # 只出指定编号（README 配图等）
+    global CUR_CARD
     for s in plan["shots"]:
         if only and s["id"] not in only:
             continue
         sun = sun_at(meta, s.get("alt_time") or s["time"])
-        make_card(s, meta, imgs.get(s["id"]), out / f"card_{s['id']}.png", sun)
+        CUR_CARD = f"card_{s['id']}.png"
+        LINKS.pop(CUR_CARD, None)
+        make_card(s, meta, imgs.get(s["id"]), out / CUR_CARD, sun)
         print("card", s["id"], "photo:", imgs.get(s["id"]).name if imgs.get(s["id"]) else "无")
+    lf = out / "links.json"                           # 与 PDF 页一一对应的可点击区域（导航二维码、导航文字、原帖二维码）
+    old_links = json.loads(lf.read_text(encoding="utf-8")) if lf.exists() else {}
+    old_links = {k: v for k, v in old_links.items() if not k.startswith("card_")}
+    old_links.update(LINKS)
+    lf.write_text(json.dumps(old_links, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":

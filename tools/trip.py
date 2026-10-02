@@ -166,7 +166,9 @@ def main():
         d.text((p[0] - tw / 2, p[1] - 10), lab, font=font(16, True), fill=(255, 255, 255))
         name = s["name"] + ("（备选）" if s.get("optional") else "")
         tw = d.textlength(name, font=f_s)
-        nx = min(max(p[0] + 18, mx0 + 8), mx1 - tw - 8); ny = min(max(p[1] - 12, my0 + 8), my1 - 30)
+        nx = max(p[0] + 18, mx0 + 8); ny = min(max(p[1] - 12, my0 + 8), my1 - 30)
+        if nx + tw > mx1 - 8:                               # 右侧放不下：标签放到圆点正下方，不压住编号与连线标注
+            nx = min(max(p[0] - tw / 2, mx0 + 8), mx1 - tw - 8); ny = min(p[1] + 20, my1 - 30)
         d.rectangle((nx - 3, ny - 2, nx + tw + 3, ny + 22), fill=(255, 255, 255)); d.text((nx, ny), name, font=f_s, fill=col)
 
     # 左下：当天天气

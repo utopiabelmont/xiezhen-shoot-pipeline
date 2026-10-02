@@ -24,6 +24,9 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from nav import nav_target, stop_target  # noqa: E402  1.9.0：每条分镜与每个停留点的谷歌地图步行导航
 MEDIUM = {"still": "静态", "burst": "连拍", "video": "短片", "live": "实况"}
 CLIP = {"24p": "24p 实时", "sq60": "S&Q 60→24", "sq120": "S&Q 120→24"}
 CLIP_PHONE = {"24p": "4K 24 fps 实时", "sq60": "4K 60 fps（放 24p 慢 2.5 倍）", "sq120": "慢动作 4K 120 fps"}
@@ -299,6 +302,8 @@ details.refs li{border-left:3px solid var(--line);padding-left:8px}
 details.refs a{color:var(--green);font-weight:600}
 details.refs .use{margin-top:2px}
 .pose{font-size:13px;margin-top:3px}
+.nav{font-size:13px;margin-top:4px;color:#666}
+.nav a{color:#2f5f8a;font-weight:600;text-decoration:none;border-bottom:1px dotted #2f5f8a;margin-right:6px}
 .pose a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px dotted var(--green);margin-right:6px}
 .poses{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .poses li{background:var(--panel,#fff);border:1px solid var(--line);border-radius:8px;padding:6px;font-size:12.5px;line-height:1.45}
@@ -440,6 +445,13 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
         return (f'<div class="pose">来源 <a href="{esc(sr["url"])}" target="_blank" rel="noopener">{esc(sr["ref"])} {esc(sr.get("title", ""))}</a>'
                 f'（{esc(sr.get("platform", ""))} · {esc(sr.get("kind", ""))}）{pose}<br>照搬：{esc(sr.get("what", ""))}</div>')
 
+    def nav_html(t, text="谷歌地图步行导航"):
+        if not t:
+            return ""
+        lat, lon = t["latlon"]
+        return (f'<div class="nav"><a href="{esc(t["url"])}" target="_blank" rel="noopener">{text}</a>'
+                f'→ <span>{esc(t["label"])}</span> <span class="num">{lat:.5f}, {lon:.5f}</span></div>')   # 文字节点分开，便于整句翻译
+
     def shot_li(s):
         m = s.get("medium", "still")
         chips = []
@@ -473,6 +485,7 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
                     f'<a href="{esc(PPOST.get(pz["src"], {}).get("url", "#"))}" target="_blank" rel="noopener">{esc(pz["id"])} {esc(pz["name"])}</a>'
                     for pz in PBY.get(s["id"], [])) + '</div>') if PBY.get(s["id"]) else "")
                 + src_html(s.get("src"))
+                + nav_html(nav_target(s))
                 + f'<details><summary>细节</summary><dl>{dl}</dl></details></div>{mv}</li>')
 
     ver = re.search(r"v\d+(?:\.\d+)?", meta.get("version", ""))
@@ -621,6 +634,7 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
         H.append(f'<div class="stop"{attrs}><h3><span class="seq">{gi + 1:02d}</span>{esc(g["name"])}'
                  f'<span class="t num">{esc(tt)}{esc(walk)}</span><span class="prog num" data-prog="#g{gi} input"></span></h3>'
                  + (f'<div class="note">{esc(g["note"])}</div>' if g.get("note") else "")
+                 + nav_html(stop_target({"shots": g["ids"]}, byid), "导航到本站")
                  + ("" if any(byid[i].get("src") is not None for i in g["ids"]) else refs_html(g["name"]))
                  + f'<ul class="items" id="g{gi}">' + "".join(shot_li(byid[i]) for i in g["ids"]) + "</ul></div>")
     H.append("</section>")

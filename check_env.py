@@ -6,6 +6,11 @@ for m in ["astral", "matplotlib", "pvlib", "pandas", "timezonefinder", "tzdata",
         importlib.import_module(m); print(f"  依赖 {m:14s} OK")
     except Exception as e:
         print(f"  依赖 {m:14s} 缺失 → pip install {m}")
+for m, why in [("qrcode", "页面上的原帖与导航二维码"), ("pypdf", "PDF 里的二维码可点按")]:
+    try:
+        importlib.import_module(m); print(f"  依赖 {m:14s} OK")
+    except Exception:
+        print(f"  依赖 {m:14s} 缺失 → pip install {m}（{why}；缺少时跳过）")
 try:
     zoneinfo.ZoneInfo("Asia/Tokyo"); print("  时区数据          OK")
 except Exception:

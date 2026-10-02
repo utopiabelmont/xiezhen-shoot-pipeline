@@ -1,0 +1,479 @@
+{
+ "plan": "odaiba-1003",
+ "browsed": "2026-10-02 22:50–23:25，Chrome 已登录账号人工级浏览；只记链接与观察，不保存图片",
+ "sources": [
+  "小红书 搜索「台场 拍照机位」「台场拍照姿势」「海之灯祭 台场 拍照」",
+  "Instagram #お台場ポートレート #海の灯まつり",
+  "抖音 搜索「台场海灯祭 拍照」",
+  "TikTok 搜索「海の灯まつり お台場」"
+ ],
+ "fields_note": "cam_bearing 指从人物到相机的方位；cam_dist 为相机到人物的距离；frame 为竖幅里人物位置（x 横向占比，top/feet 头顶与脚底的纵向占比）。",
+ "refs": [
+  {
+   "id": "S01",
+   "platform": "Instagram",
+   "url": "https://www.instagram.com/p/Ddlz5adTxwp/",
+   "posted": "2026-09-22",
+   "likes": "184",
+   "post_title": "お台場😙 #odaiba（yu_kiayumi，184 赞）",
+   "title": "アクアシティ露台 · 扶手边半身看镜头",
+   "spot": "アクアシティお台場 3F 露台",
+   "stop": "アクアシティ 3F 露台",
+   "latlon": [
+    35.6274,
+    139.77226
+   ],
+   "cam_bearing": 125,
+   "cam_dist": 2,
+   "cam_h": "胸口",
+   "lens_est": "手机约 24mm",
+   "kind": "半身",
+   "time_light": "日落前后，天空金色",
+   "weather": "晴",
+   "pose": "lean",
+   "gaze": "camera",
+   "pose_note": "一手搭在发暖光的扶手上，半转身看镜头微笑",
+   "fg_bg": "前景暖光扶手；中景道路、斑马线与行道树；背景自由女神像与彩虹桥、金色天空",
+   "outfit": "黑色荷叶边上衣",
+   "visual": {
+    "light": "夕阳在画面后方，脸被天空与扶手灯照亮",
+    "tone": "金色天空 + 冷色桥身",
+    "composition": "人物在左下约 40%，女神在她头部右侧，彩虹桥横过上三分线"
+   },
+   "frame": {
+    "x": 0.35,
+    "top": 0.47,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "露台与女神、彩虹桥的相对位置不变；改 50mm 让背景更大"
+   },
+   "shots": [
+    "02"
+   ]
+  },
+  {
+   "id": "S02",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/6a617c640000000011014054",
+   "posted": "2026-07-23",
+   "likes": "17",
+   "post_title": "东京台场保姆级打卡｜自由女神&高达一次拍全（默默MoMo，17 赞）",
+   "title": "自由女神前 · 低机位举手同款",
+   "spot": "自由女神像前木栈道",
+   "stop": "自由女神像前",
+   "latlon": [
+    35.62779,
+    139.7717
+   ],
+   "cam_bearing": 140,
+   "cam_dist": 5,
+   "cam_h": "膝盖",
+   "lens_est": "手机约 24mm",
+   "kind": "全身",
+   "time_light": "阴天",
+   "weather": "阴",
+   "pose": "stand",
+   "gaze": "away",
+   "pose_note": "右臂高举模仿火炬",
+   "fg_bg": "前景木栈道地板；栏杆横过腰后；背景女神像与远处彩虹桥",
+   "outfit": "全黑西装外套短裙 + 黑丝袜 + 厚底靴",
+   "visual": {
+    "light": "阴天散射",
+    "tone": "灰绿",
+    "composition": "人物在左侧约 44%，头顶约 43%，脚 95%；女神在右后方顶到上沿"
+   },
+   "frame": {
+    "x": 0.44,
+    "top": 0.43,
+    "feet": 0.95
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "机位固定；今天侧逆光"
+   },
+   "text_notes": "正文：自由女神像一定要站在 AQUA CITY 的露台上，把彩虹桥和城市天际线一起框进去；LOVE 爱心雕塑适合粉色穿搭。",
+   "shots": [
+    "04"
+   ]
+  },
+  {
+   "id": "S03",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/69097b9d0000000003011786",
+   "posted": "2025-11-04",
+   "likes": "702",
+   "post_title": "东京忧郁少女💙（kelvin李，702 赞）",
+   "device": "Sony α7R V + 35mm f1.2",
+   "title": "临水栏杆 · 倚栏侧望 / 透视近景 / 水边背影",
+   "spot": "台场海滨公园临水步道的灰色金属栏杆",
+   "stop": "临水步道栏杆",
+   "latlon": [
+    35.62846,
+    139.77252
+   ],
+   "cam_bearing": 160,
+   "cam_dist": 2,
+   "cam_h": "眼平略低",
+   "lens_est": "35mm（原帖写明）",
+   "kind": "七分",
+   "time_light": "暮色褪去前的几分钟（蓝调）",
+   "weather": "晴",
+   "pose": "lean",
+   "gaze": "away",
+   "pose_note": "图 1 倚栏、身体 3/4 朝左、脸看画面左侧；图 2 近景看镜头；图 3 背影站在水边看彩虹桥",
+   "fg_bg": "前景栏杆；背景蓝色海面、失焦的彩虹桥与对岸灯光",
+   "outfit": "深色水手服",
+   "visual": {
+    "light": "蓝调天空 + 左侧暖色路灯",
+    "tone": "冷蓝主调",
+    "composition": "图 1 人物在中右，头顶约 25%，下缘裁在大腿中段，彩虹桥在左上虚化"
+   },
+   "frame": {
+    "x": 0.58,
+    "top": 0.25,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "栏杆位置需现场确认；今天放在 16:20 夕照，光色与原帖不同"
+   },
+   "shots": [
+    "06",
+    "07"
+   ]
+  },
+  {
+   "id": "S04",
+   "platform": "Instagram",
+   "url": "https://www.instagram.com/p/DbvFxWYxggo/",
+   "posted": "未记录",
+   "post_title": "#海 #お台場海浜公園 #ポートレート（只看了检索页缩略图）",
+   "title": "沙滩水边 · 侧身伸手",
+   "spot": "おだいばビーチ水边",
+   "stop": "沙滩西端水边",
+   "latlon": [
+    35.62985,
+    139.7745
+   ],
+   "cam_bearing": 145,
+   "cam_dist": 3,
+   "cam_h": "眼平",
+   "lens_est": "约 70mm",
+   "kind": "七分",
+   "time_light": "阴天柔光",
+   "weather": "阴",
+   "pose": "stand",
+   "gaze": "down",
+   "pose_note": "侧身朝左，一手向下伸向水面",
+   "fg_bg": "前景湿沙；背景海面与左后方远处的彩虹桥",
+   "outfit": "浅蓝色透纱长裙",
+   "visual": {
+    "light": "阴天散射",
+    "tone": "浅蓝白",
+    "composition": "人物在中间偏右，彩虹桥在左上远处"
+   },
+   "frame": {
+    "x": 0.6,
+    "top": 0.15,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "只看过缩略图，未打开原帖；今天是夕照"
+   },
+   "shots": [
+    "09"
+   ]
+  },
+  {
+   "id": "S05",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/6a6211b3000000001d00d09e",
+   "posted": "2026-07-23",
+   "likes": "344",
+   "post_title": "数码宝贝取景地圣地巡礼｜东京台场打卡攻略（带枪的大卫爸爸，344 赞）",
+   "title": "沙滩 · 坐看彩虹桥（数码宝贝同款）",
+   "spot": "沿沙滩找角度坐下",
+   "stop": "沙滩 · 坐看彩虹桥",
+   "latlon": [
+    35.6302,
+    139.775
+   ],
+   "cam_bearing": 140,
+   "cam_dist": 18,
+   "cam_h": "胸口",
+   "lens_est": "长焦",
+   "kind": "环境远景",
+   "time_light": "夕阳，橙色天空",
+   "weather": "晴",
+   "pose": "sit",
+   "gaze": "back",
+   "pose_note": "坐着背对镜头看桥",
+   "fg_bg": "前景沙面；背景彩虹桥与橙色天空",
+   "outfit": "5 号球衣",
+   "visual": {
+    "light": "夕阳逆光剪影",
+    "tone": "橙",
+    "composition": "人物在右下，桥在中上"
+   },
+   "frame": {
+    "x": 0.65,
+    "top": 0.62,
+    "feet": 0.85
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "沙滩与桥的方位固定；评论：要站远用长焦，桥才不会小"
+   },
+   "text_notes": "正文给了一条从新桥到台场海滨公园、沙滩、自由女神、富士电视台的巡礼路线。",
+   "shots": [
+    "11"
+   ]
+  },
+  {
+   "id": "S06",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/6a62d283000000000503a9d2",
+   "posted": "2026-07-24",
+   "likes": "86",
+   "post_title": "台场竟然这么出片🇯🇵（绪依，86 赞）",
+   "title": "水边蹲下比耶",
+   "spot": "おだいばビーチ水边",
+   "stop": "水边 · 夕阳余晖",
+   "latlon": [
+    35.63095,
+    139.7762
+   ],
+   "cam_bearing": 140,
+   "cam_dist": 2,
+   "cam_h": "蹲下同高",
+   "lens_est": "手机约 24mm",
+   "kind": "近景",
+   "time_light": "日落后余晖",
+   "weather": "晴",
+   "pose": "crouch",
+   "gaze": "camera",
+   "pose_note": "蹲在水边比耶看镜头",
+   "fg_bg": "前景浅水与湿沙；背景彩虹桥与粉橙天空",
+   "outfit": "白色背心 + 牛仔短裤 + 墨镜发箍",
+   "visual": {
+    "light": "天空余晖",
+    "tone": "粉橙蓝",
+    "composition": "人物下半偏左，地平线约 40%"
+   },
+   "frame": {
+    "x": 0.42,
+    "top": 0.48,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "同一段沙滩，时间对得上"
+   },
+   "text_notes": "正文：推荐夕阳时去；海拔低，东京塔拍出来很小，只拍彩虹桥。",
+   "shots": [
+    "12"
+   ]
+  },
+  {
+   "id": "S07",
+   "platform": "TikTok",
+   "url": "https://www.tiktok.com/@megmiyae/video/7690568884138609941",
+   "posted": "2026-09-28 前后",
+   "likes": "512",
+   "post_title": "12,000 candles are lighting up a beach in Tokyo ✨（megmiyae）",
+   "title": "灯阵 · 蹲下点灯（视频封面）",
+   "spot": "地上画内",
+   "stop": "地上画 · 点灯",
+   "latlon": [
+    35.63065,
+    139.77585
+   ],
+   "cam_bearing": 160,
+   "cam_dist": 3,
+   "cam_h": "蹲下",
+   "lens_est": "约 35mm",
+   "kind": "半身",
+   "time_light": "蓝调",
+   "weather": "晴",
+   "pose": "crouch",
+   "gaze": "down",
+   "pose_note": "蹲在纸灯之间用点火器点灯",
+   "fg_bg": "前后纸灯；背景亮灯的彩虹桥",
+   "outfit": "深色上衣",
+   "visual": {
+    "light": "烛光从下方照脸",
+    "tone": "暖橙 + 冷蓝",
+    "composition": "人物在中下，桥在上方"
+   },
+   "frame": {
+    "x": 0.5,
+    "top": 0.5,
+    "feet": 0.95
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "17:00 起来场者一起点灯"
+   },
+   "shots": [
+    "13",
+    "14"
+   ]
+  },
+  {
+   "id": "S08",
+   "platform": "TikTok",
+   "url": "https://www.tiktok.com/@rakko0321/video/7557417432646733063",
+   "posted": "2025-10-05",
+   "likes": "2008",
+   "post_title": "📍海の灯火祭り お台場（rakko0321）",
+   "title": "贴地看灯带与桥（视频封面，无人物）",
+   "spot": "地上画边缘",
+   "stop": "地上画 · 点灯",
+   "latlon": [
+    35.6306,
+    139.7756
+   ],
+   "cam_bearing": 165,
+   "cam_dist": 12,
+   "cam_h": "贴地",
+   "lens_est": "广角",
+   "kind": "环境远景",
+   "time_light": "夜",
+   "weather": "晴",
+   "pose": "stand",
+   "gaze": "back",
+   "pose_note": "原帖无人物",
+   "fg_bg": "前景纸灯弧线；背景彩虹桥",
+   "visual": {
+    "light": "纸灯",
+    "tone": "暖橙",
+    "composition": "灯带从左下伸向水边，桥在上方中央"
+   },
+   "frame": {
+    "x": 0.55,
+    "top": 0.55,
+    "feet": 0.65
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "图案每年不同，灯带走向以现场为准"
+   },
+   "shots": [
+    "16"
+   ]
+  },
+  {
+   "id": "S09",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68e3af9b0000000007032345",
+   "posted": "2025-10-06",
+   "likes": "13",
+   "post_title": "🇯🇵中秋海灯（🍑兔兔桃🍑，13 赞）",
+   "title": "灯阵 · 白裙回眸",
+   "spot": "地上画内",
+   "stop": "地上画 · 蓝调",
+   "latlon": [
+    35.6306,
+    139.776
+   ],
+   "cam_bearing": 135,
+   "cam_dist": 3,
+   "cam_h": "眼平",
+   "lens_est": "约 35–50mm",
+   "kind": "七分",
+   "time_light": "夜",
+   "weather": "晴",
+   "pose": "stand",
+   "gaze": "camera",
+   "pose_note": "身体侧向左，回头看镜头，双手胸前轻握",
+   "fg_bg": "背景纸灯弧线与夜色楼群",
+   "outfit": "白色无袖长裙",
+   "visual": {
+    "light": "机顶闪光直闪",
+    "tone": "白裙 + 暖橙灯",
+    "composition": "人物中心约 62%，头顶约 20%，下缘到小腿"
+   },
+   "frame": {
+    "x": 0.62,
+    "top": 0.2,
+    "feet": 1.0
+   },
+   "reproducible": {
+    "level": "中",
+    "why": "本组不带闪光，脸靠烛光；背景换成彩虹桥"
+   },
+   "text_notes": "正文：海滩够大灯够多，总能找到没人的角落；对岸能看到大桥甚至东京塔；外围有乐队。",
+   "shots": [
+    "17"
+   ]
+  },
+  {
+   "id": "S10",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/explore/68e1dad2000000000501017f",
+   "posted": "2025-10-05",
+   "likes": "9",
+   "post_title": "灯会！灯会！就在东京湾🥳（夢我，9 赞）",
+   "title": "水边剪影望彩虹桥",
+   "spot": "地上画前缘水边",
+   "stop": "水边 · 夜色",
+   "latlon": [
+    35.63078,
+    139.7759
+   ],
+   "cam_bearing": 145,
+   "cam_dist": 6,
+   "cam_h": "纸灯高度",
+   "lens_est": "约 35–50mm",
+   "kind": "全身",
+   "time_light": "夜",
+   "weather": "晴",
+   "pose": "back",
+   "gaze": "back",
+   "pose_note": "人在水边背对镜头",
+   "fg_bg": "前景大片失焦红橙纸灯；背景亮灯彩虹桥与倒影",
+   "visual": {
+    "light": "纸灯 + 桥灯",
+    "tone": "红橙 + 白蓝",
+    "composition": "纸灯占下半，地平线约 38%，桥在左上"
+   },
+   "frame": {
+    "x": 0.55,
+    "top": 0.4,
+    "feet": 0.62
+   },
+   "reproducible": {
+    "level": "高",
+    "why": "方位固定"
+   },
+   "text_notes": "正文：日落后约 5:20 点灯，6:30 灯还亮着；很多人坐在看台上；海灯按造型摆放，请勿随意碰移。",
+   "shots": [
+    "20",
+    "21"
+   ]
+  },
+  {
+   "id": "Q1",
+   "platform": "小红书",
+   "url": "https://www.xiaohongshu.com/search_result?keyword=%E6%B5%B7%E4%B9%8B%E7%81%AF%E7%A5%AD%20%E5%8F%B0%E5%9C%BA%20%E6%8B%8D%E7%85%A7",
+   "posted": "2026-10-02",
+   "title": "搜索「海之灯祭 台场 拍照」",
+   "summary": "三毛子の情報局（2026-09-20，253 赞）：13:00 布置纸灯、17:00 开始点灯、17:20 前后光之地上画完成并持续到蜡烛燃尽；今年主题海洋生物；与彩虹桥、东京塔、屋形船同框；免费；百合鸥线台场海浜公园站步行 3 分钟、临海线东京电讯站 10 分钟。另一篇 470 赞笔记的评论在问下雨，10/3 预报晴。",
+   "shots": [
+    "13"
+   ]
+  },
+  {
+   "id": "Q2",
+   "platform": "抖音 / TikTok",
+   "url": "https://www.douyin.com/search/%E5%8F%B0%E5%9C%BA%E6%B5%B7%E7%81%AF%E7%A5%AD%20%E6%8B%8D%E7%85%A7",
+   "posted": "2026-10-02",
+   "title": "抖音「台场海灯祭 拍照」与 TikTok「海の灯まつり お台場」",
+   "summary": "抖音以视频为主，asa不犯困（2025-10-05，694 赞）提醒阴雨天不好出片；TikTok 近一周有 Diana in Japan、週末コンパス、megmiyae 等预告帖，封面多为低机位纸灯加彩虹桥。",
+   "shots": []
+  }
+ ]
+}

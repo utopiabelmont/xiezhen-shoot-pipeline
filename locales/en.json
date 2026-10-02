@@ -1001,5 +1001,13 @@
  "4K 60 / 120 与 Apple Log 文件大": "4K 60 / 120 and Apple Log files are large",
  "实况开、网格开": "Live Photo on, grid on",
  "透明长柄伞、手机防水袋、镜头布两块": "Clear long umbrella, waterproof phone pouch, two lens cloths",
- "每条短片前擦一次镜头": "Wipe the lens before every clip"
+ "每条短片前擦一次镜头": "Wipe the lens before every clip",
+ "时段 · 地点 · 步行导航": "Time · place · walking directions",
+ "扫码 / 点按导航": "Scan / tap to navigate",
+ "谷歌地图步行导航": "Google Maps walking directions",
+ "导航到本站": "Navigate to this stop",
+ "人物站位": "Subject position",
+ "机位（摄影者站位）": "Camera position (photographer)",
+ "目标点": "Destination",
+ "室内站位（导航到所在建筑）": "Indoor spot (navigates to the building)"
 }
