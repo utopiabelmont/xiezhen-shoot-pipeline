@@ -244,7 +244,10 @@ def cmd_cards(a):
                 order = [i for i in json.loads((d / "route.json").read_text(encoding="utf-8")).get("order", []) if i in cards]
             rest = [i for i in sorted(cards) if i not in order]
             rest = [i for i in rest if medium.get(i, "still") == "still"] + [i for i in rest if medium.get(i, "still") != "still"]
-            pngs = (sorted((d / "cards").glob("trip_*.png")) + sorted((d / "cards").glob("outfit_*.png"))
+            skip = set(plan.get("meta", {}).get("pdf_skip", []))   # meta.pdf_skip: ["trip", "outfit"] 时 PDF 不放行程页、穿搭页（核对表照常有）
+            pngs = ([] if "trip" in skip else sorted((d / "cards").glob("trip_*.png")))
+            pngs += ([] if "outfit" in skip else sorted((d / "cards").glob("outfit_*.png")))
+            pngs = (pngs
                     + sorted((d / "cards").glob("route_*.png")) + sorted((d / "cards").glob("sns_[0-9]*.png"))
                     + sorted((d / "cards").glob("poses_[0-9]*.png")) + sorted((d / "cards").glob("poses_src.png"))
                     + [q for i in order + rest for q in [cards[i], moves.get(i)] if q])   # 行程 → 穿搭 → 路线 → 参考机位 → 姿势参考 → 分镜（按路线顺序，短片卡后接运镜页；无路线则静态在前）；短片一览只进核对表
@@ -252,7 +255,7 @@ def cmd_cards(a):
                 meta = plan.get("meta", {})
                 name = pdf_name(meta)
                 ims = [Image.open(p).convert("RGB") for p in pngs]
-                ims[0].save(d / name, save_all=True, append_images=ims[1:], resolution=150)
+                ims[0].save(d / name, save_all=True, append_images=ims[1:], resolution=150, quality=95, subsampling=0)   # 高质量 JPEG，二维码边缘不糊
                 sys.path.insert(0, str(TOOLS))
                 from nav import add_pdf_links                # 1.9.0：分镜页的导航与原帖二维码在 PDF 里可直接点按
                 nl = add_pdf_links(d / name, pngs, d / "cards" / "links.json")

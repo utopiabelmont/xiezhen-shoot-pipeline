@@ -442,6 +442,9 @@ def build(plan_dir: Path, images: Path, thumbs=True, public=False) -> tuple[str,
         if not sr.get("ref"):
             return '<div class="pose">补充分镜（无 SNS 素材）</div>'
         pose = f'　同款姿势 {esc(sr.get("pose_id", ""))} {esc(sr["pose_name"])}' if sr.get("pose_name") else ""
+        if not sr.get("url"):                       # 平台汇总（搜索页）没有单条帖子：只写文字
+            return (f'<div class="pose">来源 {esc(sr["ref"])} {esc(sr.get("title", ""))}（{esc(sr.get("platform", ""))} · {esc(sr.get("kind", ""))}，'
+                    f'{esc(sr.get("search", "汇总页无单条链接"))}）<br>照搬：{esc(sr.get("what", ""))}</div>')
         return (f'<div class="pose">来源 <a href="{esc(sr["url"])}" target="_blank" rel="noopener">{esc(sr["ref"])} {esc(sr.get("title", ""))}</a>'
                 f'（{esc(sr.get("platform", ""))} · {esc(sr.get("kind", ""))}）{pose}<br>照搬：{esc(sr.get("what", ""))}</div>')
 

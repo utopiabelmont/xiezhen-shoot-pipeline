@@ -9,8 +9,8 @@ nav.py　分镜站位的谷歌地图步行导航链接（1.9.0 起）。
       {"latlon": [lat, lon], "label": "..."} → 导航到指定点（例如店门、出站口）
       {"place_id": "ChIJ...", "label": "..."}→ 同时带 Google 地点 ID（店内分镜导航到店铺本身，楼层写在 label）
 链接格式用 Google Maps URLs（https://developers.google.com/maps/documentation/urls/get-started）：
-  https://www.google.com/maps/dir/?api=1&destination=<lat>,<lon>&travelmode=walking[&destination_place_id=<id>]
-手机点开直接进入步行导航；电脑上打开是路线规划页。
+  https://www.google.com/maps/dir/?api=1&destination=<lat>,<lon>&travelmode=walking[&destination_place_id=<id>]&dir_action=navigate
+手机点开直接以当前位置为起点开始步行导航；电脑上打开是路线规划页。
 
 用法（自检）：python tools/nav.py --plan plans/<plan>     → 列出每条分镜的导航目标与链接
 """
@@ -33,11 +33,14 @@ def offset_latlon(lat: float, lon: float, bearing_deg: float, dist_m: float) -> 
     return lat + math.degrees(dlat), lon + math.degrees(dlon)
 
 
-def maps_url(lat: float, lon: float, place_id: str | None = None, mode: str = "walking") -> str:
-    q = {"api": "1", "destination": f"{lat:.6f},{lon:.6f}", "travelmode": mode}
+def maps_url(lat: float, lon: float, place_id: str | None = None, mode: str = "walking", navigate: bool = True) -> str:
+    """dir_action=navigate：手机上点开直接以当前位置为起点开始步行导航（没有定位权限时退回路线预览）。"""
+    q = {"api": "1", "destination": f"{lat:.5f},{lon:.5f}", "travelmode": mode}
     if place_id:
         q["destination_place_id"] = place_id
-    return "https://www.google.com/maps/dir/?" + urlencode(q)
+    if navigate:
+        q["dir_action"] = "navigate"
+    return "https://www.google.com/maps/dir/?" + urlencode(q, safe=",")
 
 
 def camera_latlon(shot: dict) -> tuple[float, float] | None:

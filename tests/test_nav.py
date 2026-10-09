@@ -12,7 +12,8 @@ class NavTargetTests(unittest.TestCase):
         t = nav_target({"subject_latlon": [35.62645, 139.77502]})
         q = parse_qs(urlparse(t["url"]).query)
         self.assertEqual(q["travelmode"], ["walking"])
-        self.assertEqual(q["destination"], ["35.626450,139.775020"])
+        self.assertEqual(q["destination"], ["35.62645,139.77502"])
+        self.assertEqual(q["dir_action"], ["navigate"])          # 手机点开直接开始步行导航
         self.assertEqual(t["label"], "人物站位")
 
     def test_camera_target_offsets_along_bearing(self):

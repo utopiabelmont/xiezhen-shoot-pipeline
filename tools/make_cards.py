@@ -547,7 +547,7 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     d = ImageDraw.Draw(img)
     split = rx0 + int((rx1 - rx0) * 0.4)
     nav = nav_target(shot)                          # 1.9.0：站位的谷歌地图步行导航（底栏二维码 + PDF 可点击）
-    pb = 872 if nav else 912                       # 有导航时姿势 / 光线两栏让出高度给底栏
+    pb = (872 if NAV_QR else 852) if nav else 912     # 有导航时姿势 / 光线两栏让出高度给底栏（印链接时多留两行）
     y = panel(d, (rx0, 702, split - 6, pb), "姿势与引导", f_h)
     pz = POSES_BY_SHOT.get(shot["id"], [])
     ptxt = ("\n参考姿势：" + "、".join(f"{p['id']} {p['name']}" for p in pz)) if pz else ""
@@ -557,7 +557,30 @@ def make_card(shot, meta, photo_path: Path, out_path: Path, sun_for_shot):
     y = panel(d, (split + 6, 702, rx1, pb), "光线与备选", f_h)
     fit_block(d, (split + 18, y), shot["light"] + "\n备选：" + shot["alt"], rx1 - split - 32, pb - 8)
     ref_txt = ""                                   # SNS 参考已在左侧对照显示，这里不重复
-    if nav:
+    if nav and not NAV_QR:                          # 地点栏不放二维码：直接印出完整导航链接，PDF 里整段可点按
+        y = panel(d, (rx0, pb + 12, rx1, H - 22), "时段 · 地点 · 步行导航", f_h)
+        lat, lon = nav["latlon"]
+        coord = f" ({lat:.5f}, {lon:.5f})" if LANG == "en" else f"（{lat:.5f}, {lon:.5f}）"
+        nav_line = f"{tr('谷歌地图步行导航')} → {tr(nav['label'])}{coord}"
+        ytop = y
+        yy = fit_block(d, (rx0 + 14, y), nav_line, rx1 - rx0 - 28, y + 40, sizes=(16, 15, 14), fill=GREEN)
+        fu = font(13)
+        url_lines, cur = [], ""
+        with raw():
+            for ch in nav["url"]:                   # 链接没有空格，按字符宽度折行
+                if d.textlength(cur + ch, font=fu) > rx1 - rx0 - 28:
+                    url_lines.append(cur); cur = ch
+                else:
+                    cur += ch
+        url_lines.append(cur)
+        for ln in url_lines:
+            d.text((rx0 + 14, yy), ln, font=fu, fill=LINK_BLUE)
+            lw = d.textlength(ln, font=fu)
+            d.line([(rx0 + 14, yy + 16), (rx0 + 14 + lw, yy + 16)], fill=LINK_BLUE, width=1)
+            yy += 18
+        LINKS.setdefault(out_path.name, []).append([rx0 + 8, ytop - 2, rx1 - 8, yy + 2, nav["url"]])
+        fit_block(d, (rx0 + 14, yy + 4), f"{shot['time']}　{shot['spot']}　注意：{shot['note']}{ref_txt}", rx1 - rx0 - 28, H - 30)
+    elif nav:
         y = panel(d, (rx0, pb + 12, rx1, H - 22), "时段 · 地点 · 步行导航", f_h)
         qs = (H - 26) - (pb + 12 + 46) - 18           # 二维码边长：底栏高度减去标题与说明
         qx, qy = rx1 - 12 - qs, pb + 12 + 46
@@ -780,7 +803,10 @@ def draw_src_column(img, box, src, shot=None):
         d.text((ix0, y), ln, font=font(16, True), fill=INK); y += 22
     y += 6
     qs = min(iw, 196)
-    q = qr_image(src["url"], qs)
+    q = qr_image(src["url"], qs) if src.get("url") else None   # 平台汇总（搜索页）没有单条帖子时不放码
+    if not src.get("url"):
+        y = fit_block(d, (ix0, y), "汇总页没有单条帖子，不放二维码；需要时在 App 里" + (src.get("search") or "按标题搜索") + "。",
+                      iw, y + 60, sizes=(13,), fill=MUTED) + 8
     if q:
         qx = x0 + (w - qs) // 2
         img.paste(q, (qx, y))
@@ -799,11 +825,11 @@ def draw_src_column(img, box, src, shot=None):
         parts.append(("也参考", "、".join(also)))
     if src.get("why"):
         parts.append(("现场差异", src["why"]))
-    url = src["url"].replace("https://www.", "").replace("https://", "")
+    url = (src.get("url") or "").replace("https://www.", "").replace("https://", "")
     if "keyword=" in url:                               # 搜索页链接太长，显示解码后的关键词
         from urllib.parse import unquote
         url = f"{src.get('platform', '')}搜索：" + unquote(url.split("keyword=")[1].split("&")[0])
-    link_lines = fit_lines(d, url, font(11), iw, 3)
+    link_lines = fit_lines(d, url, font(11), iw, 3) if url else []
     bottom = y1 - 10 - 15 * len(link_lines)
     for lab, txt in parts:
         if y > bottom - 40:
@@ -825,6 +851,8 @@ CLIP_MODE = {"24p": "動画位 4K 24p（实时，≤5 s）", "sq60": "S&Q 60→2
 # 机身是手机（meta.body 含 iPhone 等）时，设置块、页眉与页脚换成手机的写法（docs/VIDEO_NOTES.md 第 8 节）
 PHONE_WORDS = ("iPhone", "手机", "Pixel", "Galaxy", "Xperia")
 PHONE = False
+NAV_QR = True                                         # meta.nav_qr = false：地点栏不放二维码，改印可点按的完整导航链接
+LINK_BLUE = (36, 84, 160)
 
 
 def is_phone(body) -> bool:
@@ -960,6 +988,8 @@ def main():
     meta = plan["meta"]
     global PHONE
     PHONE = is_phone(meta.get("body"))
+    global NAV_QR
+    NAV_QR = meta.get("nav_qr", True)
     global BASEMAPS
     BASEMAPS = load_basemaps(a.plan)
     for name, (im, _) in BASEMAPS.items():
